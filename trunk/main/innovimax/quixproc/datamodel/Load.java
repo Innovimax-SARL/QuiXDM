@@ -44,7 +44,7 @@ public class Load implements IStream<QuixEvent> {
 
   @Override
   public boolean hasNext() {
-    return this.state == State.FINISH;
+    return this.state != State.FINISH;
   }
 
   enum State { INIT, START_SEQUENCE, START_DOCUMENT, END_DOCUMENT, FINISH }
