@@ -166,7 +166,7 @@ public class Load implements IStream<QuixEvent> {
    */
   private QuixEvent updateText(QuixEvent event) {
     if (charBuffer.length() != 0) {
-      QuixEvent text = QuixEvent.getText(sreader.getText());
+      QuixEvent text = QuixEvent.getText(charBuffer.toString());
       charBuffer.setLength(0);
       this.buffer.add(event);
       return text;
