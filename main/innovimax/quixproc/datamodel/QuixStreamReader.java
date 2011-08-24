@@ -95,7 +95,7 @@ public class QuixStreamReader implements XMLStreamReader {
             future = qs.next();
             if (future.isAttribute()) {
               attributes.add(future.asAttribute());
-            } if (future.isNamespace()) {
+            } else if (future.isNamespace()) {
               namespaces.add(future.asNamespace());
             } else {
               break;
