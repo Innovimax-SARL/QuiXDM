@@ -1,6 +1,6 @@
 /*
 QuiXProc: efficient evaluation of XProc Pipelines.
-Copyright (C) 2011 Innovimax
+Copyright (C) 2011-2012 Innovimax
 All rights reserved.
 
 This program is free software; you can redistribute it and/or
@@ -20,12 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package innovimax.quixproc.datamodel;
 
 import innovimax.quixproc.datamodel.shared.ISimpleQueue;
-import net.sf.saxon.om.NamePool;
+import net.sf.saxon.om.NamespaceBinding;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmSequenceIterator;
-import net.sf.saxon.tree.iter.NamespaceIterator;
 
 public abstract class EventConverter implements Runnable {
     private ISimpleQueue<QuixEvent> doc = null;   
@@ -64,11 +63,13 @@ public abstract class EventConverter implements Runnable {
      
 
     private void process() {
+      doc.append(QuixEvent.getStartSequence());
       String uri = ""+node.getDocumentURI();
       //System.out.println("---------->Document URI"+uri);
       doc.append(QuixEvent.getStartDocument(uri));
       processnode(node);
       doc.append(QuixEvent.getEndDocument(uri));
+      doc.append(QuixEvent.getEndSequence());
     }
     
     private void processnode(XdmNode localnode) {
@@ -93,7 +94,7 @@ public abstract class EventConverter implements Runnable {
           }
           doc.append(QuixEvent.getEndElement(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix()));
           break;
-        case ATTRIBUTE :
+        case ATTRIBUTE :          
           doc.append(QuixEvent.getAttribute(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix(), localnode.getStringValue()));
           break;
         case TEXT:
@@ -105,7 +106,7 @@ public abstract class EventConverter implements Runnable {
         case PROCESSING_INSTRUCTION :
           doc.append(QuixEvent.getPI(localnode.getNodeName().getLocalName(), localnode.getStringValue()));
           break;
-        case NAMESPACE :
+        case NAMESPACE :          
           // no op
           break;
       }
@@ -113,16 +114,15 @@ public abstract class EventConverter implements Runnable {
     
     private void namespaceProcess(XdmNode node) {
       NodeInfo inode = node.getUnderlyingNode();
-      NamePool pool = inode.getNamePool();
-      int inscopeNS[] = 
+      NamespaceBinding[] inscopeNS = 
           inode.getDeclaredNamespaces(null);
           //NamespaceIterator.getInScopeNamespaceCodes(inode);
 
       if (inscopeNS.length > 0) {
           for (int pos = 0; pos < inscopeNS.length; pos++) {
-              int ns = inscopeNS[pos];
-              String pfx = pool.getPrefixFromNamespaceCode(ns);
-              String uri = pool.getURIFromNamespaceCode(ns);
+              NamespaceBinding ns = inscopeNS[pos];
+              String pfx = ns.getPrefix();
+              String uri = ns.getURI();
               doc.append(QuixEvent.getNamespace(pfx, uri));              
            }
        }
