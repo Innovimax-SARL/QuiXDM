@@ -1,6 +1,6 @@
 /*
 QuiXProc: efficient evaluation of XProc Pipelines.
-Copyright (C) 2011 Innovimax
+Copyright (C) 2011-2012 Innovimax
 All rights reserved.
 
 This program is free software; you can redistribute it and/or
@@ -20,6 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package innovimax.quixproc.datamodel.shared;
 
 import innovimax.quixproc.datamodel.IStream;
+import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.QuixException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,66 +214,80 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
   public void closeReaderRegistration() {
     this.maxReader = readerCount;
   }
+  final static int MAX_PRODUCE = 10000000;
+  final static int LOG_MODULO  = MAX_PRODUCE / 10;
   
-//  private static class SimpleProducer implements Runnable {
-//    private final QuixEventQueue qeq;
-//
-//    SimpleProducer(QuixEventQueue qeq) {
-//      this.qeq = qeq;
-//    }
-//
-//    @Override
-//    public void run() {
-//      int i = 100;
-//      while (i-- > 0) {
+  private static class SimpleProducer implements Runnable {
+    private final IQueue<QuixEvent> qeq;
+
+    SimpleProducer(IQueue<QuixEvent> qeq) {
+      this.qeq = qeq;
+    }
+
+    @Override
+    public void run() {
+      
+      int i = MAX_PRODUCE;
+      while (i-- > 0) {
 //        try {
-//          qeq.append(QuixEvent.getStartDocument(""));
-//          System.out.println("Produce " + i);
+          qeq.append(QuixEvent.getStartDocument(""+i));
+          
+          if (i % LOG_MODULO == 0) System.out.println("Produce " + i);
 //          Thread.sleep(1);
 //        } catch (InterruptedException e) {
-//          // TODO Auto-generated catch block
+          // TODO Auto-generated catch block
 //          e.printStackTrace();
 //        }
-//      }
-//      qeq.close();
-//    }
-//  }
+      }
+      qeq.close();
+    }
+  }
 
-//  private static class SimpleConsumer implements Runnable {
-//    private final QuixStream qs;
-//    private final int        rank;
-//
-//    SimpleConsumer(QuixStream qs, int rank) {
-//      this.qs = qs;
-//      this.rank = rank;
-//    }
-//
-//    @Override
-//    public void run() {
-//      while (qs.hasNext()) {
-//        qs.next();
-//        System.out.println("Consume " + rank);
-//      }
-//      qs.close();
-//    }
-//  }
-//
-//  public static void main(String[] args) {
-//    System.out.println("Start");
-//    System.out.println("Create QuixEventQueue");
-//    QuixEventQueue qeq = new SimpleQuixEventQueue();
-//    System.out.println("Create SimpleProducer");
-//    SimpleProducer sp = new SimpleProducer(qeq);
-//    for (int i = 0; i < 100; i++) {
-//      System.out.println("Create SimpleConsumer");
-//      SimpleConsumer sc = new SimpleConsumer(qeq.registerReader(), i);
-//      Thread t = new Thread(sc);
-//      System.out.println("Start SimpleConsumer");
-//      t.start();
-//    }
-//    Thread t = new Thread(sp);
-//    System.out.println("Start SimpleProducer");
-//    t.start();
-//  }
+  private static class SimpleConsumer implements Runnable {
+    private final IStream<QuixEvent> qs;
+    private final int        rank;
+
+    SimpleConsumer(IStream<QuixEvent> qs, int rank) {
+      this.qs = qs;
+      this.rank = rank;
+    }
+
+    @Override
+    public void run() {
+      try {
+        int i = 0;
+        while (qs.hasNext()) {
+          qs.next();
+          i++;
+          if (i % LOG_MODULO == 0) System.out.println("Consume " + rank);
+        }
+      } catch (QuixException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      qs.close();
+    }
+  }
+
+  public static void main(String[] args) {
+    System.out.println("Start");
+    System.out.println("Create QuixEventQueue");
+//  IQueue<QuixEvent> qeq = new SimpleAppendQueue<QuixEvent>();
+    SmartAppendQueue<QuixEvent> qeq = new SmartAppendQueue<QuixEvent>();
+    final int READER_COUNT = 20;
+    qeq.setReaderCount(READER_COUNT);
+    System.out.println("Create SimpleProducer");
+    SimpleProducer sp = new SimpleProducer(qeq);
+    for (int i = 0; i < READER_COUNT; i++) {
+      System.out.println("Create SimpleConsumer");
+      SimpleConsumer sc = new SimpleConsumer(qeq.registerReader(), i);
+      Thread t = new Thread(sc);
+      System.out.println("Start SimpleConsumer");
+      t.start();
+    }
+    Thread t = new Thread(sp);
+    System.out.println("Start SimpleProducer");
+    t.start();
+  }
  
 }

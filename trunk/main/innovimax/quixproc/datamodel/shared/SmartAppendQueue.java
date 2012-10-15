@@ -1,6 +1,6 @@
 /*
 QuiXProc: efficient evaluation of XProc Pipelines.
-Copyright (C) 2011 Innovimax
+Copyright (C) 2011-2012 Innovimax
 All rights reserved.
 
 This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public final class SmartAppendQueue<T> implements IQueue<T> {
-  private final static boolean DEBUG = false;
+  private final static int DEBUG_LEVEL = 0; // 0 none, 1 simple, 2 detailled
   private static int counter = 0;
   private static Set<Integer> open = Collections.synchronizedSet(new TreeSet<Integer>());
   private LinkedItem<T> head;
@@ -90,9 +90,15 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
     public LinkedItem<T> getNext() {
       try {
         // this.latch.await();
-        if (this.lock != null)
+        if (this.lock != null) {
+          if (this.lock != null) {
+            if (this.lock != null) {
+              if (this.lock != null) {
         synchronized (this.lock) {
           if (this.lock != null) this.lock.wait();
+        }
+        }        }
+          }
         }
         return this.next;
       } catch (InterruptedException e) {
@@ -125,8 +131,12 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
     }
     @Override
     public boolean hasNext() {
+      if (current == null) {
+        System.out.println("hasNext => current == null in LocalReader");
+        return false;
+      }
       boolean result = this.current.getNext() != LinkedItem.END;
-      if (DEBUG) if (!result) System.out.println("Reader("+name+") hasnext=false");
+      if (DEBUG_LEVEL > 1) if (!result) System.out.println("Reader("+name+") hasnext=false");
       return result;
     }
 
@@ -134,14 +144,14 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
     public T next() {
       this.current = this.current.getNext();
       T event = this.current.get();
-      if (DEBUG) System.out.println(""+counter+"/"+name+"<-"+event);
+      if (DEBUG_LEVEL > 1) System.out.println(""+counter+"/"+name+"<-"+event);
       return event;
     }
 
     @Override
     public void close() {
       this.current = LinkedItem.END;
-      if (DEBUG) System.out.println("Reader("+name+") closed");
+      if (DEBUG_LEVEL > 0) System.out.println("Reader("+name+") closed");
     }
   }
 
@@ -151,8 +161,8 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
     this.currentReader = 0;
     this.readerCount = 0;
     this.rank = counter++;
-    if (DEBUG) System.out.println("SmartAppendQueue Create "+this.rank);
-    if (DEBUG) open.add(this.rank);
+    if (DEBUG_LEVEL > 0) System.out.println("SmartAppendQueue Create "+this.rank);
+    if (DEBUG_LEVEL > 0) open.add(this.rank);
   }
 
   /**
@@ -160,7 +170,7 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
    */
   @Override
   public void append(T event) {
-    if (DEBUG) System.out.println(""+counter+"->"+event);
+    if (DEBUG_LEVEL > 1) System.out.println(""+counter+"->"+event);
     LinkedItem<T> li = new LinkedItem<T>(event);
     this.current.setNext(li);
     this.current = li;
@@ -173,15 +183,17 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
   public void close() {
     this.current.setNext(LinkedItem.END);
     this.current = LinkedItem.END;
-    if (DEBUG) open.remove(this.rank);
-    if (DEBUG) System.out.println("SmartAppendQueue Close : "+this.rank+"; SmartAppend still open : "+open.size()+"; Reader("+currentReader+"/"+readerCount+")");
+    if (DEBUG_LEVEL > 0) open.remove(this.rank);
+    if (DEBUG_LEVEL > 0) System.out.println("SmartAppendQueue Close : "+this.rank+"; SmartAppend still open : "+open.size()+"; Reader("+currentReader+"/"+readerCount+")");
   }
 
   @Override
   public IStream<T> registerReader() {
-    LocalReader<T> l = new LocalReader<T>(head);
+    final LinkedItem<T> local_head = head;
+    if (DEBUG_LEVEL > 0) System.out.println("head " + head);
+    LocalReader<T> l = new LocalReader<T>(local_head);
     IStream<T> result = l;
-    if (DEBUG) l.setName(""+this.rank+"/"+currentReader+"/"+readerCount);
+    if (DEBUG_LEVEL > 0) l.setName(""+this.rank+"/"+currentReader+"/"+readerCount);
     currentReader++;
     if (readerCount > currentReader) {
       // do nothing there is still reader to register
@@ -192,9 +204,9 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
     } else {
       closeReaderRegistration();
       // readerCount < currentReader
-      // throw new RuntimeException(
+       throw new RuntimeException(
       // System.out.println(
-      // "readerCount < currentReader : "+readerCount+","+currentReader);
+       "readerCount < currentReader : "+readerCount+","+currentReader);
     }
     return result;
   }
@@ -225,14 +237,16 @@ public final class SmartAppendQueue<T> implements IQueue<T> {
 
   @Override
   public void setReaderCount(int count) {
+    if (count < 1) count = 1;
     this.readerCount = count;
-    if (DEBUG) if (count >= 18) Thread.dumpStack();
-    if (DEBUG) System.out.println("SetReaderCount ("+this.rank+") = "+count);
+    if (DEBUG_LEVEL > 0) if (count >= 18) Thread.dumpStack();
+    if (DEBUG_LEVEL > 0) System.out.println("SetReaderCount ("+this.rank+") = "+count);
   }
 
   @Override
-  public void closeReaderRegistration() {
+  public void closeReaderRegistration() {    
     this.head = LinkedItem.END;
+    if (DEBUG_LEVEL > 0) System.out.println("closeReaderRegistration()");
   }
 
 }
