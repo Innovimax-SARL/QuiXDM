@@ -18,7 +18,7 @@ push/pull | push | pull | -- | pull
 data model | low level XML | low level XML | low level XML | XPath Data Model
 handle sequence | no | no | no | **yes**
 
-# How does it works
+# How does it works?
 We minimize (as the XPath Data Model requires it) the number of XML information we manage
 ```ANTLR
   // Here is the grammar of events
@@ -28,6 +28,9 @@ element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTR
 ```
 
 Mainly look at [QuixEventToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuixEventToken.java)
+
+# Why QuixStreamReader and QuixEventStreamReader?
+As with Stax, there is a lightweight event processing (QuixStream) and one with Object creation (QuixEvent)
 
 # Contributors
 
