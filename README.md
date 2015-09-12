@@ -3,8 +3,8 @@
 
 # Getting Started
 
-To install, it
-*  Checkout this code. It's Java 1.6+ compliant: http://code.google.com/p/quixpath/source/checkout
+To install it
+*  Checkout this code. It's Java 1.6+ compliant
 *  Get access to Saxon 9.6: http://saxon.sourceforge.net/ 
 
 # Why QuiXDM?
@@ -18,7 +18,7 @@ data model | low level XML | low level XML | low level XML | **XPath Data Model*
 handle sequence | no | no | no | **yes**
 
 # How does it work?
-We minimize (as the XPath Data Model requires it) the number of XML information we manage
+It minimizes (as far as the XPath Data Model requires it) the number of XML information to manage
 ```ANTLR
 // Here is the grammar of events
 sequence := START_SEQUENCE, document*, END_SEQUENCE
@@ -26,10 +26,10 @@ document := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESS
 element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
 ```
 
-Mainly look at [QuixToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuixToken.java)
+Mostly look at [QuixToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuixToken.java)
 
 # Use
-## with Object creation (à la [javax.xml.stream.XMLStreamReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLStreamReader.html))
+## With Object creation (à la [javax.xml.stream.XMLStreamReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLStreamReader.html))
 Simplest way to use, is to instanciate [innovimax.quixproc.datamodel.in.QuixEventStreamReader.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuixEventStreamReader.java)
 ```java
 Iterable<Source> sources = Arrays.asList(new Source[] {
@@ -41,13 +41,11 @@ while(qesr.hasNext()) {
 	System.out.println(qesr.next());
 }
 ```
-## lightweight iterator without Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
+## Lightweight iterator without Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
 ***TODO***
 # Contributors
-
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
 # Related Projects
-
 QuiXDM can be used standalone
 
 This is the data model of QuiXPath and QuiXProc
