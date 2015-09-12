@@ -6,7 +6,7 @@
 To install, it
 
 *  Checkout this code. It's Java 1.6+ compliant: http://code.google.com/p/quixpath/source/checkout
-*  Get access to Saxon 9.4: http://saxon.sourceforge.net/ 
+*  Get access to Saxon 9.6: http://saxon.sourceforge.net/ 
 
 # Why QuiXDM?
 There is SAX and StAX and DOM out there for processing XML
