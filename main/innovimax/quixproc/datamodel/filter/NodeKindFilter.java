@@ -17,42 +17,48 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel.stream;
+package innovimax.quixproc.datamodel.filter;
 
-import java.util.Iterator;
-import java.util.Stack;
-
-import javax.xml.namespace.QName;
+import java.util.EnumSet;
 
 import innovimax.quixproc.datamodel.IEvent;
 import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.QuixEvent;
 
-public class AncestorContextFilter<T extends IEvent> extends AStreamFilter<T> {
+public class NodeKindFilter<T extends IEvent> extends AStreamFilter<T> {
+  enum Kind { ATTRIBUTE, TEXT, COMMENT, PI, NAMESPACE }
+  
+  private EnumSet<Kind> enumset;
 
-  private Stack<QName> ancestors;
-  public AncestorContextFilter(IStream<T> stream) {
+  public NodeKindFilter(IStream<T> stream, EnumSet<Kind> enumset) {
     super(stream);
-    this.ancestors = new Stack<QName>();
+    this.enumset = enumset;
   }
-
+ 
   @Override
   public T process(T item) {
+    // We cannot extends the list of Kind in order to be able to assert that this process terminate
     QuixEvent qevent = item.getEvent();
-    switch (qevent.getType()) {
-      case START_ELEMENT :
-        this.ancestors.push(qevent.asNamedEvent().getQName());
+    switch(qevent.getType()) {
+      case ATTRIBUTE :
+        if (enumset.contains(Kind.ATTRIBUTE)) return null;
         break;
-      case END_ELEMENT:
-        this.ancestors.pop();
+      case TEXT :
+        if (enumset.contains(Kind.TEXT)) return null;
         break;
-      default:  
-        break;        
+      case COMMENT :
+        if (enumset.contains(Kind.COMMENT)) return null;
+        break;
+      case NAMESPACE :
+        if (enumset.contains(Kind.NAMESPACE)) return null;
+        break;
+      case PI :
+         if (enumset.contains(Kind.PI)) return null;
+         break;
+      default :
+         break;         
     }
     return item;
   }
 
-  public Iterator<QName> ancestors() {
-    return this.ancestors.iterator();
-  }
 }

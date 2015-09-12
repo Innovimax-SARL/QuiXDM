@@ -17,35 +17,35 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel.stream;
+package innovimax.quixproc.datamodel.filter;
 
-import innovimax.quixproc.datamodel.IEvent;
 import innovimax.quixproc.datamodel.IStream;
-import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.QuixException;
 
-public class DocumentCountFilter<T extends IEvent> extends AStreamFilter<T> {
-
-  private int count;
-  
-  public DocumentCountFilter(IStream<T> stream) {
-    super(stream);
-    this.count = 0;
+public abstract class AStreamFilter<IEvent> implements IStream<IEvent> {
+  private IStream<IEvent> stream;
+  public AStreamFilter(IStream<IEvent> stream) {
+    this.stream = stream;
   }
 
   @Override
-  public T process(T item) {
-    QuixEvent qevent = item.getEvent();
-    switch(qevent.getType()) {
-      case START_DOCUMENT :
-        this.count++;
-        break;
-      default:
-        break;
-    }
+  public boolean hasNext() throws QuixException {
+    return this.stream.hasNext();
+  }
+
+  @Override
+  public IEvent next() throws QuixException {
+    IEvent item;
+    while ((item = process(this.stream.next())) == null)
+        /* NOP */;
     return item;
   }
 
-  public int getCurrentDocumentCount() {
-    return this.count;
+  @Override
+  public void close() {
+    this.stream.close();
   }
+  
+  public abstract IEvent process(IEvent item);
+
 }
