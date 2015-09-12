@@ -22,8 +22,8 @@ package innovimax.quixproc.datamodel.filter;
 import java.util.EnumSet;
 
 import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.event.IQuixEvent;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
+import innovimax.quixproc.datamodel.event.IQuixEvent;
 
 public class NodeKindFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
   enum Kind { ATTRIBUTE, TEXT, COMMENT, PI, NAMESPACE }

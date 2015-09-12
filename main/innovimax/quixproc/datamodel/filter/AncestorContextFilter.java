@@ -25,8 +25,8 @@ import java.util.Stack;
 import javax.xml.namespace.QName;
 
 import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.event.IQuixEvent;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
+import innovimax.quixproc.datamodel.event.IQuixEvent;
 
 public class AncestorContextFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
 

@@ -1,5 +1,7 @@
 package innovimax.quixproc.datamodel.stream;
 
+import java.util.NoSuchElementException;
+
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;

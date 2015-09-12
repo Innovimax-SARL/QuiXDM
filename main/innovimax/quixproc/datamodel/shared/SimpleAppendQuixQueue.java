@@ -19,13 +19,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.shared;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import innovimax.quixproc.datamodel.IQuixStream;
 import innovimax.quixproc.datamodel.QuixException;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Simple implementation of {@link Queue} interface It uses a simple {@link ArrayList} and {@link ReentrantReadWriteLock}

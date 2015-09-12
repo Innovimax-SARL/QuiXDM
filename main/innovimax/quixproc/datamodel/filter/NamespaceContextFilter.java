@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.event.IQuixEvent;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
+import innovimax.quixproc.datamodel.event.IQuixEvent;
 
 public class NamespaceContextFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
 

@@ -19,13 +19,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.shared;
 
-//import java.util.concurrent.locks.AbstractQueuedSynchronizer;
-
-import innovimax.quixproc.datamodel.IQuixStream;
-
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+
+//import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+
+import innovimax.quixproc.datamodel.IQuixStream;
 
 public final class SmartAppendQuixQueue<T> implements IQuixQueue<T> {
   private final static int DEBUG_LEVEL = 0; // 0 none, 1 simple, 2 detailled
