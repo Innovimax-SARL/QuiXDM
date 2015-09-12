@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package innovimax.quixproc.datamodel.convert;
 
 import innovimax.quixproc.datamodel.event.AQuixEvent;
-import innovimax.quixproc.datamodel.shared.ISimpleQueue;
+import innovimax.quixproc.datamodel.shared.ISimpleQuixQueue;
 import net.sf.saxon.om.NamespaceBinding;
 import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.s9api.Axis;
@@ -28,13 +28,13 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmSequenceIterator;
 
 public abstract class AXdmNode2QuixEventStreamConverter implements Runnable {
-    private ISimpleQueue<AQuixEvent> doc = null;   
+    private ISimpleQuixQueue<AQuixEvent> doc = null;   
     private XdmNode node = null;      
     private boolean running = true; 
     private static int counter = 1;
     private final int rank = counter++;
     
-    public AXdmNode2QuixEventStreamConverter(ISimpleQueue<AQuixEvent> doc, XdmNode node) {  
+    public AXdmNode2QuixEventStreamConverter(ISimpleQuixQueue<AQuixEvent> doc, XdmNode node) {  
         this.doc = doc;              
         this.node = node;
     }

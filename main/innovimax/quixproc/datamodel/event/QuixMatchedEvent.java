@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.event;
 
-public class MatchEvent implements IQuixEvent
+public class QuixMatchedEvent implements IQuixEvent
 {           
   
   /* properties */       
@@ -30,11 +30,11 @@ public class MatchEvent implements IQuixEvent
   
   /* constructor */ 
       
-  public MatchEvent(AQuixEvent event) {
+  public QuixMatchedEvent(AQuixEvent event) {
     this.event = event;
   }
   
-  public MatchEvent(AQuixEvent event, boolean matched) {
+  public QuixMatchedEvent(AQuixEvent event, boolean matched) {
     this.event = event;
     this.matched = matched;
   }
@@ -45,7 +45,7 @@ public class MatchEvent implements IQuixEvent
     return event;
   }  
     
-  public MatchEvent setMatched(boolean matched) {
+  public QuixMatchedEvent setMatched(boolean matched) {
     this.matched = matched;
     return this;
   }

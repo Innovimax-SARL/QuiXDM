@@ -19,12 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.filter;
 
-import innovimax.quixproc.datamodel.IStream;
+import innovimax.quixproc.datamodel.IQuixStream;
 import innovimax.quixproc.datamodel.QuixException;
 
-public abstract class AStreamFilter<IEvent> implements IStream<IEvent> {
-  private IStream<IEvent> stream;
-  public AStreamFilter(IStream<IEvent> stream) {
+public abstract class AQuixEventStreamFilter<IEvent> implements IQuixStream<IEvent> {
+  private IQuixStream<IEvent> stream;
+  public AQuixEventStreamFilter(IQuixStream<IEvent> stream) {
     this.stream = stream;
   }
 

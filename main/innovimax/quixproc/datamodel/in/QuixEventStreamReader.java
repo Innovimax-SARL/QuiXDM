@@ -28,17 +28,17 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.QuixException;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
+import innovimax.quixproc.datamodel.event.IQuixEventStreamReader;
 
-public class Load implements IStream<AQuixEvent> {
+public class QuixEventStreamReader implements IQuixEventStreamReader {
 
   private final XMLStreamReader  sreader;
   private final String           baseURI;
   private final Queue<AQuixEvent> buffer = new LinkedList<AQuixEvent>();
 
-  public Load(InputStream is, String baseURI) throws XMLStreamException {
+  public QuixEventStreamReader(InputStream is, String baseURI) throws XMLStreamException {
     XMLInputFactory ifactory = XMLInputFactory.newFactory();
     ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);

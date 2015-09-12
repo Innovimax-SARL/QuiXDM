@@ -21,16 +21,16 @@ package innovimax.quixproc.datamodel.filter;
 
 import java.util.EnumSet;
 
-import innovimax.quixproc.datamodel.IStream;
+import innovimax.quixproc.datamodel.IQuixStream;
 import innovimax.quixproc.datamodel.event.IQuixEvent;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
 
-public class NodeKindFilter<T extends IQuixEvent> extends AStreamFilter<T> {
+public class NodeKindFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
   enum Kind { ATTRIBUTE, TEXT, COMMENT, PI, NAMESPACE }
   
   private EnumSet<Kind> enumset;
 
-  public NodeKindFilter(IStream<T> stream, EnumSet<Kind> enumset) {
+  public NodeKindFilter(IQuixStream<T> stream, EnumSet<Kind> enumset) {
     super(stream);
     this.enumset = enumset;
   }

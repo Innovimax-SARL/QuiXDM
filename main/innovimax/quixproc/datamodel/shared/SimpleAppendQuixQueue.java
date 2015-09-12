@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.shared;
 
-import innovimax.quixproc.datamodel.IStream;
+import innovimax.quixproc.datamodel.IQuixStream;
 import innovimax.quixproc.datamodel.QuixException;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
 
@@ -33,7 +33,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * 
  * @author innovimax
  */
-public class SimpleAppendQueue<T> implements IQueue<T> {
+public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
 
   private final static boolean         DEBUG = false;
   private final List<T>                events;
@@ -47,7 +47,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
   private final int                    rank;
   private int                          maxReader;
 
-  public SimpleAppendQueue() {
+  public SimpleAppendQuixQueue() {
     events = new ArrayList<T>();
     rwl = new ReentrantReadWriteLock(true);
     counter++;
@@ -88,7 +88,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
     if (DEBUG) System.out.println("CreateSimpleQEQ (closed) : " + rank);
   }
 
-  private class LocalReader implements IStream<T> {
+  private class LocalReader implements IQuixStream<T> {
     // private final Iterator<QuixEvent> iterator;
     private int     i            = 0;
     private boolean readerClosed = false;
@@ -168,7 +168,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
    * @see com.xmlcalabash.stream.util.shared.IQuixEventQueue#registerReader()
    */
   @Override
-  public IStream<T> registerReader() {
+  public IQuixStream<T> registerReader() {
     // if (startWorking) throw new RuntimeException("Cannot register reader after the queue already been fed");
     if (DEBUG) System.out.println("CreateSimpleQEQ (open reader "+readerCount+") : " + rank);
     readerCount++;
@@ -218,9 +218,9 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
   final static int LOG_MODULO  = MAX_PRODUCE / 10;
   
   private static class SimpleProducer implements Runnable {
-    private final IQueue<AQuixEvent> qeq;
+    private final IQuixQueue<AQuixEvent> qeq;
 
-    SimpleProducer(IQueue<AQuixEvent> qeq) {
+    SimpleProducer(IQuixQueue<AQuixEvent> qeq) {
       this.qeq = qeq;
     }
 
@@ -244,10 +244,10 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
   }
 
   private static class SimpleConsumer implements Runnable {
-    private final IStream<AQuixEvent> qs;
+    private final IQuixStream<AQuixEvent> qs;
     private final int        rank;
 
-    SimpleConsumer(IStream<AQuixEvent> qs, int rank) {
+    SimpleConsumer(IQuixStream<AQuixEvent> qs, int rank) {
       this.qs = qs;
       this.rank = rank;
     }
@@ -273,7 +273,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
     System.out.println("Start");
     System.out.println("Create QuixEventQueue");
 //  IQueue<QuixEvent> qeq = new SimpleAppendQueue<QuixEvent>();
-    SmartAppendQueue<AQuixEvent> qeq = new SmartAppendQueue<AQuixEvent>();
+    SmartAppendQuixQueue<AQuixEvent> qeq = new SmartAppendQuixQueue<AQuixEvent>();
     final int READER_COUNT = 20;
     qeq.setReaderCount(READER_COUNT);
     System.out.println("Create SimpleProducer");

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel.in;
+package innovimax.quixproc.datamodel.convert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +29,15 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.QuixException;
-//import innovimax.quixproc.datamodel.QuixEvent.Attribute;
-//import innovimax.quixproc.datamodel.QuixEvent.Namespace;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
+import innovimax.quixproc.datamodel.event.IQuixEventStreamReader;
 
-public class QuixEventStreamAsXMLStreamReader implements XMLStreamReader {
-  private final IStream<AQuixEvent> qs;
+public class QuixEventStream2XMLStreamReader implements XMLStreamReader {
+  private final IQuixEventStreamReader qs;
   private final static boolean DEBUG = false;
   private final static int POSITION = 1;
-  public QuixEventStreamAsXMLStreamReader(IStream<AQuixEvent> qs) {
+  public QuixEventStream2XMLStreamReader(IQuixEventStreamReader qs) {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
     this.qs = qs;
   }
