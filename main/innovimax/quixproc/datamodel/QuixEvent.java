@@ -27,11 +27,6 @@ import javax.xml.namespace.QName;
 
 public abstract class QuixEvent implements IEvent{
   
-  // Here is the grammar of events
-  // sequence := START_SEQUENCE, document*, END_SEQUENCE
-  // document := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT
-  // element := START_ELEMENT, NAMESPACE*, ATTRIBUTE*, (TEXT|element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
-
   // TODO : store namespacecontext
   // TODO : store type information for PSVI
   
@@ -41,26 +36,22 @@ public abstract class QuixEvent implements IEvent{
   private final static boolean ELEMENT_CACHING_ENABLED  = false;
   private final static boolean NAME_CACHING_ENABLED     = false;
 
-  public static enum Token {
-    START_SEQUENCE, END_SEQUENCE, START_DOCUMENT, END_DOCUMENT, NAMESPACE, START_ELEMENT, END_ELEMENT, ATTRIBUTE, TEXT, PI, COMMENT
-  }
-
   private static long createCount     = 0;
   private static long createCallCount = 0;
   private static long createDocCount  = 0;
   private static long createAttrCount = 0;
 
-  protected final Token     type;
+  protected final QuixEventToken     type;
 
   /* constructors */
-  private QuixEvent(Token type) {
+  private QuixEvent(QuixEventToken type) {
     this.type = type;
     createCount++;
   }
   
   public static class StartSequence extends QuixEvent {
     private StartSequence() {
-      super(Token.START_SEQUENCE);
+      super(QuixEventToken.START_SEQUENCE);
     }
 
     public String toString() {
@@ -70,7 +61,7 @@ public abstract class QuixEvent implements IEvent{
 
   public static class EndSequence extends QuixEvent {
     private EndSequence() {
-      super(Token.END_SEQUENCE);
+      super(QuixEventToken.END_SEQUENCE);
     }
 
     public String toString() {
@@ -82,7 +73,7 @@ public abstract class QuixEvent implements IEvent{
     private final String uri;
 
     private StartDocument(String uri) {
-      super(Token.START_DOCUMENT);
+      super(QuixEventToken.START_DOCUMENT);
       this.uri = uri;
       createDocCount++;
 //      System.out.println("START DOCUMENT"+uri);
@@ -101,7 +92,7 @@ public abstract class QuixEvent implements IEvent{
     private final String uri;
 
     private EndDocument(String uri) {
-      super(Token.END_DOCUMENT);
+      super(QuixEventToken.END_DOCUMENT);
       this.uri = uri;
       createDocCount++;
 //      System.out.println("END DOCUMENT"+uri);
@@ -120,7 +111,7 @@ public abstract class QuixEvent implements IEvent{
     private final String prefix;
     private final String uri;
     private Namespace(String prefix, String uri) {
-      super(Token.NAMESPACE);
+      super(QuixEventToken.NAMESPACE);
       this.prefix = prefix;
       this.uri = uri;
     }
@@ -138,7 +129,7 @@ public abstract class QuixEvent implements IEvent{
   public static abstract class NamedEvent extends QuixEvent {
     private final QName qname;
 
-    private NamedEvent(QName qname, Token type) {
+    private NamedEvent(QName qname, QuixEventToken type) {
       super(type);
       this.qname = qname;
     }
@@ -166,7 +157,7 @@ public abstract class QuixEvent implements IEvent{
 
   public static class StartElement extends NamedEvent {
     private StartElement(QName qname) {
-      super(qname, Token.START_ELEMENT);
+      super(qname, QuixEventToken.START_ELEMENT);
       // System.out.println("START ELEMENT"+localName);
     }
 
@@ -177,7 +168,7 @@ public abstract class QuixEvent implements IEvent{
 
   public static class EndElement extends NamedEvent {
     private EndElement(QName qname) {
-      super(qname,Token.END_ELEMENT);
+      super(qname,QuixEventToken.END_ELEMENT);
       // System.out.println("END ELEMENT" + localName);
     }
 
@@ -190,7 +181,7 @@ public abstract class QuixEvent implements IEvent{
     private final String value;
 
     private Attribute(QName qname, String value) {
-      super(qname, Token.ATTRIBUTE);
+      super(qname, QuixEventToken.ATTRIBUTE);
       this.value = value;
       createAttrCount++;
       // System.out.println("ATTRIBUTE");
@@ -210,7 +201,7 @@ public abstract class QuixEvent implements IEvent{
     private final String data;
 
     private Text(String data) {
-      super(Token.TEXT);
+      super(QuixEventToken.TEXT);
       this.data = data;
       // System.out.println("TEXT");
     }
@@ -229,7 +220,7 @@ public abstract class QuixEvent implements IEvent{
     private final String data;
 
     private PI(String target, String data) {
-      super(Token.PI);
+      super(QuixEventToken.PI);
       this.target = target;
       this.data = data;
     }
@@ -251,7 +242,7 @@ public abstract class QuixEvent implements IEvent{
     private final String data;
 
     private Comment(String data) {
-      super(Token.COMMENT);
+      super(QuixEventToken.COMMENT);
       this.data = data;
     }
 
@@ -312,7 +303,7 @@ public abstract class QuixEvent implements IEvent{
     return (Attribute) this;
   }
 
-  public Token getType() {
+  public QuixEventToken getType() {
     return this.type;
   }
 
@@ -511,47 +502,47 @@ public abstract class QuixEvent implements IEvent{
   /* utilities */
 
   public boolean isStartSequence() {
-    return (this.type == Token.START_SEQUENCE);
+    return (this.type == QuixEventToken.START_SEQUENCE);
   }
 
   public boolean isEndSequence() {
-    return (this.type == Token.END_SEQUENCE);
+    return (this.type == QuixEventToken.END_SEQUENCE);
   }
 
   public boolean isStartDocument() {
-    return (this.type == Token.START_DOCUMENT);
+    return (this.type == QuixEventToken.START_DOCUMENT);
   }
 
   public boolean isEndDocument() {
-    return (this.type == Token.END_DOCUMENT);
+    return (this.type == QuixEventToken.END_DOCUMENT);
   }
 
   public boolean isStartElement() {
-    return (this.type == Token.START_ELEMENT);
+    return (this.type == QuixEventToken.START_ELEMENT);
   }
 
   public boolean isEndElement() {
-    return (this.type == Token.END_ELEMENT);
+    return (this.type == QuixEventToken.END_ELEMENT);
   }
 
   public boolean isAttribute() {
-    return (this.type == Token.ATTRIBUTE);
+    return (this.type == QuixEventToken.ATTRIBUTE);
   }
 
   public boolean isText() {
-    return (this.type == Token.TEXT);
+    return (this.type == QuixEventToken.TEXT);
   }
 
   public boolean isPI() {
-    return (this.type == Token.PI);
+    return (this.type == QuixEventToken.PI);
   }
 
   public boolean isComment() {
-    return (this.type == Token.COMMENT);
+    return (this.type == QuixEventToken.COMMENT);
   }
   
   public boolean isNamespace() {
-    return (this.type == Token.NAMESPACE);
+    return (this.type == QuixEventToken.NAMESPACE);
   }
   
   public QuixEvent getEvent() { return this; }
