@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.in;
 
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -42,7 +41,7 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
   private  String           baseURI;
   private final Queue<AQuixEvent> buffer = new LinkedList<AQuixEvent>();
 
-  public QuixEventStreamReader(Iterable<Source> sources, String baseURI) throws XMLStreamException {
+  public QuixEventStreamReader(Iterable<Source> sources) throws XMLStreamException {
     this.ifactory = XMLInputFactory.newFactory();
     this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
@@ -207,5 +206,4 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
       e.printStackTrace();
     }
   }
-
 }
