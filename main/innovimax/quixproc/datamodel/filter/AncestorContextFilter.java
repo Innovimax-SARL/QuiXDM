@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 
 import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.event.IQuixEvent;
-import innovimax.quixproc.datamodel.event.QuixEvent;
+import innovimax.quixproc.datamodel.event.AQuixEvent;
 
 public class AncestorContextFilter<T extends IQuixEvent> extends AStreamFilter<T> {
 
@@ -38,7 +38,7 @@ public class AncestorContextFilter<T extends IQuixEvent> extends AStreamFilter<T
 
   @Override
   public T process(T item) {
-    QuixEvent qevent = item.getEvent();
+    AQuixEvent qevent = item.getEvent();
     switch (qevent.getType()) {
       case START_ELEMENT :
         this.ancestors.push(qevent.asNamedEvent().getQName());

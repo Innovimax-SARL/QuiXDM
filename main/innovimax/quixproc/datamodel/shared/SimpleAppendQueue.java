@@ -21,7 +21,7 @@ package innovimax.quixproc.datamodel.shared;
 
 import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.QuixException;
-import innovimax.quixproc.datamodel.event.QuixEvent;
+import innovimax.quixproc.datamodel.event.AQuixEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -218,9 +218,9 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
   final static int LOG_MODULO  = MAX_PRODUCE / 10;
   
   private static class SimpleProducer implements Runnable {
-    private final IQueue<QuixEvent> qeq;
+    private final IQueue<AQuixEvent> qeq;
 
-    SimpleProducer(IQueue<QuixEvent> qeq) {
+    SimpleProducer(IQueue<AQuixEvent> qeq) {
       this.qeq = qeq;
     }
 
@@ -230,7 +230,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
       int i = MAX_PRODUCE;
       while (i-- > 0) {
 //        try {
-          qeq.append(QuixEvent.getStartDocument(""+i));
+          qeq.append(AQuixEvent.getStartDocument(""+i));
           
           if (i % LOG_MODULO == 0) System.out.println("Produce " + i);
 //          Thread.sleep(1);
@@ -244,10 +244,10 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
   }
 
   private static class SimpleConsumer implements Runnable {
-    private final IStream<QuixEvent> qs;
+    private final IStream<AQuixEvent> qs;
     private final int        rank;
 
-    SimpleConsumer(IStream<QuixEvent> qs, int rank) {
+    SimpleConsumer(IStream<AQuixEvent> qs, int rank) {
       this.qs = qs;
       this.rank = rank;
     }
@@ -273,7 +273,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
     System.out.println("Start");
     System.out.println("Create QuixEventQueue");
 //  IQueue<QuixEvent> qeq = new SimpleAppendQueue<QuixEvent>();
-    SmartAppendQueue<QuixEvent> qeq = new SmartAppendQueue<QuixEvent>();
+    SmartAppendQueue<AQuixEvent> qeq = new SmartAppendQueue<AQuixEvent>();
     final int READER_COUNT = 20;
     qeq.setReaderCount(READER_COUNT);
     System.out.println("Create SimpleProducer");

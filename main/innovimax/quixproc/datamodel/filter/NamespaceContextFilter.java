@@ -26,7 +26,7 @@ import java.util.TreeMap;
 
 import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.event.IQuixEvent;
-import innovimax.quixproc.datamodel.event.QuixEvent;
+import innovimax.quixproc.datamodel.event.AQuixEvent;
 
 public class NamespaceContextFilter<T extends IQuixEvent> extends AStreamFilter<T> {
 
@@ -40,7 +40,7 @@ public class NamespaceContextFilter<T extends IQuixEvent> extends AStreamFilter<
   private boolean needCleaning = false;
   @Override
   public T process(T item) {
-    QuixEvent qevent = item.getEvent();
+    AQuixEvent qevent = item.getEvent();
     if (needCleaning) {
       this.namespaces.pollLast();
       needCleaning = false;

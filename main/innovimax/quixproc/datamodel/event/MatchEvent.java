@@ -24,24 +24,24 @@ public class MatchEvent implements IQuixEvent
   
   /* properties */       
   
-  private final QuixEvent event;
+  private final AQuixEvent event;
   private boolean matched = true;  
   private String channels = null;    
   
   /* constructor */ 
       
-  public MatchEvent(QuixEvent event) {
+  public MatchEvent(AQuixEvent event) {
     this.event = event;
   }
   
-  public MatchEvent(QuixEvent event, boolean matched) {
+  public MatchEvent(AQuixEvent event, boolean matched) {
     this.event = event;
     this.matched = matched;
   }
 
   /* set/get properties */  
   
-  public QuixEvent getEvent() {    
+  public AQuixEvent getEvent() {    
     return event;
   }  
     

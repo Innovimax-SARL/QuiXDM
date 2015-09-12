@@ -33,13 +33,13 @@ import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.QuixException;
 //import innovimax.quixproc.datamodel.QuixEvent.Attribute;
 //import innovimax.quixproc.datamodel.QuixEvent.Namespace;
-import innovimax.quixproc.datamodel.event.QuixEvent;
+import innovimax.quixproc.datamodel.event.AQuixEvent;
 
-public class QuixEventStreamReader implements XMLStreamReader {
-  private final IStream<QuixEvent> qs;
+public class QuixEventStreamAsXMLStreamReader implements XMLStreamReader {
+  private final IStream<AQuixEvent> qs;
   private final static boolean DEBUG = false;
   private final static int POSITION = 1;
-  public QuixEventStreamReader(IStream<QuixEvent> qs) {
+  public QuixEventStreamAsXMLStreamReader(IStream<AQuixEvent> qs) {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
     this.qs = qs;
   }
@@ -63,10 +63,10 @@ public class QuixEventStreamReader implements XMLStreamReader {
     }
   }
 
-  private QuixEvent                 current    = null;
-  private QuixEvent                 future     = null;
-  private List<QuixEvent.Namespace> namespaces = new ArrayList<QuixEvent.Namespace>();
-  private List<QuixEvent.Attribute> attributes = new ArrayList<QuixEvent.Attribute>();
+  private AQuixEvent                 current    = null;
+  private AQuixEvent                 future     = null;
+  private List<AQuixEvent.Namespace> namespaces = new ArrayList<AQuixEvent.Namespace>();
+  private List<AQuixEvent.Attribute> attributes = new ArrayList<AQuixEvent.Attribute>();
 
   @Override
   public int next() throws XMLStreamException {
@@ -204,7 +204,7 @@ public class QuixEventStreamReader implements XMLStreamReader {
   @Override
   public String getAttributeValue(String namespaceURI, String localName) {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-    for (QuixEvent.Attribute attribute : attributes) {
+    for (AQuixEvent.Attribute attribute : attributes) {
       if (localName.equals(attribute.getLocalName()) && namespaceURI.equals(attribute.getURI())) return attribute.getValue();
     }
     return null;

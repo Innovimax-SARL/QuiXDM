@@ -124,7 +124,7 @@ import javax.xml.stream.Location;
  *
  * @version 0.1
  * @author Copyright (c) 2015 by Innovimax. All Rights Reserved.
- * @see innovimax.quixproc.datamodel.QuixEventToken
+ * @see innovimax.quixproc.datamodel.QuixToken
  * @see javax.xml.stream.XMLStreamReader
  */
 public interface IQuixStreamReader {

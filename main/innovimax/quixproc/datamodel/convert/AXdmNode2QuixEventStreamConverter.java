@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.convert;
 
-import innovimax.quixproc.datamodel.event.QuixEvent;
+import innovimax.quixproc.datamodel.event.AQuixEvent;
 import innovimax.quixproc.datamodel.shared.ISimpleQueue;
 import net.sf.saxon.om.NamespaceBinding;
 import net.sf.saxon.om.NodeInfo;
@@ -27,14 +27,14 @@ import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmSequenceIterator;
 
-public abstract class EventConverter implements Runnable {
-    private ISimpleQueue<QuixEvent> doc = null;   
+public abstract class AXdmNode2QuixEventStreamConverter implements Runnable {
+    private ISimpleQueue<AQuixEvent> doc = null;   
     private XdmNode node = null;      
     private boolean running = true; 
     private static int counter = 1;
     private final int rank = counter++;
     
-    public EventConverter(ISimpleQueue<QuixEvent> doc, XdmNode node) {  
+    public AXdmNode2QuixEventStreamConverter(ISimpleQueue<AQuixEvent> doc, XdmNode node) {  
         this.doc = doc;              
         this.node = node;
     }
@@ -64,13 +64,13 @@ public abstract class EventConverter implements Runnable {
      
 
     private void process() {
-      doc.append(QuixEvent.getStartSequence());
+      doc.append(AQuixEvent.getStartSequence());
       String uri = ""+node.getDocumentURI();
       //System.out.println("---------->Document URI"+uri);
-      doc.append(QuixEvent.getStartDocument(uri));
+      doc.append(AQuixEvent.getStartDocument(uri));
       processnode(node);
-      doc.append(QuixEvent.getEndDocument(uri));
-      doc.append(QuixEvent.getEndSequence());
+      doc.append(AQuixEvent.getEndDocument(uri));
+      doc.append(AQuixEvent.getEndSequence());
     }
     
     private void processnode(XdmNode localnode) {
@@ -83,7 +83,7 @@ public abstract class EventConverter implements Runnable {
           }
           break;
         case ELEMENT :          
-          doc.append(QuixEvent.getStartElement(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix()));
+          doc.append(AQuixEvent.getStartElement(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix()));
           namespaceProcess(localnode);
           for(XdmSequenceIterator iter = localnode.axisIterator(Axis.ATTRIBUTE);iter.hasNext();) {
             XdmNode item = (XdmNode) iter.next();
@@ -93,19 +93,19 @@ public abstract class EventConverter implements Runnable {
             XdmNode item = (XdmNode) iter.next();
             processnode(item);
           }
-          doc.append(QuixEvent.getEndElement(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix()));
+          doc.append(AQuixEvent.getEndElement(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix()));
           break;
         case ATTRIBUTE :          
-          doc.append(QuixEvent.getAttribute(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix(), localnode.getStringValue()));
+          doc.append(AQuixEvent.getAttribute(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix(), localnode.getStringValue()));
           break;
         case TEXT:
-          doc.append(QuixEvent.getText(localnode.getStringValue()));
+          doc.append(AQuixEvent.getText(localnode.getStringValue()));
           break;
         case COMMENT :
-          doc.append(QuixEvent.getComment(localnode.getStringValue()));
+          doc.append(AQuixEvent.getComment(localnode.getStringValue()));
           break;
         case PROCESSING_INSTRUCTION :
-          doc.append(QuixEvent.getPI(localnode.getNodeName().getLocalName(), localnode.getStringValue()));
+          doc.append(AQuixEvent.getPI(localnode.getNodeName().getLocalName(), localnode.getStringValue()));
           break;
         case NAMESPACE :          
           // no op
@@ -124,7 +124,7 @@ public abstract class EventConverter implements Runnable {
               NamespaceBinding ns = inscopeNS[pos];
               String pfx = ns.getPrefix();
               String uri = ns.getURI();
-              doc.append(QuixEvent.getNamespace(pfx, uri));              
+              doc.append(AQuixEvent.getNamespace(pfx, uri));              
            }
        }
 
