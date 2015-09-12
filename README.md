@@ -29,9 +29,18 @@ element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTR
 
 Mainly look at [QuixEventToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuixEventToken.java)
 
-# Why QuixStreamReader and QuixEventStreamReader?
-As with Stax, there is a lightweight event processing (QuixStream) and one with Object creation (QuixEvent)
-
+# Use
+Simplest way to use, is to instanciate [innovimax.quixproc.datamodel.in.QuixEventStreamReader.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuixEventStreamReader.java)
+```java
+Iterable<Source> sources = Arrays.asList(new Source[] {
+		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aaa.xml"),	
+		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aab.xml"),	
+	});
+	QuixEventStreamReader qesr = new QuixEventStreamReader(sources);
+	while(qesr.hasNext()) {
+		System.out.println(qesr.next());
+	}
+```
 # Contributors
 
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
