@@ -5,11 +5,11 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 /**
- *  The IXDMStreamReader interface allows forward, read-only access to XML.
+ *  The IQuixStreamReader interface allows forward, read-only access to XML.
  *  It is designed to be the higher level  (XPath Data Model) and most efficient way to
  *  read XML data.
  *
- * <p> The IXDMStreamReader is designed to iterate over XML using
+ * <p> The IQuixStreamReader is designed to iterate over XML using
  * next() and hasNext().  The data can be accessed using methods such as getEventType(),
  * getNamespaceURI(), getLocalName() and getText();
  *
