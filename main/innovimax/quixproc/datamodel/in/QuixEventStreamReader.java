@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package innovimax.quixproc.datamodel.in;
 
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,6 +28,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.Source;
 
 import innovimax.quixproc.datamodel.QuixException;
 import innovimax.quixproc.datamodel.event.AQuixEvent;
@@ -34,16 +36,23 @@ import innovimax.quixproc.datamodel.event.IQuixEventStreamReader;
 
 public class QuixEventStreamReader implements IQuixEventStreamReader {
 
-  private final XMLStreamReader  sreader;
-  private final String           baseURI;
+  private final Iterator<Source>     sources;
+  private final XMLInputFactory      ifactory;
+  private  XMLStreamReader  sreader;
+  private  String           baseURI;
   private final Queue<AQuixEvent> buffer = new LinkedList<AQuixEvent>();
 
-  public QuixEventStreamReader(InputStream is, String baseURI) throws XMLStreamException {
-    XMLInputFactory ifactory = XMLInputFactory.newFactory();
-    ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
-    ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
-    this.sreader = ifactory.createXMLStreamReader(is);
-    this.baseURI = baseURI;
+  public QuixEventStreamReader(Iterable<Source> sources, String baseURI) throws XMLStreamException {
+    this.ifactory = XMLInputFactory.newFactory();
+    this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
+    this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
+    this.sources = sources.iterator();
+  }
+
+  private void loadSource() throws XMLStreamException {
+	    Source current = this.sources.next();
+	    this.sreader = this.ifactory.createXMLStreamReader(current);
+	    this.baseURI = current.getSystemId();
   }
 
   @Override
@@ -69,6 +78,13 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
         return event;
       }
       if (state.equals(State.START_SEQUENCE)) {
+    	if (!this.sources.hasNext()) {
+    		event = AQuixEvent.getEndSequence();
+    		this.state = State.FINISH;
+    		return event;
+    	}
+    	// there is at least one source
+    	loadSource();    	
         event = AQuixEvent.getStartDocument(this.baseURI);
         this.state = State.START_DOCUMENT;
         return event;
@@ -81,6 +97,13 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
         return event;
       }
       if (state.equals(State.END_DOCUMENT)) {
+    	if (this.sources.hasNext()) {
+    		// there is still sources
+    		loadSource();
+            event = AQuixEvent.getStartDocument(this.baseURI);
+            this.state = State.START_DOCUMENT;
+            return event;    		
+    	}
         event = AQuixEvent.getEndSequence();
         this.state = State.FINISH;
         return event;
