@@ -29,6 +29,7 @@ element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTR
 Mainly look at [QuixToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuixToken.java)
 
 # Use
+## with Object creation (à la [javax.xml.stream.XMLStreamReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLStreamReader.html))
 Simplest way to use, is to instanciate [innovimax.quixproc.datamodel.in.QuixEventStreamReader.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuixEventStreamReader.java)
 ```java
 Iterable<Source> sources = Arrays.asList(new Source[] {
@@ -40,6 +41,8 @@ while(qesr.hasNext()) {
 	System.out.println(qesr.next());
 }
 ```
+## lightweight iterator without Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
+***TODO***
 # Contributors
 
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
