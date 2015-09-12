@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.shared;
 
-import innovimax.quixproc.datamodel.IQuixStream;
+import innovimax.quixproc.datamodel.IQuiXStream;
 
 /**
  * This defines a simple append only on write interface
@@ -28,7 +28,7 @@ import innovimax.quixproc.datamodel.IQuixStream;
  * @author innovimax
  *
  */
-public interface IQuixQueue<T> extends ISimpleQuixQueue<T> {
+public interface IQuiXQueue<T> extends ISimpleQuiXQueue<T> {
   /**
    * This defines a proxy to which we can register
    * @author innovimax
@@ -39,7 +39,7 @@ public interface IQuixQueue<T> extends ISimpleQuixQueue<T> {
      * The proxy can declare it's own reader
      * @return
      */
-    public IQuixStream<T> registerReader();
+    public IQuiXStream<T> registerReader();
     
     /**
      * To close the proxy
@@ -52,7 +52,7 @@ public interface IQuixQueue<T> extends ISimpleQuixQueue<T> {
    * Register a reader here to read only in forward mode
    * @return
    */
-  public IQuixStream<T> registerReader();
+  public IQuiXStream<T> registerReader();
   
   /**
    * Register proxy reader is there for for-each loops where you never know

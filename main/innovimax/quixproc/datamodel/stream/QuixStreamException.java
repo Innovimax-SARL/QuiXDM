@@ -1,7 +1,7 @@
 package innovimax.quixproc.datamodel.stream;
 
-import innovimax.quixproc.datamodel.QuixException;
+import innovimax.quixproc.datamodel.QuiXException;
 
-public class QuixStreamException extends QuixException {
+public class QuiXStreamException extends QuiXException {
 
 }

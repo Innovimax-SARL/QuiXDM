@@ -29,19 +29,19 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
-import innovimax.quixproc.datamodel.QuixException;
-import innovimax.quixproc.datamodel.event.AQuixEvent;
-import innovimax.quixproc.datamodel.event.IQuixEventStreamReader;
+import innovimax.quixproc.datamodel.QuiXException;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 
-public class QuixEventStreamReader implements IQuixEventStreamReader {
+public class QuiXEventStreamReader implements IQuiXEventStreamReader {
 
   private final Iterator<Source>     sources;
   private final XMLInputFactory      ifactory;
   private  XMLStreamReader  sreader;
   private  String           baseURI;
-  private final Queue<AQuixEvent> buffer = new LinkedList<AQuixEvent>();
+  private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
-  public QuixEventStreamReader(Iterable<Source> sources) throws XMLStreamException {
+  public QuiXEventStreamReader(Iterable<Source> sources) throws XMLStreamException {
     this.ifactory = XMLInputFactory.newFactory();
     this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
     this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
@@ -67,31 +67,31 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
   private StringBuilder charBuffer = new StringBuilder();
 
   @Override
-  public AQuixEvent next() throws QuixException {
+  public AQuiXEvent next() throws QuiXException {
     try {
-      AQuixEvent event = null;
+      AQuiXEvent event = null;
       if (state.equals(State.FINISH)) { return null; }
       if (state.equals(State.INIT)) {
-        event = AQuixEvent.getStartSequence();
+        event = AQuiXEvent.getStartSequence();
         this.state = State.START_SEQUENCE;
         return event;
       }
       if (state.equals(State.START_SEQUENCE)) {
     	if (!this.sources.hasNext()) {
-    		event = AQuixEvent.getEndSequence();
+    		event = AQuiXEvent.getEndSequence();
     		this.state = State.FINISH;
     		return event;
     	}
     	// there is at least one source
     	loadSource();    	
-        event = AQuixEvent.getStartDocument(this.baseURI);
+        event = AQuiXEvent.getStartDocument(this.baseURI);
         this.state = State.START_DOCUMENT;
         return event;
       }
       if (!buffer.isEmpty()) { return buffer.poll(); }
       if (!sreader.hasNext() && this.state.equals(State.START_DOCUMENT)) {
         // special case if the buffer is empty but the document has not been closed
-        event = AQuixEvent.getEndDocument(this.baseURI);
+        event = AQuiXEvent.getEndDocument(this.baseURI);
         this.state = State.END_DOCUMENT;
         return event;
       }
@@ -99,11 +99,11 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
     	if (this.sources.hasNext()) {
     		// there is still sources
     		loadSource();
-            event = AQuixEvent.getStartDocument(this.baseURI);
+            event = AQuiXEvent.getStartDocument(this.baseURI);
             this.state = State.START_DOCUMENT;
             return event;    		
     	}
-        event = AQuixEvent.getEndSequence();
+        event = AQuiXEvent.getEndSequence();
         this.state = State.FINISH;
         return event;
       }
@@ -116,31 +116,31 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
             break;
           case XMLStreamConstants.START_ELEMENT:
             // System.out.println("START_ELEMENT");
-            event = AQuixEvent.getStartElement(sreader.getLocalName(), sreader.getNamespaceURI(), sreader.getPrefix());
+            event = AQuiXEvent.getStartElement(sreader.getLocalName(), sreader.getNamespaceURI(), sreader.getPrefix());
             event = updateText(event);
             for (int i = 0; i < sreader.getNamespaceCount(); i++) {
-              buffer.add(AQuixEvent.getNamespace(sreader.getNamespacePrefix(i), sreader.getNamespaceURI(i)));
+              buffer.add(AQuiXEvent.getNamespace(sreader.getNamespacePrefix(i), sreader.getNamespaceURI(i)));
             }
             for (int i = 0; i < sreader.getAttributeCount(); i++) {
-              buffer.add(AQuixEvent.getAttribute(sreader.getAttributeLocalName(i), sreader.getAttributeNamespace(i), sreader.getAttributePrefix(i),
+              buffer.add(AQuiXEvent.getAttribute(sreader.getAttributeLocalName(i), sreader.getAttributeNamespace(i), sreader.getAttributePrefix(i),
                   sreader.getAttributeValue(i)));
             }
             return event;
           case XMLStreamConstants.END_DOCUMENT:
             // System.out.println("END_DOCUMENT");
-            event = AQuixEvent.getEndDocument(this.baseURI);
+            event = AQuiXEvent.getEndDocument(this.baseURI);
             event = updateText(event);
             this.state = State.END_DOCUMENT;
             return event;
           case XMLStreamConstants.END_ELEMENT:
             // System.out.println("END_ELEMENT");
-            event = AQuixEvent.getEndElement(sreader.getLocalName(), sreader.getNamespaceURI(), sreader.getPrefix());
+            event = AQuiXEvent.getEndElement(sreader.getLocalName(), sreader.getNamespaceURI(), sreader.getPrefix());
             event = updateText(event);
             return event;
           case XMLStreamConstants.ATTRIBUTE:
             // System.out.println("ATTRIBUTE");
             for (int i = 0; i < sreader.getAttributeCount(); i++) {
-              buffer.add(AQuixEvent.getAttribute(sreader.getAttributeLocalName(i), sreader.getAttributeNamespace(i), sreader.getAttributePrefix(i),
+              buffer.add(AQuiXEvent.getAttribute(sreader.getAttributeLocalName(i), sreader.getAttributeNamespace(i), sreader.getAttributePrefix(i),
                   sreader.getAttributeValue(i)));
             }
             return buffer.poll();
@@ -161,12 +161,12 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
             break;
           case XMLStreamConstants.COMMENT:
             // System.out.println("COMMENT");
-            event = AQuixEvent.getComment(sreader.getText());
+            event = AQuiXEvent.getComment(sreader.getText());
             event = updateText(event);
             return event;
           case XMLStreamConstants.PROCESSING_INSTRUCTION:
             // System.out.println("PI");
-            event = AQuixEvent.getPI(sreader.getPITarget(), sreader.getPIData());
+            event = AQuiXEvent.getPI(sreader.getPITarget(), sreader.getPIData());
             event = updateText(event);
             return event;
             // case XMLStreamConstants.NAMESPACE:
@@ -177,7 +177,7 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
         }
       }
     } catch (XMLStreamException e) {
-      throw new QuixException(e);
+      throw new QuiXException(e);
     }
   }
 
@@ -188,9 +188,9 @@ public class QuixEventStreamReader implements IQuixEventStreamReader {
    * @param event
    * @return
    */
-  private AQuixEvent updateText(AQuixEvent event) {
+  private AQuiXEvent updateText(AQuiXEvent event) {
     if (charBuffer.length() != 0) {
-      AQuixEvent text = AQuixEvent.getText(charBuffer.toString());
+      AQuiXEvent text = AQuiXEvent.getText(charBuffer.toString());
       charBuffer.setLength(0);
       this.buffer.add(event);
       return text;

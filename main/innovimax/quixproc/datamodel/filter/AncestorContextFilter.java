@@ -24,21 +24,21 @@ import java.util.Stack;
 
 import javax.xml.namespace.QName;
 
-import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.event.AQuixEvent;
-import innovimax.quixproc.datamodel.event.IQuixEvent;
+import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
-public class AncestorContextFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
+public class AncestorContextFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
 
   private Stack<QName> ancestors;
-  public AncestorContextFilter(IQuixStream<T> stream) {
+  public AncestorContextFilter(IQuiXStream<T> stream) {
     super(stream);
     this.ancestors = new Stack<QName>();
   }
 
   @Override
   public T process(T item) {
-    AQuixEvent qevent = item.getEvent();
+    AQuiXEvent qevent = item.getEvent();
     switch (qevent.getType()) {
       case START_ELEMENT :
         this.ancestors.push(qevent.asNamedEvent().getQName());

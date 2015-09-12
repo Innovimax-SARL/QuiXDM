@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.QuixException;
-import innovimax.quixproc.datamodel.event.AQuixEvent;
+import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.QuiXException;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
 
 /**
  * Simple implementation of {@link Queue} interface It uses a simple {@link ArrayList} and {@link ReentrantReadWriteLock}
@@ -34,7 +34,7 @@ import innovimax.quixproc.datamodel.event.AQuixEvent;
  * 
  * @author innovimax
  */
-public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
+public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
   private final static boolean         DEBUG = false;
   private final List<T>                events;
@@ -48,7 +48,7 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
   private final int                    rank;
   private int                          maxReader;
 
-  public SimpleAppendQuixQueue() {
+  public SimpleAppendQuiXQueue() {
     events = new ArrayList<T>();
     rwl = new ReentrantReadWriteLock(true);
     counter++;
@@ -89,7 +89,7 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
     if (DEBUG) System.out.println("CreateSimpleQEQ (closed) : " + rank);
   }
 
-  private class LocalReader implements IQuixStream<T> {
+  private class LocalReader implements IQuiXStream<T> {
     // private final Iterator<QuixEvent> iterator;
     private int     i            = 0;
     private boolean readerClosed = false;
@@ -169,7 +169,7 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
    * @see com.xmlcalabash.stream.util.shared.IQuixEventQueue#registerReader()
    */
   @Override
-  public IQuixStream<T> registerReader() {
+  public IQuiXStream<T> registerReader() {
     // if (startWorking) throw new RuntimeException("Cannot register reader after the queue already been fed");
     if (DEBUG) System.out.println("CreateSimpleQEQ (open reader "+readerCount+") : " + rank);
     readerCount++;
@@ -219,9 +219,9 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
   final static int LOG_MODULO  = MAX_PRODUCE / 10;
   
   private static class SimpleProducer implements Runnable {
-    private final IQuixQueue<AQuixEvent> qeq;
+    private final IQuiXQueue<AQuiXEvent> qeq;
 
-    SimpleProducer(IQuixQueue<AQuixEvent> qeq) {
+    SimpleProducer(IQuiXQueue<AQuiXEvent> qeq) {
       this.qeq = qeq;
     }
 
@@ -231,7 +231,7 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
       int i = MAX_PRODUCE;
       while (i-- > 0) {
 //        try {
-          qeq.append(AQuixEvent.getStartDocument(""+i));
+          qeq.append(AQuiXEvent.getStartDocument(""+i));
           
           if (i % LOG_MODULO == 0) System.out.println("Produce " + i);
 //          Thread.sleep(1);
@@ -245,10 +245,10 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
   }
 
   private static class SimpleConsumer implements Runnable {
-    private final IQuixStream<AQuixEvent> qs;
+    private final IQuiXStream<AQuiXEvent> qs;
     private final int        rank;
 
-    SimpleConsumer(IQuixStream<AQuixEvent> qs, int rank) {
+    SimpleConsumer(IQuiXStream<AQuiXEvent> qs, int rank) {
       this.qs = qs;
       this.rank = rank;
     }
@@ -262,7 +262,7 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
           i++;
           if (i % LOG_MODULO == 0) System.out.println("Consume " + rank);
         }
-      } catch (QuixException e) {
+      } catch (QuiXException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
@@ -274,7 +274,7 @@ public class SimpleAppendQuixQueue<T> implements IQuixQueue<T> {
     System.out.println("Start");
     System.out.println("Create QuixEventQueue");
 //  IQueue<QuixEvent> qeq = new SimpleAppendQueue<QuixEvent>();
-    SmartAppendQuixQueue<AQuixEvent> qeq = new SmartAppendQuixQueue<AQuixEvent>();
+    SmartAppendQuiXQueue<AQuiXEvent> qeq = new SmartAppendQuiXQueue<AQuiXEvent>();
     final int READER_COUNT = 20;
     qeq.setReaderCount(READER_COUNT);
     System.out.println("Create SimpleProducer");

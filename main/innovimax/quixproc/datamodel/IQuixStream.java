@@ -19,10 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel;
 
-public interface IQuixStream<T> {
-  public boolean hasNext() throws QuixException;
+public interface IQuiXStream<T> {
+  public boolean hasNext() throws QuiXException;
 
-  public T next() throws QuixException;
+  public T next() throws QuiXException;
 
   public void close();
 }

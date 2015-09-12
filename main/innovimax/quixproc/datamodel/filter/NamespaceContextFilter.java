@@ -24,14 +24,14 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.event.AQuixEvent;
-import innovimax.quixproc.datamodel.event.IQuixEvent;
+import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
-public class NamespaceContextFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
+public class NamespaceContextFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
 
   private LinkedList<Map<String, String>> namespaces;
-  public NamespaceContextFilter(IQuixStream<T> stream) {
+  public NamespaceContextFilter(IQuiXStream<T> stream) {
     super(stream);
     // TODO Auto-generated constructor stub
     this.namespaces = new LinkedList<Map<String, String>>();
@@ -40,7 +40,7 @@ public class NamespaceContextFilter<T extends IQuixEvent> extends AQuixEventStre
   private boolean needCleaning = false;
   @Override
   public T process(T item) {
-    AQuixEvent qevent = item.getEvent();
+    AQuiXEvent qevent = item.getEvent();
     if (needCleaning) {
       this.namespaces.pollLast();
       needCleaning = false;

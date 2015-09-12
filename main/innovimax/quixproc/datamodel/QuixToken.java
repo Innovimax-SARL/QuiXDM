@@ -1,6 +1,6 @@
 package innovimax.quixproc.datamodel;
 
-public enum QuixToken {
+public enum QuiXToken {
 	  // Here is the grammar of events
 	  // sequence := START_SEQUENCE, document*, END_SEQUENCE
 	  // document := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT

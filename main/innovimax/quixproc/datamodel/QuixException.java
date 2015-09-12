@@ -19,14 +19,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel;
 
-public class QuixException extends Exception {
+public class QuiXException extends Exception {
 
-  public QuixException() { this(null, null); }
+  public QuiXException() { this(null, null); }
 
-  public QuixException(String message, Throwable cause) { super(message, cause); }
+  public QuiXException(String message, Throwable cause) { super(message, cause); }
 
-  public QuixException(String message) { this(message, null); }
+  public QuiXException(String message) { this(message, null); }
 
-  public QuixException(Throwable cause) { this(null, cause); }
+  public QuiXException(Throwable cause) { this(null, cause); }
 
 }

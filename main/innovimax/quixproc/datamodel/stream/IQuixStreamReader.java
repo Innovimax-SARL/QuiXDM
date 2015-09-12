@@ -6,6 +6,8 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
+import innovimax.quixproc.datamodel.QuiXToken;
+
 /**
  *  The IQuixStreamReader interface allows forward, read-only access to XML.
  *  It is designed to be the higher level  (XPath Data Model) and most efficient way to
@@ -126,10 +128,10 @@ import javax.xml.stream.Location;
  *
  * @version 0.1
  * @author Copyright (c) 2015 by Innovimax. All Rights Reserved.
- * @see innovimax.quixproc.datamodel.QuixToken
+ * @see innovimax.quixproc.datamodel.QuiXToken
  * @see javax.xml.stream.XMLStreamReader
  */
-public interface IQuixStreamReader {
+public interface IQuiXStreamReader {
 	  /**
 	   * Get the value of a feature/property from the underlying implementation
 	   * @param name The name of the property, may not be null
@@ -168,9 +170,9 @@ public interface IQuixStreamReader {
 	   * @see javax.xml.stream.events.XMLEvent
 	   * @return the integer code corresponding to the current parse event
 	   * @throws NoSuchElementException if this is called when hasNext() returns false
-	   * @throws QuixStreamException  if there is an error processing the underlying XML source
+	   * @throws QuiXStreamException  if there is an error processing the underlying XML source
 	   */
-	  public int next() throws QuixStreamException;
+	  public QuiXToken next() throws QuiXStreamException;
 
 	  /**
 	   * Test if the current event is of the given type and if the namespace and name match the current
@@ -179,9 +181,9 @@ public interface IQuixStreamReader {
 	   * @param type the event type
 	   * @param namespaceURI the uri of the event, may be null
 	   * @param localName the localName of the event, may be null
-	   * @throws QuixStreamException if the required values are not matched.
+	   * @throws QuiXStreamException if the required values are not matched.
 	   */
-	  public void require(int type, String namespaceURI, String localName) throws QuixStreamException;
+	  public void require(int type, String namespaceURI, String localName) throws QuiXStreamException;
 
 	  /**
 	   * Reads the content of a text-only element, an exception is thrown if this is
@@ -223,10 +225,10 @@ public interface IQuixStreamReader {
 	   * return buf.toString();
 	   * </pre>
 	   *
-	   * @throws QuixStreamException if the current event is not a START_ELEMENT
+	   * @throws QuiXStreamException if the current event is not a START_ELEMENT
 	   * or if a non text element is encountered
 	   */
-	  public String getElementText() throws QuixStreamException;
+	  public String getElementText() throws QuiXStreamException;
 
 	  /**
 	   * Skips any white space (isWhiteSpace() returns true), COMMENT,
@@ -260,11 +262,11 @@ public interface IQuixStreamReader {
 	   * </pre>
 	   *
 	   * @return the event type of the element read (START_ELEMENT or END_ELEMENT)
-	   * @throws QuixStreamException if the current event is not white space, PROCESSING_INSTRUCTION,
+	   * @throws QuiXStreamException if the current event is not white space, PROCESSING_INSTRUCTION,
 	   * START_ELEMENT or END_ELEMENT
 	   * @throws NoSuchElementException if this is called when hasNext() returns false
 	   */
-	  public int nextTag() throws QuixStreamException;
+	  public int nextTag() throws QuiXStreamException;
 
 	  /**
 	   * Returns true if there are more parsing events and false
@@ -272,16 +274,16 @@ public interface IQuixStreamReader {
 	   * false if the current state of the XMLStreamReader is
 	   * END_DOCUMENT
 	   * @return true if there are more events, false otherwise
-	   * @throws QuixStreamException if there is a fatal error detecting the next state
+	   * @throws QuiXStreamException if there is a fatal error detecting the next state
 	   */
-	  public boolean hasNext() throws QuixStreamException;
+	  public boolean hasNext() throws QuiXStreamException;
 
 	  /**
 	   * Frees any resources associated with this Reader.  This method does not close the
 	   * underlying input source.
-	   * @throws QuixStreamException if there are errors freeing associated resources
+	   * @throws QuiXStreamException if there are errors freeing associated resources
 	   */
-	  public void close() throws QuixStreamException;
+	  public void close() throws QuiXStreamException;
 
 	  /**
 	   * Return the uri for the given prefix.
@@ -531,14 +533,14 @@ public interface IQuixStreamReader {
 	   * @param targetStart the start offset in the target array
 	   * @param length the number of characters to copy
 	   * @return the number of characters actually copied
-	   * @throws QuixStreamException if the underlying XML source is not well-formed
+	   * @throws QuiXStreamException if the underlying XML source is not well-formed
 	   * @throws IndexOutOfBoundsException if targetStart < 0 or > than the length of target
 	   * @throws IndexOutOfBoundsException if length < 0 or targetStart + length > length of target
 	   * @throws UnsupportedOperationException if this method is not supported
 	   * @throws NullPointerException is if target is null
 	   */
 	   public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
-	     throws QuixStreamException;
+	     throws QuiXStreamException;
 
 	  /**
 	   * Gets the text associated with a CHARACTERS, SPACE or CDATA event.  Allows the underlying

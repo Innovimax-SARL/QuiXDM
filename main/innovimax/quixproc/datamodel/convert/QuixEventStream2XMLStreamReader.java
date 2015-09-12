@@ -29,15 +29,15 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import innovimax.quixproc.datamodel.QuixException;
-import innovimax.quixproc.datamodel.event.AQuixEvent;
-import innovimax.quixproc.datamodel.event.IQuixEventStreamReader;
+import innovimax.quixproc.datamodel.QuiXException;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 
-public class QuixEventStream2XMLStreamReader implements XMLStreamReader {
-  private final IQuixEventStreamReader qs;
+public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
+  private final IQuiXEventStreamReader qs;
   private final static boolean DEBUG = false;
   private final static int POSITION = 1;
-  public QuixEventStream2XMLStreamReader(IQuixEventStreamReader qs) {
+  public QuiXEventStream2XMLStreamReader(IQuiXEventStreamReader qs) {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
     this.qs = qs;
   }
@@ -56,15 +56,15 @@ public class QuixEventStream2XMLStreamReader implements XMLStreamReader {
     if (future != null) return true;
     try {
       return qs.hasNext();
-    } catch (QuixException e) {
+    } catch (QuiXException e) {
       throw new XMLStreamException(e);
     }
   }
 
-  private AQuixEvent                 current    = null;
-  private AQuixEvent                 future     = null;
-  private List<AQuixEvent.Namespace> namespaces = new ArrayList<AQuixEvent.Namespace>();
-  private List<AQuixEvent.Attribute> attributes = new ArrayList<AQuixEvent.Attribute>();
+  private AQuiXEvent                 current    = null;
+  private AQuiXEvent                 future     = null;
+  private List<AQuiXEvent.Namespace> namespaces = new ArrayList<AQuiXEvent.Namespace>();
+  private List<AQuiXEvent.Attribute> attributes = new ArrayList<AQuiXEvent.Attribute>();
 
   @Override
   public int next() throws XMLStreamException {
@@ -95,7 +95,7 @@ public class QuixEventStream2XMLStreamReader implements XMLStreamReader {
           namespaces.clear();
           while (true) {
             boolean test = qs.hasNext();
-            if (!test) throw new QuixException("Impossible");
+            if (!test) throw new QuiXException("Impossible");
             future = qs.next();
             if (future.isAttribute()) {
               attributes.add(future.asAttribute());
@@ -119,7 +119,7 @@ public class QuixEventStream2XMLStreamReader implements XMLStreamReader {
           return XMLStreamConstants.CHARACTERS;
       }
     }
-    } catch(QuixException e) {
+    } catch(QuiXException e) {
       throw new XMLStreamException(e);
       
     }
@@ -202,7 +202,7 @@ public class QuixEventStream2XMLStreamReader implements XMLStreamReader {
   @Override
   public String getAttributeValue(String namespaceURI, String localName) {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-    for (AQuixEvent.Attribute attribute : attributes) {
+    for (AQuiXEvent.Attribute attribute : attributes) {
       if (localName.equals(attribute.getLocalName()) && namespaceURI.equals(attribute.getURI())) return attribute.getValue();
     }
     return null;

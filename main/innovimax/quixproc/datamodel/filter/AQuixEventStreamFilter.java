@@ -19,22 +19,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.filter;
 
-import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.QuixException;
+import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.QuiXException;
 
-public abstract class AQuixEventStreamFilter<IEvent> implements IQuixStream<IEvent> {
-  private IQuixStream<IEvent> stream;
-  public AQuixEventStreamFilter(IQuixStream<IEvent> stream) {
+public abstract class AQuiXEventStreamFilter<IEvent> implements IQuiXStream<IEvent> {
+  private IQuiXStream<IEvent> stream;
+  public AQuiXEventStreamFilter(IQuiXStream<IEvent> stream) {
     this.stream = stream;
   }
 
   @Override
-  public boolean hasNext() throws QuixException {
+  public boolean hasNext() throws QuiXException {
     return this.stream.hasNext();
   }
 
   @Override
-  public IEvent next() throws QuixException {
+  public IEvent next() throws QuiXException {
     IEvent item;
     while ((item = process(this.stream.next())) == null)
         /* NOP */;

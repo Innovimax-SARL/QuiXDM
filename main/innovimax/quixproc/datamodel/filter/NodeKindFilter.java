@@ -21,16 +21,16 @@ package innovimax.quixproc.datamodel.filter;
 
 import java.util.EnumSet;
 
-import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.event.AQuixEvent;
-import innovimax.quixproc.datamodel.event.IQuixEvent;
+import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
-public class NodeKindFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
+public class NodeKindFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
   enum Kind { ATTRIBUTE, TEXT, COMMENT, PI, NAMESPACE }
   
   private EnumSet<Kind> enumset;
 
-  public NodeKindFilter(IQuixStream<T> stream, EnumSet<Kind> enumset) {
+  public NodeKindFilter(IQuiXStream<T> stream, EnumSet<Kind> enumset) {
     super(stream);
     this.enumset = enumset;
   }
@@ -38,7 +38,7 @@ public class NodeKindFilter<T extends IQuixEvent> extends AQuixEventStreamFilter
   @Override
   public T process(T item) {
     // We cannot extends the list of Kind in order to be able to assert that this process terminate
-    AQuixEvent qevent = item.getEvent();
+    AQuiXEvent qevent = item.getEvent();
     switch(qevent.getType()) {
       case ATTRIBUTE :
         if (enumset.contains(Kind.ATTRIBUTE)) return null;

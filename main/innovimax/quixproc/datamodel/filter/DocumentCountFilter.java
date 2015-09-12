@@ -19,22 +19,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.filter;
 
-import innovimax.quixproc.datamodel.IQuixStream;
-import innovimax.quixproc.datamodel.event.AQuixEvent;
-import innovimax.quixproc.datamodel.event.IQuixEvent;
+import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
-public class DocumentCountFilter<T extends IQuixEvent> extends AQuixEventStreamFilter<T> {
+public class DocumentCountFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
 
   private int count;
   
-  public DocumentCountFilter(IQuixStream<T> stream) {
+  public DocumentCountFilter(IQuiXStream<T> stream) {
     super(stream);
     this.count = 0;
   }
 
   @Override
   public T process(T item) {
-    AQuixEvent qevent = item.getEvent();
+    AQuiXEvent qevent = item.getEvent();
     switch(qevent.getType()) {
       case START_DOCUMENT :
         this.count++;

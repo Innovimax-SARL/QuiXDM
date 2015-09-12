@@ -1,7 +1,7 @@
 package innovimax.quixproc.datamodel.event;
 
-import innovimax.quixproc.datamodel.IQuixStream;
+import innovimax.quixproc.datamodel.IQuiXStream;
 
-public interface IQuixEventStreamReader extends IQuixStream<AQuixEvent> {
+public interface IQuiXEventStreamReader extends IQuiXStream<AQuiXEvent> {
   // marker interface
 }
