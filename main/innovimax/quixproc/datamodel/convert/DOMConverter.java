@@ -25,7 +25,7 @@ import javax.xml.transform.Source;
 
 import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.QuixEvent;
-import innovimax.quixproc.datamodel.in.QuixStreamReader;
+import innovimax.quixproc.datamodel.in.QuixEventStreamReader;
 import net.sf.saxon.pull.PullSource;
 import net.sf.saxon.pull.StaxBridge;
 import net.sf.saxon.s9api.DocumentBuilder;
@@ -48,7 +48,7 @@ public class DOMConverter {
   public XdmNode exec() throws ConvertException {
     //System.out.println("DOMConverter.exec("+rank+")");
     try {
-      XMLStreamReader xer = new QuixStreamReader(reader);
+      XMLStreamReader xer = new QuixEventStreamReader(reader);
       try {
         StaxBridge sb = new StaxBridge();
         sb.setXMLStreamReader(xer);

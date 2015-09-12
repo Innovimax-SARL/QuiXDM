@@ -32,14 +32,14 @@ import javax.xml.stream.XMLStreamReader;
 import innovimax.quixproc.datamodel.IStream;
 import innovimax.quixproc.datamodel.QuixEvent;
 import innovimax.quixproc.datamodel.QuixException;
-import innovimax.quixproc.datamodel.QuixEvent.Attribute;
-import innovimax.quixproc.datamodel.QuixEvent.Namespace;
+//import innovimax.quixproc.datamodel.QuixEvent.Attribute;
+//import innovimax.quixproc.datamodel.QuixEvent.Namespace;
 
-public class QuixStreamReader implements XMLStreamReader {
+public class QuixEventStreamReader implements XMLStreamReader {
   private final IStream<QuixEvent> qs;
   private final static boolean DEBUG = false;
   private final static int POSITION = 1;
-  public QuixStreamReader(IStream<QuixEvent> qs) {
+  public QuixEventStreamReader(IStream<QuixEvent> qs) {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
     this.qs = qs;
   }
