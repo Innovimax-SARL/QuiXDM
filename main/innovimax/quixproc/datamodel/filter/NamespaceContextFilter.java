@@ -24,12 +24,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-
-import innovimax.quixproc.datamodel.IEvent;
 import innovimax.quixproc.datamodel.IStream;
-import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.event.IQuixEvent;
+import innovimax.quixproc.datamodel.event.QuixEvent;
 
-public class NamespaceContextFilter<T extends IEvent> extends AStreamFilter<T> {
+public class NamespaceContextFilter<T extends IQuixEvent> extends AStreamFilter<T> {
 
   private LinkedList<Map<String, String>> namespaces;
   public NamespaceContextFilter(IStream<T> stream) {

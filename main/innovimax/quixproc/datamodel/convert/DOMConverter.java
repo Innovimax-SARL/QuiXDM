@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
 import innovimax.quixproc.datamodel.IStream;
-import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.event.QuixEvent;
 import innovimax.quixproc.datamodel.in.QuixEventStreamReader;
 import net.sf.saxon.pull.PullSource;
 import net.sf.saxon.pull.StaxBridge;

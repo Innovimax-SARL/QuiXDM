@@ -24,11 +24,11 @@ import java.util.Stack;
 
 import javax.xml.namespace.QName;
 
-import innovimax.quixproc.datamodel.IEvent;
 import innovimax.quixproc.datamodel.IStream;
-import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.event.IQuixEvent;
+import innovimax.quixproc.datamodel.event.QuixEvent;
 
-public class AncestorContextFilter<T extends IEvent> extends AStreamFilter<T> {
+public class AncestorContextFilter<T extends IQuixEvent> extends AStreamFilter<T> {
 
   private Stack<QName> ancestors;
   public AncestorContextFilter(IStream<T> stream) {

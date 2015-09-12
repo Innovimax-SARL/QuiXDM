@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel;
+package innovimax.quixproc.datamodel.event;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,9 @@ import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
-public abstract class QuixEvent implements IEvent{
+import innovimax.quixproc.datamodel.QuixEventToken;
+
+public abstract class QuixEvent implements IQuixEvent{
   
   // TODO : store namespacecontext
   // TODO : store type information for PSVI

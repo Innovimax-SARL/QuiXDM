@@ -29,8 +29,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import innovimax.quixproc.datamodel.IStream;
-import innovimax.quixproc.datamodel.QuixEvent;
 import innovimax.quixproc.datamodel.QuixException;
+import innovimax.quixproc.datamodel.event.QuixEvent;
 
 public class Load implements IStream<QuixEvent> {
 

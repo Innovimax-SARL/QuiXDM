@@ -17,9 +17,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel;
+package innovimax.quixproc.datamodel.event;
 
-public class MatchEvent implements IEvent
+public class MatchEvent implements IQuixEvent
 {           
   
   /* properties */       

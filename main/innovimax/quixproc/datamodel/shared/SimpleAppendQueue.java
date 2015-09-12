@@ -20,8 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package innovimax.quixproc.datamodel.shared;
 
 import innovimax.quixproc.datamodel.IStream;
-import innovimax.quixproc.datamodel.QuixEvent;
 import innovimax.quixproc.datamodel.QuixException;
+import innovimax.quixproc.datamodel.event.QuixEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +104,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
       try {
         if (i < events.size()) return true;
         // if (iterator.hasNext()) return true;
-        // si c'est faux ca dépends de close
+        // si c'est faux ca dï¿½pends de close
         while (i >= events.size()/* !iterator.hasNext() */) {
           if (closed) return false;
           rwl.readLock().unlock();
@@ -113,7 +113,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
 //          System.out.println("hasNextAfterYield");
           rwl.readLock().lock();
         }
-        // il n'y a pas de concurrence sur la lecture, chacun lit à son rythme
+        // il n'y a pas de concurrence sur la lecture, chacun lit ï¿½ son rythme
         // donc si il y a un element il l'est toujours
         return true;
       } finally {
@@ -128,7 +128,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
       try {
         if (i < events.size()) { return events.get(i++); }
         // if (iterator.hasNext()) return iterator.next();
-        // si c'est faux ca dépends de close
+        // si c'est faux ca dï¿½pends de close
         while (i >= events.size()/* !iterator.hasNext() */) {
           if (closed) return null;
           rwl.readLock().unlock();
@@ -137,7 +137,7 @@ public class SimpleAppendQueue<T> implements IQueue<T> {
 //          System.out.println("nextAfterYield");
           rwl.readLock().lock();
         }
-        // il n'y a pas de concurrence sur la lecture, chacun lit à son rythme
+        // il n'y a pas de concurrence sur la lecture, chacun lit ï¿½ son rythme
         // donc si il y a un element il l'est toujours
         return events.get(i++);
         // return iterator.next();
