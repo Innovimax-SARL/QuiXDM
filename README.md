@@ -29,19 +29,19 @@ element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTR
 Mostly look at [QuixToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuixToken.java)
 
 # Use
-## With Object creation (à la [javax.xml.stream.XMLStreamReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLStreamReader.html))
+## With Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
 Simplest way to use, is to instanciate [innovimax.quixproc.datamodel.in.QuixEventStreamReader.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuixEventStreamReader.java)
 ```java
 Iterable<Source> sources = Arrays.asList(new Source[] {
 		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aaa.xml"),	
-		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aab.xml"),	
+		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aab.xml")	
 });
 QuixEventStreamReader qesr = new QuixEventStreamReader(sources);
 while(qesr.hasNext()) {
 	System.out.println(qesr.next());
 }
 ```
-## Lightweight iterator without Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
+## Lightweight iterator without Object creation (à la [javax.xml.stream.XMLStreamReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLStreamReader.html))
 ***TODO***
 # Contributors
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
