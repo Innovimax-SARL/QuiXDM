@@ -26,39 +26,47 @@ import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
 public class NodeKindFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
-  enum Kind { ATTRIBUTE, TEXT, COMMENT, PI, NAMESPACE }
-  
-  private EnumSet<Kind> enumset;
+	enum Kind {
+		ATTRIBUTE, TEXT, COMMENT, PI, NAMESPACE
+	}
 
-  public NodeKindFilter(IQuiXStream<T> stream, EnumSet<Kind> enumset) {
-    super(stream);
-    this.enumset = enumset;
-  }
- 
-  @Override
-  public T process(T item) {
-    // We cannot extends the list of Kind in order to be able to assert that this process terminate
-    AQuiXEvent qevent = item.getEvent();
-    switch(qevent.getType()) {
-      case ATTRIBUTE :
-        if (enumset.contains(Kind.ATTRIBUTE)) return null;
-        break;
-      case TEXT :
-        if (enumset.contains(Kind.TEXT)) return null;
-        break;
-      case COMMENT :
-        if (enumset.contains(Kind.COMMENT)) return null;
-        break;
-      case NAMESPACE :
-        if (enumset.contains(Kind.NAMESPACE)) return null;
-        break;
-      case PI :
-         if (enumset.contains(Kind.PI)) return null;
-         break;
-      default :
-         break;         
-    }
-    return item;
-  }
+	private EnumSet<Kind> enumset;
+
+	public NodeKindFilter(IQuiXStream<T> stream, EnumSet<Kind> enumset) {
+		super(stream);
+		this.enumset = enumset;
+	}
+
+	@Override
+	public T process(T item) {
+		// We cannot extends the list of Kind in order to be able to assert that
+		// this process terminate
+		AQuiXEvent qevent = item.getEvent();
+		switch (qevent.getType()) {
+		case ATTRIBUTE:
+			if (enumset.contains(Kind.ATTRIBUTE))
+				return null;
+			break;
+		case TEXT:
+			if (enumset.contains(Kind.TEXT))
+				return null;
+			break;
+		case COMMENT:
+			if (enumset.contains(Kind.COMMENT))
+				return null;
+			break;
+		case NAMESPACE:
+			if (enumset.contains(Kind.NAMESPACE))
+				return null;
+			break;
+		case PI:
+			if (enumset.contains(Kind.PI))
+				return null;
+			break;
+		default:
+			break;
+		}
+		return item;
+	}
 
 }

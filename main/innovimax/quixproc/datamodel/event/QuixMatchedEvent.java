@@ -19,44 +19,42 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.event;
 
-public class QuiXMatchedEvent implements IQuiXEvent
-{           
-  
-  /* properties */       
-  
-  private final AQuiXEvent event;
-  private boolean matched = true;  
-  private String channels = null;    
-  
-  /* constructor */ 
-      
-  public QuiXMatchedEvent(AQuiXEvent event) {
-    this.event = event;
-  }
-  
-  public QuiXMatchedEvent(AQuiXEvent event, boolean matched) {
-    this.event = event;
-    this.matched = matched;
-  }
+public class QuiXMatchedEvent implements IQuiXEvent {
 
-  /* set/get properties */  
-  
-  public AQuiXEvent getEvent() {    
-    return event;
-  }  
-    
-  public QuiXMatchedEvent setMatched(boolean matched) {
-    this.matched = matched;
-    return this;
-  }
+	/* properties */
 
+	private final AQuiXEvent event;
+	private boolean matched = true;
+	private String channels = null;
 
-  public boolean isMatched() {
-    return matched;
-  }  
+	/* constructor */
 
-  @Override
-  public String toString() {
-    return this.event.toString() + ";"+this.matched;
-  }
+	public QuiXMatchedEvent(AQuiXEvent event) {
+		this.event = event;
+	}
+
+	public QuiXMatchedEvent(AQuiXEvent event, boolean matched) {
+		this.event = event;
+		this.matched = matched;
+	}
+
+	/* set/get properties */
+
+	public AQuiXEvent getEvent() {
+		return event;
+	}
+
+	public QuiXMatchedEvent setMatched(boolean matched) {
+		this.matched = matched;
+		return this;
+	}
+
+	public boolean isMatched() {
+		return matched;
+	}
+
+	@Override
+	public String toString() {
+		return this.event.toString() + ";" + this.matched;
+	}
 }

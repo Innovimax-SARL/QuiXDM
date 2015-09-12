@@ -25,51 +25,58 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
 public class NamespaceContextFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
 
-  private LinkedList<Map<String, String>> namespaces;
-  public NamespaceContextFilter(IQuiXStream<T> stream) {
-    super(stream);
-    // TODO Auto-generated constructor stub
-    this.namespaces = new LinkedList<Map<String, String>>();
-  }
+	private LinkedList<Map<QuiXCharStream, QuiXCharStream>> namespaces;
 
-  private boolean needCleaning = false;
-  @Override
-  public T process(T item) {
-    AQuiXEvent qevent = item.getEvent();
-    if (needCleaning) {
-      this.namespaces.pollLast();
-      needCleaning = false;
-    }
-    switch(qevent.getType()) {
-      case START_ELEMENT :
-        this.namespaces.add(new TreeMap<String, String>());
-        break;
-      case END_ELEMENT :
-        // differ the cleaning to the next event
-        needCleaning = true;
-        break;
-      case NAMESPACE :        
-        this.namespaces.getLast().put(qevent.asNamespace().getPrefix(), qevent.asNamespace().getURI());
-        break;
-    }
-    return item;
-  }
-  /**
-   * Check at the current moment if the prefix is mapped
-   * It returns null if the prefix is not mapped at this time
-   * @param prefix
-   * @return
-   */
-  public String getURI(String prefix) {
-    for(Iterator<Map<String, String>> iter = this.namespaces.descendingIterator();iter.hasNext();) {
-       Map<String, String> map = iter.next();
-       if (map.containsKey(prefix)) return map.get(prefix);
-    }
-    return null;
-  }
+	public NamespaceContextFilter(IQuiXStream<T> stream) {
+		super(stream);
+		// TODO Auto-generated constructor stub
+		this.namespaces = new LinkedList<Map<QuiXCharStream, QuiXCharStream>>();
+	}
+
+	private boolean needCleaning = false;
+
+	@Override
+	public T process(T item) {
+		AQuiXEvent qevent = item.getEvent();
+		if (needCleaning) {
+			this.namespaces.pollLast();
+			needCleaning = false;
+		}
+		switch (qevent.getType()) {
+		case START_ELEMENT:
+			this.namespaces.add(new TreeMap<QuiXCharStream, QuiXCharStream>());
+			break;
+		case END_ELEMENT:
+			// differ the cleaning to the next event
+			needCleaning = true;
+			break;
+		case NAMESPACE:
+			this.namespaces.getLast().put(qevent.asNamespace().getPrefix(), qevent.asNamespace().getURI());
+			break;
+		}
+		return item;
+	}
+
+	/**
+	 * Check at the current moment if the prefix is mapped It returns null if
+	 * the prefix is not mapped at this time
+	 * 
+	 * @param prefix
+	 * @return
+	 */
+	public QuiXCharStream getURI(String prefix) {
+		for (Iterator<Map<QuiXCharStream, QuiXCharStream>> iter = this.namespaces.descendingIterator(); iter
+				.hasNext();) {
+			Map<QuiXCharStream, QuiXCharStream> map = iter.next();
+			if (map.containsKey(prefix))
+				return map.get(prefix);
+		}
+		return null;
+	}
 }

@@ -21,12 +21,20 @@ package innovimax.quixproc.datamodel;
 
 public class QuiXException extends Exception {
 
-  public QuiXException() { this(null, null); }
+	public QuiXException() {
+		this(null, null);
+	}
 
-  public QuiXException(String message, Throwable cause) { super(message, cause); }
+	public QuiXException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-  public QuiXException(String message) { this(message, null); }
+	public QuiXException(String message) {
+		this(message, null);
+	}
 
-  public QuiXException(Throwable cause) { this(null, cause); }
+	public QuiXException(Throwable cause) {
+		this(null, cause);
+	}
 
 }

@@ -22,37 +22,37 @@ package innovimax.quixproc.datamodel.filter;
 import java.util.Iterator;
 import java.util.Stack;
 
-import javax.xml.namespace.QName;
-
 import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.QuiXQName;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
 public class AncestorContextFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
 
-  private Stack<QName> ancestors;
-  public AncestorContextFilter(IQuiXStream<T> stream) {
-    super(stream);
-    this.ancestors = new Stack<QName>();
-  }
+	private Stack<QuiXQName> ancestors;
 
-  @Override
-  public T process(T item) {
-    AQuiXEvent qevent = item.getEvent();
-    switch (qevent.getType()) {
-      case START_ELEMENT :
-        this.ancestors.push(qevent.asNamedEvent().getQName());
-        break;
-      case END_ELEMENT:
-        this.ancestors.pop();
-        break;
-      default:  
-        break;        
-    }
-    return item;
-  }
+	public AncestorContextFilter(IQuiXStream<T> stream) {
+		super(stream);
+		this.ancestors = new Stack<QuiXQName>();
+	}
 
-  public Iterator<QName> ancestors() {
-    return this.ancestors.iterator();
-  }
+	@Override
+	public T process(T item) {
+		AQuiXEvent qevent = item.getEvent();
+		switch (qevent.getType()) {
+		case START_ELEMENT:
+			this.ancestors.push(qevent.asNamedEvent().getQName());
+			break;
+		case END_ELEMENT:
+			this.ancestors.pop();
+			break;
+		default:
+			break;
+		}
+		return item;
+	}
+
+	public Iterator<QuiXQName> ancestors() {
+		return this.ancestors.iterator();
+	}
 }

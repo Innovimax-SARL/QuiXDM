@@ -25,27 +25,27 @@ import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
 public class DocumentCountFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
 
-  private int count;
-  
-  public DocumentCountFilter(IQuiXStream<T> stream) {
-    super(stream);
-    this.count = 0;
-  }
+	private int count;
 
-  @Override
-  public T process(T item) {
-    AQuiXEvent qevent = item.getEvent();
-    switch(qevent.getType()) {
-      case START_DOCUMENT :
-        this.count++;
-        break;
-      default:
-        break;
-    }
-    return item;
-  }
+	public DocumentCountFilter(IQuiXStream<T> stream) {
+		super(stream);
+		this.count = 0;
+	}
 
-  public int getCurrentDocumentCount() {
-    return this.count;
-  }
+	@Override
+	public T process(T item) {
+		AQuiXEvent qevent = item.getEvent();
+		switch (qevent.getType()) {
+		case START_DOCUMENT:
+			this.count++;
+			break;
+		default:
+			break;
+		}
+		return item;
+	}
+
+	public int getCurrentDocumentCount() {
+		return this.count;
+	}
 }

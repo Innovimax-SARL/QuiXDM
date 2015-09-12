@@ -19,12 +19,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.event;
 
-public class QuiXValue 
-{    
-  private final String value;  
+public class QuiXValue {
+	private final String value;
 
-  public QuiXValue(String value) { this.value = value; }
+	public QuiXValue(String value) {
+		this.value = value;
+	}
 
-  public String getString() { return value; }   
-       
+	public String getString() {
+		return value;
+	}
+
 }

@@ -22,54 +22,59 @@ package innovimax.quixproc.datamodel.shared;
 import innovimax.quixproc.datamodel.IQuiXStream;
 
 /**
- * This defines a simple append only on write interface
- * With simple forward reading reader registered
- *  
+ * This defines a simple append only on write interface With simple forward
+ * reading reader registered
+ * 
  * @author innovimax
  *
  */
 public interface IQuiXQueue<T> extends ISimpleQuiXQueue<T> {
-  /**
-   * This defines a proxy to which we can register
-   * @author innovimax
-   *
-   */
-  public interface ProxyReader<T> {
-    /**
-     * The proxy can declare it's own reader
-     * @return
-     */
-    public IQuiXStream<T> registerReader();
-    
-    /**
-     * To close the proxy
-     * @return
-     */
-    public void closeReaderRegistration();
-  }
+	/**
+	 * This defines a proxy to which we can register
+	 * 
+	 * @author innovimax
+	 *
+	 */
+	public interface ProxyReader<T> {
+		/**
+		 * The proxy can declare it's own reader
+		 * 
+		 * @return
+		 */
+		public IQuiXStream<T> registerReader();
 
-  /**
-   * Register a reader here to read only in forward mode
-   * @return
-   */
-  public IQuiXStream<T> registerReader();
-  
-  /**
-   * Register proxy reader is there for for-each loops where you never know
-   * the true number of reader.
-   * The idea is that implementations of this interface should be able to 
-   * garbage collect the data that is sure to not be read again
-   */
-  public ProxyReader<T> registerProxyReader();
-  
-  /**
-   * This method is called when no more call to registerReader or registerProxyReader will be done 
-   */
-  public void closeReaderRegistration();
-  
-  /**
-   * Implementation of this interface keep a readercount
-   */
-  public void setReaderCount(int count);
+		/**
+		 * To close the proxy
+		 * 
+		 * @return
+		 */
+		public void closeReaderRegistration();
+	}
+
+	/**
+	 * Register a reader here to read only in forward mode
+	 * 
+	 * @return
+	 */
+	public IQuiXStream<T> registerReader();
+
+	/**
+	 * Register proxy reader is there for for-each loops where you never know
+	 * the true number of reader. The idea is that implementations of this
+	 * interface should be able to garbage collect the data that is sure to not
+	 * be read again
+	 */
+	public ProxyReader<T> registerProxyReader();
+
+	/**
+	 * This method is called when no more call to registerReader or
+	 * registerProxyReader will be done
+	 */
+	public void closeReaderRegistration();
+
+	/**
+	 * Implementation of this interface keep a readercount
+	 */
+	public void setReaderCount(int count);
 
 }

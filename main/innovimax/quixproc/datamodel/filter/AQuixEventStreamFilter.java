@@ -23,29 +23,30 @@ import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.QuiXException;
 
 public abstract class AQuiXEventStreamFilter<IEvent> implements IQuiXStream<IEvent> {
-  private IQuiXStream<IEvent> stream;
-  public AQuiXEventStreamFilter(IQuiXStream<IEvent> stream) {
-    this.stream = stream;
-  }
+	private IQuiXStream<IEvent> stream;
 
-  @Override
-  public boolean hasNext() throws QuiXException {
-    return this.stream.hasNext();
-  }
+	public AQuiXEventStreamFilter(IQuiXStream<IEvent> stream) {
+		this.stream = stream;
+	}
 
-  @Override
-  public IEvent next() throws QuiXException {
-    IEvent item;
-    while ((item = process(this.stream.next())) == null)
-        /* NOP */;
-    return item;
-  }
+	@Override
+	public boolean hasNext() throws QuiXException {
+		return this.stream.hasNext();
+	}
 
-  @Override
-  public void close() {
-    this.stream.close();
-  }
-  
-  public abstract IEvent process(IEvent item);
+	@Override
+	public IEvent next() throws QuiXException {
+		IEvent item;
+		while ((item = process(this.stream.next())) == null)
+			/* NOP */;
+		return item;
+	}
+
+	@Override
+	public void close() {
+		this.stream.close();
+	}
+
+	public abstract IEvent process(IEvent item);
 
 }

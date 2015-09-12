@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.convert.saxon;
 
+import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.shared.ISimpleQuiXQueue;
 import net.sf.saxon.om.NamespaceBinding;
@@ -28,124 +29,130 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmSequenceIterator;
 
 public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
-    private ISimpleQuiXQueue<AQuiXEvent> doc = null;   
-    private XdmNode node = null;      
-    private boolean running = true; 
-    private static int counter = 1;
-    private final int rank = counter++;
-    
-    public AXdmNode2QuiXEventStreamConverter(ISimpleQuiXQueue<AQuiXEvent> doc, XdmNode node) {  
-        this.doc = doc;              
-        this.node = node;
-    }
-    
-    public void run() {                    
-      //System.out.println("EventConverter.run("+rank+")");
-        try {               
-            startProcess();
-            process();
-            doc.close();
-            endProcess();  
-            running = false;                                     
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {          
-            throw new RuntimeException(e);
-        }                     
-    }
-    
-    public boolean isRunning() {
-        return running;
-    }
-    
-    /** 	  
-     * parse handler interface
-     */ 
-     
+	private ISimpleQuiXQueue<AQuiXEvent> doc = null;
+	private XdmNode node = null;
+	private boolean running = true;
+	private static int counter = 1;
+	private final int rank = counter++;
 
-    private void process() {
-      doc.append(AQuiXEvent.getStartSequence());
-      String uri = ""+node.getDocumentURI();
-      //System.out.println("---------->Document URI"+uri);
-      doc.append(AQuiXEvent.getStartDocument(uri));
-      processnode(node);
-      doc.append(AQuiXEvent.getEndDocument(uri));
-      doc.append(AQuiXEvent.getEndSequence());
-    }
-    
-    private void processnode(XdmNode localnode) {
-      switch (localnode.getNodeKind()) {
-        case DOCUMENT:
-          // do nothing
-          for(XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD);iter.hasNext();) {
-            XdmNode item = (XdmNode) iter.next();
-            processnode(item);
-          }
-          break;
-        case ELEMENT :          
-          doc.append(AQuiXEvent.getStartElement(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix()));
-          namespaceProcess(localnode);
-          for(XdmSequenceIterator iter = localnode.axisIterator(Axis.ATTRIBUTE);iter.hasNext();) {
-            XdmNode item = (XdmNode) iter.next();
-            processnode(item);
-          }
-          for(XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD);iter.hasNext();) {
-            XdmNode item = (XdmNode) iter.next();
-            processnode(item);
-          }
-          doc.append(AQuiXEvent.getEndElement(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix()));
-          break;
-        case ATTRIBUTE :          
-          doc.append(AQuiXEvent.getAttribute(localnode.getNodeName().getLocalName(), localnode.getNodeName().getNamespaceURI(), localnode.getNodeName().getPrefix(), localnode.getStringValue()));
-          break;
-        case TEXT:
-          doc.append(AQuiXEvent.getText(localnode.getStringValue()));
-          break;
-        case COMMENT :
-          doc.append(AQuiXEvent.getComment(localnode.getStringValue()));
-          break;
-        case PROCESSING_INSTRUCTION :
-          doc.append(AQuiXEvent.getPI(localnode.getNodeName().getLocalName(), localnode.getStringValue()));
-          break;
-        case NAMESPACE :          
-          // no op
-          break;
-      }
-    }
-    
-    private void namespaceProcess(XdmNode node) {
-      NodeInfo inode = node.getUnderlyingNode();
-      NamespaceBinding[] inscopeNS = 
-          inode.getDeclaredNamespaces(null);
-          //NamespaceIterator.getInScopeNamespaceCodes(inode);
+	public AXdmNode2QuiXEventStreamConverter(ISimpleQuiXQueue<AQuiXEvent> doc, XdmNode node) {
+		this.doc = doc;
+		this.node = node;
+	}
 
-      if (inscopeNS.length > 0) {
-          for (int pos = 0; pos < inscopeNS.length; pos++) {
-              NamespaceBinding ns = inscopeNS[pos];
-              String pfx = ns.getPrefix();
-              String uri = ns.getURI();
-              doc.append(AQuiXEvent.getNamespace(pfx, uri));              
-           }
-       }
+	public void run() {
+		// System.out.println("EventConverter.run("+rank+")");
+		try {
+			startProcess();
+			process();
+			doc.close();
+			endProcess();
+			running = false;
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-      // Careful, we're messing with the namespace bindings
-      // Make sure the nameCode is right...
-      //int nameCode = inode.getNameCode();
-      //int typeCode = inode.getTypeAnnotation() & NamePool.FP_MASK;
-      //String pfx = pool.getPrefix(nameCode);
-      //String uri = pool.getURI(nameCode);
+	public boolean isRunning() {
+		return running;
+	}
 
-      //if (excludeDefault && "".equals(pfx) && !usesDefaultNS) {
-          //nameCode = pool.allocate("", "", pool.getLocalName(nameCode));
-      //}
+	/**
+	 * parse handler interface
+	 */
 
-      //tree.addStartElement(nameCode, typeCode, newNS);
-      //tree.addAttributes(node);
+	private void process() {
+		doc.append(AQuiXEvent.getStartSequence());
+		String uri = "" + node.getDocumentURI();
+		// System.out.println("---------->Document URI"+uri);
+		doc.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence(uri)));
+		processnode(node);
+		doc.append(AQuiXEvent.getEndDocument(QuiXCharStream.fromSequence(uri)));
+		doc.append(AQuiXEvent.getEndSequence());
+	}
 
+	private void processnode(XdmNode localnode) {
+		switch (localnode.getNodeKind()) {
+		case DOCUMENT:
+			// do nothing
+			for (XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD); iter.hasNext();) {
+				XdmNode item = (XdmNode) iter.next();
+				processnode(item);
+			}
+			break;
+		case ELEMENT:
+			doc.append(AQuiXEvent.getStartElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
+					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
+			namespaceProcess(localnode);
+			for (XdmSequenceIterator iter = localnode.axisIterator(Axis.ATTRIBUTE); iter.hasNext();) {
+				XdmNode item = (XdmNode) iter.next();
+				processnode(item);
+			}
+			for (XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD); iter.hasNext();) {
+				XdmNode item = (XdmNode) iter.next();
+				processnode(item);
+			}
+			doc.append(AQuiXEvent.getEndElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
+					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
+			break;
+		case ATTRIBUTE:
+			doc.append(AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
+					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix()),
+					QuiXCharStream.fromSequence(localnode.getStringValue())));
+			break;
+		case TEXT:
+			doc.append(AQuiXEvent.getText(QuiXCharStream.fromSequence(localnode.getStringValue())));
+			break;
+		case COMMENT:
+			doc.append(AQuiXEvent.getComment(QuiXCharStream.fromSequence(localnode.getStringValue())));
+			break;
+		case PROCESSING_INSTRUCTION:
+			doc.append(AQuiXEvent.getPI(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+					QuiXCharStream.fromSequence(localnode.getStringValue())));
+			break;
+		case NAMESPACE:
+			// no op
+			break;
+		}
+	}
 
-    }
-    
-    public abstract void startProcess();
-    public abstract void endProcess();
-               
+	private void namespaceProcess(XdmNode node) {
+		NodeInfo inode = node.getUnderlyingNode();
+		NamespaceBinding[] inscopeNS = inode.getDeclaredNamespaces(null);
+		// NamespaceIterator.getInScopeNamespaceCodes(inode);
+
+		if (inscopeNS.length > 0) {
+			for (int pos = 0; pos < inscopeNS.length; pos++) {
+				NamespaceBinding ns = inscopeNS[pos];
+				String pfx = ns.getPrefix();
+				String uri = ns.getURI();
+				doc.append(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(pfx), QuiXCharStream.fromSequence(uri)));
+			}
+		}
+
+		// Careful, we're messing with the namespace bindings
+		// Make sure the nameCode is right...
+		// int nameCode = inode.getNameCode();
+		// int typeCode = inode.getTypeAnnotation() & NamePool.FP_MASK;
+		// String pfx = pool.getPrefix(nameCode);
+		// String uri = pool.getURI(nameCode);
+
+		// if (excludeDefault && "".equals(pfx) && !usesDefaultNS) {
+		// nameCode = pool.allocate("", "", pool.getLocalName(nameCode));
+		// }
+
+		// tree.addStartElement(nameCode, typeCode, newNS);
+		// tree.addAttributes(node);
+
+	}
+
+	public abstract void startProcess();
+
+	public abstract void endProcess();
+
 }

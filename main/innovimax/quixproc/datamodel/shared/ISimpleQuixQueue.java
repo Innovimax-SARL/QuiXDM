@@ -21,15 +21,16 @@ package innovimax.quixproc.datamodel.shared;
 
 public interface ISimpleQuiXQueue<T> {
 
-  /**
-   * append an event on this queue
-   * @param event
-   */
-  public abstract void append(T event);
+	/**
+	 * append an event on this queue
+	 * 
+	 * @param event
+	 */
+	public abstract void append(T event);
 
-  /**
-   * close the queue
-   */
-  public abstract void close();
+	/**
+	 * close the queue
+	 */
+	public abstract void close();
 
 }
