@@ -1,4 +1,4 @@
-# quixdm
+# QuiXDM
 **QuiXDM** is an open-source implementation of an [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/) able to do Streaming Processing.
 
 # Getting Started
@@ -10,17 +10,17 @@ To install, it
 # Why QuiXDM?
 There is SAX and StAX and DOM out there for processing XML
 
- API | SAX | StAX | DOM | **QuixDM**
+ Feature\API | SAX | StAX | DOM | **QuixDM**
 ------|-----|------|-----|-------
 in memory/streaming | streaming | streaming | in memory | **streaming**
 push/pull | push | pull | -- | **pull**
 data model | low level XML | low level XML | low level XML | **XPath Data Model**
 handle sequence | no | no | no | **yes**
 
-# How does it works?
+# How does it work?
 We minimize (as the XPath Data Model requires it) the number of XML information we manage
 ```ANTLR
-  // Here is the grammar of events
+// Here is the grammar of events
 sequence := START_SEQUENCE, document*, END_SEQUENCE
 document := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT
 element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
@@ -34,16 +34,16 @@ Simplest way to use, is to instanciate [innovimax.quixproc.datamodel.in.QuixEven
 Iterable<Source> sources = Arrays.asList(new Source[] {
 		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aaa.xml"),	
 		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aab.xml"),	
-	});
-	QuixEventStreamReader qesr = new QuixEventStreamReader(sources);
-	while(qesr.hasNext()) {
-		System.out.println(qesr.next());
-	}
+});
+QuixEventStreamReader qesr = new QuixEventStreamReader(sources);
+while(qesr.hasNext()) {
+	System.out.println(qesr.next());
+}
 ```
 # Contributors
 
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
-Related Projects
+# Related Projects
 
 QuiXDM can be used standalone
 
