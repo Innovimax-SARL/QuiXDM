@@ -13,14 +13,14 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>QuiXDM by innovimax</title>
+    <title>Quixdm by innovimax</title>
   </head>
 
   <body>
     <header>
       <div class="inner">
-        <h1>QuiXDM</h1>
-        <h2>QuiXDM is an open-source implementation of an XQuery and XPath Data Model (XDM) able to do Streaming Processing</h2>
+        <h1>Quixdm</h1>
+        <h2>QuiXDM is an open-source implementation of an XQuery and XPath Data Model able to do Streaming Processing</h2>
         <a href="https://github.com/innovimax/quixdm" class="button"><small>View project on</small> GitHub</a>
       </div>
     </header>
@@ -28,29 +28,113 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to QuiXDM github Pages.</h3>
+          <h1>
+<a id="quixdm" class="anchor" href="#quixdm" aria-hidden="true"><span class="octicon octicon-link"></span></a>quixdm</h1>
 
-<p>QuiXDM is an open-source implementation of an <a href="http://www.w3.org/TR/xpath-datamodel/">XQuery and XPath Data Model (XDM)</a> able to do Streaming Processing.</p>
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<p><strong>QuiXDM</strong> is an open-source implementation of an <a href="http://www.w3.org/TR/xpath-datamodel/">XQuery and XPath Data Model (XDM)</a> able to do Streaming Processing</p>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+<h1>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h1>
 
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating pages manually</h3>
+<p>To install, it</p>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<ul>
+<li> Checkout this code. It's Java 1.6+ compliant: <a href="http://code.google.com/p/quixpath/source/checkout">http://code.google.com/p/quixpath/source/checkout</a>
+</li>
+<li> Get access to Saxon 9.6: <a href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a> </li>
+</ul>
 
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<h1>
+<a id="why-quixdm" class="anchor" href="#why-quixdm" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why QuiXDM?</h1>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>There is SAX and StAX and DOM out there for processing XML</p>
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>SAX</th>
+<th>StAX</th>
+<th>DOM</th>
+<th>QuixDM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>in memory/streaming</td>
+<td>streaming</td>
+<td>streaming</td>
+<td>in memory</td>
+<td>streaming</td>
+</tr>
+<tr>
+<td>push/pull</td>
+<td>push</td>
+<td>pull</td>
+<td>--</td>
+<td>pull</td>
+</tr>
+<tr>
+<td>data model</td>
+<td>low level XML</td>
+<td>low level XML</td>
+<td>low level XML</td>
+<td>XPath Data Model</td>
+</tr>
+<tr>
+<td>handle sequence</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes</strong></td>
+</tr>
+</tbody>
+</table>
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+<h1>
+<a id="how-does-it-works" class="anchor" href="#how-does-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does it works?</h1>
+
+<p>We minimize (as the XPath Data Model requires it) the number of XML information we manage</p>
+
+<div class="highlight highlight-ANTLR"><pre>  <span class="pl-c">// Here is the grammar of events</span>
+<span class="pl-en">sequence</span> := <span class="pl-c1">START_SEQUENCE</span>, document*, <span class="pl-c1">END_SEQUENCE</span>
+<span class="pl-en">document</span> := <span class="pl-c1">START_DOCUMENT</span>, (<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, element, (<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_DOCUMENT</span>
+<span class="pl-en">element</span> := <span class="pl-c1">START_ELEMENT</span>, (<span class="pl-c1">NAMESPACE</span>|<span class="pl-c1">ATTRIBUTE</span>)*, (<span class="pl-c1">TEXT</span>|element|<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_ELEMENT</span></pre></div>
+
+<p>Mainly look at <a href="https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuixEventToken.java">QuixEventToken.java</a></p>
+
+<h1>
+<a id="use" class="anchor" href="#use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use</h1>
+
+<p>Simplest way to use, is to instanciate <a href="https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuixEventStreamReader.java">innovimax.quixproc.datamodel.in.QuixEventStreamReader.java</a></p>
+
+<div class="highlight highlight-java"><pre><span class="pl-k">Iterable&lt;<span class="pl-smi">Source</span>&gt;</span> sources <span class="pl-k">=</span> <span class="pl-smi">Arrays</span><span class="pl-k">.</span>asList(<span class="pl-k">new</span> <span class="pl-smi">Source</span>[] {
+        <span class="pl-k">new</span> <span class="pl-smi">javax.xml.transform.stream<span class="pl-k">.</span>StreamSource</span>(<span class="pl-s"><span class="pl-pds">"</span>/tmp/file/file_aaa.xml<span class="pl-pds">"</span></span>),  
+        <span class="pl-k">new</span> <span class="pl-smi">javax.xml.transform.stream<span class="pl-k">.</span>StreamSource</span>(<span class="pl-s"><span class="pl-pds">"</span>/tmp/file/file_aab.xml<span class="pl-pds">"</span></span>),  
+    });
+    <span class="pl-smi">QuixEventStreamReader</span> qesr <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">QuixEventStreamReader</span>(sources);
+    <span class="pl-k">while</span>(qesr<span class="pl-k">.</span>hasNext()) {
+        <span class="pl-smi">System</span><span class="pl-k">.</span>out<span class="pl-k">.</span>println(qesr<span class="pl-k">.</span>next());
+    }</pre></div>
+
+<h1>
+<a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributors</h1>
+
+<p><a href="http://innovimax.fr">Innovimax</a> and <a href="http://www.inria.fr/centre/lille">INRIA Lille</a> is contributing to this work
+Related Projects</p>
+
+<p>QuiXDM can be used standalone</p>
+
+<p>This is the data model of QuiXPath and QuiXProc</p>
+
+<p>It is part of two bigger projects :</p>
+
+<ul>
+<li> QuiXProc: <a href="https://github.com/innovimax/quixproc">https://github.com/innovimax/quixproc</a>
+</li>
+<li> QuiXPath: <a href="https://github.com/innovimax/quixpath">https://github.com/innovimax/quixpath</a>
+</li>
+</ul>
         </section>
 
         <aside id="sidebar">
