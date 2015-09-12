@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel;
+package innovimax.quixproc.datamodel.in;
 
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -27,6 +27,10 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import innovimax.quixproc.datamodel.IStream;
+import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.QuixException;
 
 public class Load implements IStream<QuixEvent> {
 

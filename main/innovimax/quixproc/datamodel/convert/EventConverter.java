@@ -17,8 +17,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel;
+package innovimax.quixproc.datamodel.convert;
 
+import innovimax.quixproc.datamodel.QuixEvent;
 import innovimax.quixproc.datamodel.shared.ISimpleQueue;
 import net.sf.saxon.om.NamespaceBinding;
 import net.sf.saxon.om.NodeInfo;

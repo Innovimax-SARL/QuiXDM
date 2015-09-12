@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel;
+package innovimax.quixproc.datamodel.in;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,12 @@ import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import innovimax.quixproc.datamodel.IStream;
+import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.QuixException;
+import innovimax.quixproc.datamodel.QuixEvent.Attribute;
+import innovimax.quixproc.datamodel.QuixEvent.Namespace;
 
 public class QuixStreamReader implements XMLStreamReader {
   private final IStream<QuixEvent> qs;
@@ -74,7 +80,7 @@ public class QuixStreamReader implements XMLStreamReader {
       } else {
         current = qs.next();
       }
-      switch (current.type) {
+      switch (current.getType()) {
         case START_SEQUENCE:
           // DO NOTHING : should be already processed by caller
           break;
@@ -282,7 +288,7 @@ public class QuixStreamReader implements XMLStreamReader {
   public int getEventType() {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
     if (current == null) return XMLStreamConstants.START_DOCUMENT;
-    switch (current.type) {
+    switch (current.getType()) {
       case START_DOCUMENT:
         return XMLStreamConstants.START_DOCUMENT;
       case END_DOCUMENT:
@@ -318,7 +324,7 @@ public class QuixStreamReader implements XMLStreamReader {
     // the string value for a SPACE event,
     // or the String value of the internal subset of the DTD.
     // If an ENTITY_REFERENCE has been resolved, any character data will be reported as CHARACTERS events.
-    switch (current.type) {
+    switch (current.getType()) {
       case TEXT:
         return current.asText().getData();
       case COMMENT:
@@ -415,7 +421,7 @@ public class QuixStreamReader implements XMLStreamReader {
   @Override
   public QName getName() {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-    switch (current.type) {
+    switch (current.getType()) {
       case START_ELEMENT:
       case END_ELEMENT:
         return current.asNamedEvent().getQName();
@@ -426,7 +432,7 @@ public class QuixStreamReader implements XMLStreamReader {
   @Override
   public String getLocalName() {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-    switch (current.type) {
+    switch (current.getType()) {
       case START_ELEMENT:
       case END_ELEMENT:
         return current.asNamedEvent().getLocalName();
@@ -443,7 +449,7 @@ public class QuixStreamReader implements XMLStreamReader {
   @Override
   public String getNamespaceURI() {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-    switch (current.type) {
+    switch (current.getType()) {
       case START_ELEMENT:
       case END_ELEMENT:
         return current.asNamedEvent().getURI();
@@ -454,7 +460,7 @@ public class QuixStreamReader implements XMLStreamReader {
   @Override
   public String getPrefix() {
     if (DEBUG) System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-    switch (current.type) {
+    switch (current.getType()) {
       case START_ELEMENT:
       case END_ELEMENT:
         return current.asNamedEvent().getPrefix();

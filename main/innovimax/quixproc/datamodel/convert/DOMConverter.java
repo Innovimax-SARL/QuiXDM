@@ -18,11 +18,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-package innovimax.quixproc.datamodel;
+package innovimax.quixproc.datamodel.convert;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
+import innovimax.quixproc.datamodel.IStream;
+import innovimax.quixproc.datamodel.QuixEvent;
+import innovimax.quixproc.datamodel.in.QuixStreamReader;
 import net.sf.saxon.pull.PullSource;
 import net.sf.saxon.pull.StaxBridge;
 import net.sf.saxon.s9api.DocumentBuilder;
