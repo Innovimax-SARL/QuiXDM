@@ -43,6 +43,23 @@ while(qesr.hasNext()) {
 ```
 ## Lightweight iterator without Object creation (à la [javax.xml.stream.XMLStreamReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLStreamReader.html))
 ***TODO***
+
+
+
+# Why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java)?
+Well it comes from the fact that Streaming interface in XML should really be streaming.
+The truth is that there is no such character streaming interface in Java.
+ * String is definitely not streamable and limited to 2^31 characters
+ * CharSequence, which could have been, is neither because it has [length()](http://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--)
+ * CharIterator doesn't exist in the JDK (but you can find it [here](http://fastutil.di.unimi.it/docs/it/unimi/dsi/fastutil/chars/CharIterator.html))
+ * CharSequence.chars() returns IntStream (instead of CharStream because Java 8 people didn't want to add it) which 
+ * Java 8 Stream<Char> implies that every char is boxed (which means it's highly INEFFICIENT)
+ 
+Having such context, that's why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java) went live in order to be able to stream even corner cases XML:
+ * huge names
+ * huge string
+ * huge namespace
+
 # Contributors
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
 # Related Projects
