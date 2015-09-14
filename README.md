@@ -55,10 +55,12 @@ The truth is that there is no such character streaming interface in Java.
  * CharSequence.chars() returns IntStream (instead of CharStream because Java 8 people didn't want to add it) which 
  * Java 8 Stream<Char> implies that every char is boxed (which means it's highly INEFFICIENT)
  
-Having such context, that's why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java) went live in order to be able to stream even corner cases XML:
- * huge names
- * huge string
- * huge namespace
+Having such context, that's why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java) went live in order to :
+ * be able to address the TEXT recombination issue (text() node in XDM cannot be contiguous)
+ * be able to stream even corner cases XML:
+   * huge string
+   * huge names
+   * huge namespace
 
 # Contributors
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
