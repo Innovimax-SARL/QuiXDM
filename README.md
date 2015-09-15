@@ -23,7 +23,7 @@ It minimizes (as far as the XPath Data Model requires it) the number of XML info
 // Here is the grammar of events
 sequence := START_SEQUENCE, document*, END_SEQUENCE
 document := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT
-element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (element|PROCESSING-INSTRUCTION|COMMENT)*, (TEXT, (element|PROCESSING-INSTRUCTION|COMMENT)+)*, END_ELEMENT
+element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, TEXT?, ((element|PROCESSING-INSTRUCTION|COMMENT)+, TEXT)*, (element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
 ```
 Mostly look at [QuiXToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuiXToken.java)
 
