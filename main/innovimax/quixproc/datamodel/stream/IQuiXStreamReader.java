@@ -319,7 +319,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalArgumentException
 	 *             if the prefix is null
 	 */
-	public String getNamespaceURI(String prefix);
+	public QuiXCharStream getNamespaceURI(String prefix);
 
 	/**
 	 * Returns true if the cursor points to a start tag (otherwise false)
