@@ -36,10 +36,6 @@ public class SimpleGenerator {
 		}
 		
 	}
-	private static getInputStream() {
-		switch ()
-	}
-	enum 
 	public static void main(String[] args) throws IOException {
 		{
 			//InputStream is = new FileInputStream(new File("/Users/innovimax/tmp/quixdm/high_density-1GB.xml"));
