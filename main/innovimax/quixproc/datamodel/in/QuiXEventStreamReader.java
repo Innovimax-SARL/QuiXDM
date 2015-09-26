@@ -200,7 +200,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader {
 	}
 
 	/**
-	 * This function take a QuixEvent as parameter If there is character event
+	 * This function take a QuiXEvent as parameter If there is character event
 	 * waiting, it creates it, empties the charbuffer and push the current event
 	 * in the stack. If not it return the parameter
 	 * 
@@ -223,6 +223,16 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader {
 			this.sreader.close();
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
+		}
+	}
+	public static void main(String[] args) throws XMLStreamException, QuiXException {
+		Iterable<Source> sources = java.util.Arrays.asList(new Source[] {
+		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),  
+		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml")   
+		});
+		QuiXEventStreamReader qesr = new QuiXEventStreamReader(sources);
+		while(qesr.hasNext()) {
+		    System.out.println(qesr.next());
 		}
 	}
 }

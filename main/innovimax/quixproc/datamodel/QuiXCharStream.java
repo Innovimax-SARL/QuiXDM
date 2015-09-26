@@ -1,5 +1,7 @@
 package innovimax.quixproc.datamodel;
 
+import java.util.ConcurrentModificationException;
+
 /**
  * A truly Streamable CharSequence
  * 
@@ -11,13 +13,13 @@ public abstract class QuiXCharStream {
 	public static final QuiXCharStream EMPTY = QuiXCharStream.fromSequence("");
 
 	@Override
-	public abstract String toString();
+	public abstract String toString() throws ConcurrentModificationException;
 
-	public abstract boolean contains(CharSequence sequence);
+	public abstract boolean contains(CharSequence sequence) throws ConcurrentModificationException;
 
-	public abstract QuiXCharStream substringBefore(CharSequence sequence);
+	public abstract QuiXCharStream substringBefore(CharSequence sequence) throws ConcurrentModificationException;
 
-	public abstract QuiXCharStream substringAfter(CharSequence sequence);
+	public abstract QuiXCharStream substringAfter(CharSequence sequence) throws ConcurrentModificationException;
 
 	public abstract boolean isEmpty();
 
@@ -26,13 +28,60 @@ public abstract class QuiXCharStream {
 	public abstract QuiXCharStream append(CharSequence cs);
 
 	public static QuiXCharStream fromSequence(CharSequence cs) {
-		return new LocalQuiXCharStream(cs);
+		return new CharSequenceQuiXCharStream(cs);
 	}
+    private static class QuiXCharStreamList extends QuiXCharStream {
+    	final QuiXCharStream a, b;
+    	private QuiXCharStreamList(QuiXCharStream a, QuiXCharStream b) {
+    		this.a = a;
+    		this.b = b;
+    	}
+    	
+		@Override
+		public String toString() throws ConcurrentModificationException {
+			return a.toString()+ b.toString();
+		}
 
-	private static class LocalQuiXCharStream extends QuiXCharStream {
+		@Override
+		public boolean contains(CharSequence sequence) throws ConcurrentModificationException {
+			if (a.contains(sequence)) return true;
+			return b.contains(sequence);
+		}
+
+		@Override
+		public QuiXCharStream substringBefore(CharSequence sequence) throws ConcurrentModificationException {
+			
+			return null;
+		}
+
+		@Override
+		public QuiXCharStream substringAfter(CharSequence sequence) throws ConcurrentModificationException {
+			// TODO Auto-generated method stub
+			// not easy to do...
+			return null;
+		}
+
+		@Override
+		public boolean isEmpty() {
+			if (!a.isEmpty()) return false;
+			return b.isEmpty();
+		}
+
+		@Override
+		public QuiXCharStream append(QuiXCharStream cs) {
+			return new QuiXCharStreamList(this, cs);
+		}
+
+		@Override
+		public QuiXCharStream append(CharSequence cs) {
+			return new QuiXCharStreamList(this, new CharSequenceQuiXCharStream(cs));
+		}
+    	
+    }
+	private static class CharSequenceQuiXCharStream extends QuiXCharStream {
 		private final CharSequence cs;
 
-		private LocalQuiXCharStream(CharSequence cs) {
+		private CharSequenceQuiXCharStream(CharSequence cs) {
 			this.cs = cs;
 		}
 
@@ -68,8 +117,7 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public QuiXCharStream append(QuiXCharStream cs) {
-			throw new UnsupportedOperationException();
-			// return this.append(cs);
+			return new QuiXCharStreamList(this, cs);
 		}
 
 		@Override
