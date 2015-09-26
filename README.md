@@ -21,11 +21,11 @@ handle sequence | no | no | no | **yes**
 It minimizes (as far as the XPath Data Model requires it) the number of XML information to manage
 ```ANTLR
 // Here is the grammar of events
-sequence := START_SEQUENCE, (document|json)*, END_SEQUENCE
+sequence := START_SEQUENCE, (document|object)*, END_SEQUENCE
 document := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT
 element  := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, TEXT?, ((element|PROCESSING-INSTRUCTION|COMMENT)+, TEXT)*, (element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
-json     := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
-value    := array|VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
+object   := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
+value    := object|array|VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
 array    := START_ARRAY, value*, END_ARRAY
 ```
 Mostly look at [QuiXToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuiXToken.java)
