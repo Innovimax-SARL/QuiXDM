@@ -88,7 +88,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		final byte character;
 		int end;
 
-		private BoxedArray(byte[][] array, int selector, int start) {
+		BoxedArray(byte[][] array, int selector, int start) {
 			this.array = array;
 			this.selector = selector;
 			this.start = start;
@@ -96,12 +96,12 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			this.character = array[selector][start];
 		}
 
-		private void nextUnique() {
-			int pos = end;
+		void nextUnique() {
+			int pos = this.end;
 			while (pos >= this.start) {
-				byte r = array[selector][pos];
+				byte r = this.array[this.selector][pos];
 				byte s = nextChar(r, 0);
-				array[selector][pos] = s;
+				this.array[this.selector][pos] = s;
 				if (s != this.character) {
 					return;
 				}
@@ -110,15 +110,15 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				pos--;
 			}
 			// if here we have to extend the buffer
-			byte[] replace = new byte[array[selector].length + 1];
-			System.arraycopy(array[selector], 0, replace, 0, this.start + 1);
-			System.arraycopy(array[selector], this.start, replace, this.start + 1, replace.length - this.start - 1);
+			byte[] replace = new byte[this.array[this.selector].length + 1];
+			System.arraycopy(this.array[this.selector], 0, replace, 0, this.start + 1);
+			System.arraycopy(this.array[this.selector], this.start, replace, this.start + 1, replace.length - this.start - 1);
 			this.end++;
-			array[selector] = replace;
+			this.array[this.selector] = replace;
 		}
 	}
 
-	private static byte nextChar(byte b, int incr) {
+	static byte nextChar(byte b, int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = nextChar[(b + incr) & 0xFF];
@@ -127,7 +127,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	private static byte nextDigit(byte b, int incr) {
+	static byte nextDigit(byte b, int incr) {
 		byte r = nextDigit[(b + incr) & 0xFF];
 		return r;
 	}
@@ -162,12 +162,12 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getEnd() {
-			return end;
+			return this.end;
 		}
 
 		@Override
 		protected byte[] getStart() {
-			return start;
+			return this.start;
 		}
 
 		// {} => 2 smallest
@@ -175,13 +175,13 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		// {"A":1,"B":1} => 13
 		// since key must be different at some point you need bigger key
 		// ..."AA":1, ...
-		// more or less 7 bytes per key value looks like the densiest
+		// more or less 7 bytes per key value looks like the densest
 
 		private final byte[][] patterns = { // empty object is allowed
 				"\"A\":1".getBytes(), // first used only once
 				",\"A\":1".getBytes() };
 
-		private final BoxedArray baA = new BoxedArray(patterns, 1, 2);
+		private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
 
 		public HighDensityGenerator() {
 			super(FileExtension.JSON);
@@ -189,7 +189,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[][] getPatterns() {
-			return patterns;
+			return this.patterns;
 		}
 
 		@Override
@@ -209,11 +209,11 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				// IMPORTANT : the uniqueness is mandatory
 				// it doesn't depends on applyRandom hence
 				if (pos == 1)
-					baA.nextUnique();
+					this.baA.nextUnique();
 				return bs[pos];
 			case RANDOM:
-				incr = random.nextInt(10);
-				// FALL-THROUGH
+				incr = this.random.nextInt(10);
+				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
@@ -237,18 +237,18 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	// start "{"
 	// end "}"
 	// '"a":{' and '}'
-	public static class HighDepthGenerator extends AHighDepthGenerator {
+	public static class HighDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "{".getBytes();
 		final byte[] end = "}".getBytes();
 
 		@Override
 		protected byte[] getEnd() {
-			return end;
+			return this.end;
 		}
 
 		@Override
 		protected byte[] getStart() {
-			return start;
+			return this.start;
 		}
 
 		final byte[][] patterns = { "\"a\":{".getBytes(), "}".getBytes() };
@@ -257,12 +257,14 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			super(AGenerator.FileExtension.JSON, ATreeGenerator.Type.HIGH_NODE_DEPTH);
 		}
 
+		@Override
 		protected byte[][] getPatterns() {
-			return patterns;
+			return this.patterns;
 		}
 
+		@Override
 		protected int getPatternsLength() {
-			return patterns[0].length + patterns[1].length;
+			return this.patterns[0].length + this.patterns[1].length;
 		}
 
 		@Override
@@ -272,8 +274,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-				incr = random.nextInt(128);
-				// FALL-THROUGH
+				incr = this.random.nextInt(128);
+				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:

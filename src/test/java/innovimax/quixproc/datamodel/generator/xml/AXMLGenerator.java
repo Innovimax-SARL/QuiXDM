@@ -67,7 +67,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case NAMESPACE:
 				return new HighDepthNamespaceGenerator();
 			}
-			return new HighDepthGenerator();
+			return new HighNodeDepthGenerator();
 		case HIGH_NODE_NAME_SIZE:
 			switch (special) {
 			case OPEN_CLOSE:
@@ -196,46 +196,46 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return results;
 	}
 
-	private static byte nextChar(byte b, int incr) {
+	static byte nextChar(byte b, int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextChar[(b + incr) & 0xFF];
+		byte r = nextChar[(b + incr) & 0x7F];
 		// System.out.println("nextChar : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte nextAttributeValue(byte b, int incr) {
+	static byte nextAttributeValue(byte b, int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextAttributeValue[(b + incr) & 0xFF];
+		byte r = nextAttributeValue[(b + incr) & 0x7F];
 		// System.out.println("nextChar : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte nextStartName(byte b, int incr) {
+	static byte nextStartName(byte b, int incr) {
 		// System.out.println("nextStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextStartName[(b + incr) & 0xFF];
+		byte r = nextStartName[(b + incr) & 0x7F];
 		// System.out.println("nextStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte nextName(byte b, int incr) {
+	static byte nextName(byte b, int incr) {
 		// System.out.println("nextName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextName[(b + incr) & 0xFF];
+		byte r = nextName[(b + incr) & 0x7F];
 		// System.out.println("nextName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte prevStartName(byte b, int incr) {
+	static byte prevStartName(byte b, int incr) {
 		// System.out.println("prevStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = prevStartName[(b + incr) & 0xFF];
+		byte r = prevStartName[(b + incr) & 0x7F];
 		// System.out.println("prevStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
@@ -252,19 +252,19 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getEnd() {
-			return end;
+			return this.end;
 		}
 
 		@Override
 		protected byte[] getStart() {
-			return start;
+			return this.start;
 		}
 
 		final byte[][] patterns = { "a".getBytes() };
 
 		@Override
 		protected byte[][] getPatterns() {
-			return patterns;
+			return this.patterns;
 		}
 
 		@Override
@@ -274,7 +274,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-				incr = random.nextInt(128);
+				incr = this.random.nextInt(128);
+				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
@@ -309,12 +310,12 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getEnd() {
-			return end;
+			return this.end;
 		}
 
 		@Override
 		protected byte[] getStart() {
-			return start;
+			return this.start;
 		}
 
 		final byte[][] patterns = { "a".getBytes(), "<b/>".getBytes() };
@@ -325,7 +326,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[][] getPatterns() {
-			return patterns;
+			return this.patterns;
 		}
 
 		@Override
@@ -335,7 +336,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-				incr = random.nextInt(128);
+				incr = this.random.nextInt(128);
+				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
@@ -352,32 +354,38 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	public static class HighDepthGenerator extends AHighDepthGenerator {
+	public static class HighNodeDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
 
 		@Override
 		protected byte[] getEnd() {
-			return end;
+			return this.end;
 		}
 
 		@Override
 		protected byte[] getStart() {
-			return start;
+			return this.start;
 		}
 
 		final byte[][] patterns = { "<a>".getBytes(), "</a>".getBytes() };
 
-		public HighDepthGenerator() {
+		public HighNodeDepthGenerator() {
 			super(AGenerator.FileExtension.XML, ATreeGenerator.Type.HIGH_NODE_DEPTH);
+
 		}
 
+		@Override
 		protected byte[][] getPatterns() {
-			return patterns;
+			return this.patterns;
 		}
 
-		protected int getPatternsLength() {
-			return patterns[0].length + patterns[1].length;
+		@Override
+		protected int getPatternsLength() { 
+		
+			int result =  this.patterns[0].length + this.patterns[1].length;
+			//System.out.println("get patterns lenght " +result);
+			return result;
 		}
 
 		private boolean isReturn = false;
@@ -391,15 +399,16 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case RANDOM:
 				// how to have reversible random ?
 				incr = 0;
+				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
 					bs[0][1] = nextStartName(bs[0][1], incr);
-					isReturn = true;
+					this.isReturn = true;
 					break;
 				case 1:
-					if (isReturn) {
-						isReturn = false;
+					if (this.isReturn) {
+						this.isReturn = false;
 						bs[1][2] = bs[0][1];
 					} else
 						bs[1][2] = prevStartName(bs[1][2], incr);
@@ -412,18 +421,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	public static class HighDepthNamespaceGenerator extends AHighDepthGenerator {
+	public static class HighDepthNamespaceGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
 
 		@Override
 		protected byte[] getEnd() {
-			return end;
+			return this.end;
 		}
 
 		@Override
 		protected byte[] getStart() {
-			return start;
+			return this.start;
 		}
 
 		final byte[][] patterns = { "<a xmlns=\"a\">".getBytes(), "</a>".getBytes() };
@@ -433,12 +442,14 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			super(AGenerator.FileExtension.XML, Type.HIGH_NODE_DENSITY);
 		}
 
+		@Override
 		protected byte[][] getPatterns() {
-			return patterns;
+			return this.patterns;
 		}
 
+		@Override
 		protected int getPatternsLength() {
-			return patterns[0].length + patterns[1].length;
+			return this.patterns[0].length + this.patterns[1].length;
 		}
 
 		private boolean isReturn = false;
@@ -452,17 +463,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case RANDOM:
 				// how to make reversible random
 				// incr = random.nextInt(128);
-				incr2 = random.nextInt(128);
+				incr2 = this.random.nextInt(128);
+				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
 					bs[0][1] = nextStartName(bs[0][1], incr);
 					bs[0][10] = nextAttributeValue(bs[0][10], incr2);
-					isReturn = true;
+					this.isReturn = true;
 					break;
 				case 1:
-					if (isReturn) {
-						isReturn = false;
+					if (this.isReturn) {
+						this.isReturn = false;
 						bs[1][2] = bs[0][1];
 					} else
 						bs[1][2] = prevStartName(bs[1][2], incr);
@@ -525,7 +537,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case NO_VARIATION:
 					return bs[pos];
 				case RANDOM:
-					incr = random.nextInt(128);
+					incr = this.random.nextInt(128);
+					//$FALL-THROUGH$
 				case SEQUENTIAL:
 					bs[0][0] = nextName(bs[0][0], incr);
 					return bs[pos];
@@ -536,9 +549,11 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		public static class HighElementNameSizeOpenClose extends AHighElementNameSize {
-
+			
+			
 			public HighElementNameSizeOpenClose() {
 				super(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, SpecialType.OPEN_CLOSE);
+				this.random.setSeed(0);
 			}
 
 			@Override
@@ -550,7 +565,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 			@Override
 			protected byte[][] getPatterns() {
-				return patterns;
+				return this.patterns;
 			}
 
 			@Override
@@ -564,8 +579,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			protected boolean notFinished(long current_size, int current_pattern, long total) {
 				// System.out.println(current_size + ", "+current_pattern+",
 				// "+total);
-				if (current_size + patterns[1].length < total) {
-					loop++;
+				if (current_size + this.patterns[1].length < total) {
+					this.loop++;
 					return true;
 				}
 				// current_size >= total
@@ -602,7 +617,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case NO_VARIATION:
 					return bs[pos];
 				case RANDOM:
-					incr = random.nextInt(128);
+					incr = this.random.nextInt(128);
+					//$FALL-THROUGH$
 				case SEQUENTIAL:
 					switch (pos) {
 					case 0:
@@ -610,6 +626,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 						break;
 					case 1:
 						// NOP
+						this.random.setSeed(0);
 						break;
 					case 2:
 						bs[2][0] = nextName(bs[2][0], incr);
@@ -674,9 +691,9 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		System.out.println("nextName\t: " + display(nextName));
 		System.out.println("prevStartName\t:" + display(prevStartName));
 		if (ONE_INSTANCE) {
-			call(ATreeGenerator.Type.HIGH_NODE_DENSITY, null, 150, Unit.MBYTE);
+//			call(ATreeGenerator.Type.HIGH_NODE_DENSITY, null, 150, Unit.MBYTE);
 			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
-			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
+//			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
 			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 					ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,

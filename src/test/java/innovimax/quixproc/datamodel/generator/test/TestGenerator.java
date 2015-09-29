@@ -2,6 +2,7 @@ package innovimax.quixproc.datamodel.generator.test;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
 
@@ -40,5 +41,32 @@ public class TestGenerator {
 		}
 		assertTrue(true);
 	}
+	public static void main(String[] args) throws QuiXException, IOException {
+		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
+				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
+				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
+			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
+				//System.out.println(gtype+", "+stype);			
+				for (Variation variation : Variation.values()) {
+					AGenerator generator = AXMLGenerator.instance(gtype, stype);
+					System.out.println(gtype+", "+stype+", "+variation);
+					InputStream is = generator.getInputStream(10, Unit.MBYTE, variation);
+//					if (false) {
+//						int c;
+//						while ((c = is.read()) != -1) {
+//							 System.out.println(AGenerator.display((byte) (c & 0xFF)));
+//						}
+//                
+//					} else {
+					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
+					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
+					while (vqxs.hasNext()) {
+						vqxs.next();
+					}
+//					}
+				}
+			}
+		}
 
+	}
 }

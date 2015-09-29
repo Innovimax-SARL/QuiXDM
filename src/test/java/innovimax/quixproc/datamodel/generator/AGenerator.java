@@ -96,7 +96,6 @@ public abstract class AGenerator {
 		generate(output, size, unit, Variation.NO_VARIATION);
 	}
 
-	public abstract byte[] applyVariation(Variation variation, byte[][] bs, int pos);
 
 	public void generate(File output, long size, Unit unit, Variation variation) throws IOException {
 		output.getParentFile().mkdirs();
@@ -111,18 +110,21 @@ public abstract class AGenerator {
 		int current_pattern = -1;
 		// write the start pattern
 		bos.write(start);
-		// System.out.println(current_size);
+		System.out.println(display(start));
 		while (notFinished(current_size, current_pattern, total)) {
 			// move to next pattern
 			current_pattern = updatePattern(current_pattern);
 			// System.out.println(current_size);
 			// write the alternate pattern
-			bos.write(applyVariation(variation, patterns, current_pattern));
+			byte[] toWrite = applyVariation(variation, patterns, current_pattern);
+			System.out.println(display(toWrite));		
+			bos.write(toWrite);
 			// update the size
 			current_size = updateSize(current_size, current_pattern);
 		}
 		// write the end pattern
 		bos.write(end);
+		System.out.println(display(end));
 		bos.flush();
 		bos.close();
 		fos.close();
@@ -132,7 +134,7 @@ public abstract class AGenerator {
 		return new GeneratorInputStream(size, unit, variation);
 	}
 
-	// protected abstract byte[] applyRandom(byte[][] bs, int pos);
+	protected abstract byte[] applyVariation(Variation variation, byte[][] bs, int pos);
 
 	protected abstract boolean notFinished(long current_size, int current_pattern, long total);
 
@@ -148,7 +150,7 @@ public abstract class AGenerator {
 
 	private enum InputStreamState {
 		START, CURRENT, END
-	};
+	}
 
 	public class GeneratorInputStream extends InputStream {
 
@@ -156,7 +158,7 @@ public abstract class AGenerator {
 		final byte[][] patterns = getPatterns();
 		final byte[] end = getEnd();
 		// ensure that at minimum the size is start+end
-		long current_size = start.length + end.length;
+		long current_size = this.start.length + this.end.length;
 		int current_pattern = -1;
 		int offset = -1;
 		byte[] buffer = null;
@@ -165,16 +167,17 @@ public abstract class AGenerator {
 		final Variation variation;
 
 		public GeneratorInputStream(long size, Unit unit, Variation variation) {
-			state = InputStreamState.START;
-			buffer = start;
-			total = size * unit.value();
+			this.state = InputStreamState.START;
+			this.buffer = this.start;
+			//System.out.println("START : length : "+this.buffer.length+" : "+display(this.buffer));
+
+			this.total = size * unit.value();
 			this.variation = variation;
 		}
 
 		@Override
-		public int read(byte[] b, int off, int len) throws IOException {
-			// System.out.println("off : "+off+" ; len : "+len+" :
-			// "+display(b));
+		public int read(byte[] b, int off, int len) {
+			 //System.out.println("READ : off : "+off+" ; len : "+len+" : "+display(b));
 			if (b == null) {
 				throw new NullPointerException();
 			}
@@ -184,91 +187,94 @@ public abstract class AGenerator {
 			if (len == 0) {
 				return 0;
 			}
-			if (buffer == null)
+			if (this.buffer == null)
 				return -1;
 			int total = 0;
-			if (offset + 1 == buffer.length) {
-				// System.out.println("offset : "+offset);
-				// System.out.println("length : "+len);
+			if (this.offset + 1 == this.buffer.length) {
+//				 System.out.println("offset : "+this.offset);
+//				 System.out.println("length : "+len);
 				update();
-				// System.out.println("offset : "+offset);
-				// System.out.println("length : "+len);
-				if (buffer == null)
+//				 System.out.println("offset : "+this.offset);
+//				 System.out.println("length : "+len);
+				if (this.buffer == null)
 					return -1;
 			}
 			do {
-				// System.out.println("offset : "+offset);
+				// System.out.println("offset : "+this.offset);
 				// System.out.println("length : "+len);
-				int length = Math.min(buffer.length - (offset + 1), len - total);
+				int length = Math.min(this.buffer.length - (this.offset + 1), len - total);
 				// System.out.println("length : "+length);
-				System.arraycopy(buffer, offset + 1, b, off + total, length);
+				System.arraycopy(this.buffer, this.offset + 1, b, off + total, length);
 				total += length;
 				// System.out.println("total : "+total);
-				offset = offset + 1 + length - 1;
-				// System.out.println("offset : "+offset);
-				if (offset == buffer.length - 1)
+				this.offset = this.offset + 1 + length - 1;
+				// System.out.println("offset : "+this.offset);
+				if (this.offset == this.buffer.length - 1)
 					update();
 				if (total == len) {
-					// System.out.println("length : "+len+" : "+display(b));
+					//System.out.println("offset : "+ this.offset+"; length : "+len+" : "+display(b));
 					return len;
 
 				}
-				if (buffer == null) {
-					// System.out.println("length : "+total+" : "+display(b));
+				if (this.buffer == null) {
+					// System.out.println("offset : "+ this.offset+"; length : "+total+" : "+display(b));
 					return total;
 				}
 			} while (true);
 		}
 
 		private void update() {
+			//System.out.println(this.state);
 			// offset == buffer.length
-			switch (state) {
+			switch (this.state) {
 			case START:
-				if (notFinished(current_size, current_pattern, total)) {
+				//System.out.println("NotFinished");
+				if (notFinished(this.current_size, this.current_pattern, this.total)) {
+					//System.out.println("NotFinished : no");
 					// move to next pattern
-					current_pattern = updatePattern(current_pattern);
+					this.current_pattern = updatePattern(this.current_pattern);
 					// System.out.println(current_size);
 					// write the alternate pattern
-					buffer = applyVariation(variation, patterns, current_pattern);
+					this.buffer = applyVariation(this.variation, this.patterns, this.current_pattern);
 					// update the size
-					current_size = updateSize(current_size, current_pattern);
-					offset = -1;
+					this.current_size = updateSize(this.current_size, this.current_pattern);
+					this.offset = -1;
 					return;
 				}
-				state = InputStreamState.CURRENT;
-				// FALL-THROUGH
+				this.state = InputStreamState.CURRENT;
+				//$FALL-THROUGH$
 			case CURRENT:
-				buffer = end;
-				offset = -1;
-				state = InputStreamState.END;
+				this.buffer = this.end;
+				this.offset = -1;
+				this.state = InputStreamState.END;
 				return;
 			case END:
-				buffer = null;
+				this.buffer = null;
 			}
 		}
 
 		@Override
-		public int read() throws IOException {
-			if (buffer == null)
+		public int read() {
+			if (this.buffer == null)
 				return -1;
-			offset++;
-			if (offset < buffer.length) {
-				int c = buffer[offset];
-				// System.out.println("read : "+display((byte) (c & 0xFF)));
+			this.offset++;
+			if (this.offset < this.buffer.length) {
+				int c = this.buffer[this.offset];
+				//System.out.println("read : "+display((byte) (c & 0xFF)));
 				return c;
 			}
 			update();
-			if (buffer == null)
+			if (this.buffer == null)
 				return -1;
-			offset++;
-			int c = buffer[offset];
-			// System.out.println("read : "+display((byte) (c & 0xFF)));
+			this.offset++;
+			int c = this.buffer[this.offset];
+		    //System.out.println("read : "+display((byte) (c & 0xFF)));
 			return c;
 		}
 
 	}
 
-	protected static String display(byte b) {
+	public static String display(byte b) {
 		return Integer.toHexString(b & 0xFF) + "(" + Character.toString((char) (b & 0xFF)) + ")";
 	}
 

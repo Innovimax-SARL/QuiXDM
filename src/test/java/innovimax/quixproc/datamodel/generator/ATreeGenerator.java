@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.generator;
 
+import java.io.IOException;
+
 public abstract class ATreeGenerator extends AGenerator {
 	public enum Type {
 		HIGH_NODE_DENSITY, HIGH_NODE_DEPTH, HIGH_NODE_NAME_SIZE, HIGH_TEXT_SIZE, SPECIFIC
@@ -59,9 +61,9 @@ public abstract class ATreeGenerator extends AGenerator {
 
 	}
 
-	public static abstract class AHighDepthGenerator extends ATreeGenerator {
+	public static abstract class AHighNodeDepthGenerator extends ATreeGenerator {
 
-		protected AHighDepthGenerator(FileExtension ext, ATreeGenerator.Type gtype) {
+		protected AHighNodeDepthGenerator(FileExtension ext, ATreeGenerator.Type gtype) {
 			super(ext, gtype);
 		}
 
@@ -69,6 +71,8 @@ public abstract class ATreeGenerator extends AGenerator {
 
 		@Override
 		protected int updatePattern(int current_pattern) {
+			//System.out.println("update pattern " + current_pattern + " --> "+this.next_pattern);
+			
 			// return internal state
 			return this.next_pattern;
 		}
@@ -76,18 +80,27 @@ public abstract class ATreeGenerator extends AGenerator {
 		@Override
 		protected long updateSize(long current_size, int current_pattern) {
 			// update the size by adding open and closing tag
-			return current_size + (current_pattern == 0 ? getPatternsLength() : 0);
+			//System.out.println("update size " + current_size+", current_pattern "+current_pattern);
+			long result = current_size + (current_pattern == 0 ? getPatternsLength() : 0);
+			//System.out.println("after update size " + result);
+			return result;
 		}
 
 		private long loop = 0;
 
 		@Override
 		protected boolean notFinished(long current_size, int current_pattern, long total) {
-			// System.out.println(current_size + ", "+current_pattern+",
-			// "+total);
+		//	 System.out.println("not finished " + current_size + ", "+current_pattern+", "+total);
+		//	 try {
+		//		System.in.read();
+		//	} catch (IOException e) {
+		//		// TODO Auto-generated catch block
+		//		e.printStackTrace();
+		//	}
 			if (current_size < total) {
-				loop++;
-				return true;
+				this.loop++;
+		//		 System.out.println("not finished loop " + loop);
+					return true;
 			}
 			// current_size >= total
 			if (current_pattern == 0) {

@@ -287,7 +287,7 @@ public class QuiXQName implements Serializable {
 	 * @return Namespace URI of this <code>QName</code>
 	 */
 	public QuiXCharStream getNamespaceURI() {
-		return namespaceURI;
+		return this.namespaceURI;
 	}
 
 	/**
@@ -298,7 +298,7 @@ public class QuiXQName implements Serializable {
 	 * @return local part of this <code>QName</code>
 	 */
 	public QuiXCharStream getLocalPart() {
-		return localPart;
+		return this.localPart;
 	}
 
 	/**
@@ -317,7 +317,7 @@ public class QuiXQName implements Serializable {
 	 * @return prefix of this <code>QName</code>
 	 */
 	public QuiXCharStream getPrefix() {
-		return prefix;
+		return this.prefix;
 	}
 
 	/**
@@ -350,6 +350,7 @@ public class QuiXQName implements Serializable {
 	 * @return <code>true</code> if the given <code>Object</code> is equal to
 	 *         this <code>QName</code> else <code>false</code>
 	 */
+	@Override
 	public final boolean equals(Object objectToTest) {
 		if (objectToTest == this) {
 			return true;
@@ -361,7 +362,7 @@ public class QuiXQName implements Serializable {
 
 		QuiXQName qName = (QuiXQName) objectToTest;
 
-		return localPart.equals(qName.localPart) && namespaceURI.equals(qName.namespaceURI);
+		return this.localPart.equals(qName.localPart) && this.namespaceURI.equals(qName.namespaceURI);
 	}
 
 	/**
@@ -382,8 +383,9 @@ public class QuiXQName implements Serializable {
 	 *
 	 * @return hash code for this <code>QName</code> <code>Object</code>
 	 */
+	@Override
 	public final int hashCode() {
-		return namespaceURI.hashCode() ^ localPart.hashCode();
+		return this.namespaceURI.hashCode() ^ this.localPart.hashCode();
 	}
 
 	/**
@@ -417,12 +419,12 @@ public class QuiXQName implements Serializable {
 	 *
 	 * @return <code>String</code> representation of this <code>QName</code>
 	 */
+	@Override
 	public String toString() {
-		if (namespaceURI.equals(XMLConstants.NULL_NS_URI)) {
-			return localPart.toString();
-		} else {
-			return "{" + namespaceURI + "}" + localPart;
+		if (this.namespaceURI.equals(XMLConstants.NULL_NS_URI)) {
+			return this.localPart.toString();
 		}
+		return "{" + this.namespaceURI + "}" + this.localPart;
 	}
 
 	/**
