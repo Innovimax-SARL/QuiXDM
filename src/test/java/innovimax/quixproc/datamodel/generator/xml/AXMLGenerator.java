@@ -34,7 +34,28 @@ import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
 	public enum SpecialType {
-		NAMESPACE, OPEN_CLOSE, EMPTY
+		STANDARD, // no specific
+		NAMESPACE, OPEN_CLOSE;
+
+		public static EnumSet<SpecialType> allowedModifiers(Type gtype) {
+			switch(gtype) {
+			case HIGH_NODE_DENSITY:
+				return EnumSet.of(STANDARD);
+			case HIGH_NODE_DEPTH:
+				return EnumSet.of(STANDARD, NAMESPACE);
+			case HIGH_NODE_NAME_SIZE:
+				return EnumSet.of(STANDARD, OPEN_CLOSE);
+			case HIGH_TEXT_SIZE:
+				return EnumSet.of(STANDARD);
+			case SPECIFIC:
+				return EnumSet.of(STANDARD);
+			default:
+				break;
+			
+			}
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 	public static AGenerator instance(Type type, SpecialType special) {
@@ -61,7 +82,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	SpecialType specialType;
 
-	protected AXMLGenerator(SpecialType xmlType, Type treeType) {
+	protected AXMLGenerator(Type treeType, SpecialType xmlType) {
 		super(FileExtension.XML, treeType);
 		this.specialType = xmlType;
 	}
@@ -221,8 +242,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	}
 
 	public static class HighTextSize extends ATreeGenerator {
-		protected HighTextSize(FileExtension type, Type treeType) {
-			super(type, treeType);
+		protected HighTextSize() {
+			super(FileExtension.XML, ATreeGenerator.Type.HIGH_TEXT_SIZE);
 			// TODO Auto-generated constructor stub
 		}
 
@@ -456,6 +477,11 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	public abstract static class AHighElementNameSize extends AXMLGenerator {
 
+
+		protected AHighElementNameSize(Type treeType, SpecialType xmlType) {
+			super(treeType, xmlType);
+		}
+
 		public static class HighElementNameSizeSingle extends AHighElementNameSize {
 			@Override
 			protected byte[] getEnd() {
@@ -512,7 +538,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		public static class HighElementNameSizeOpenClose extends AHighElementNameSize {
 
 			public HighElementNameSizeOpenClose() {
-				super(ATreeGenerator.Type.HIGH_ELEMENT_NAME_SIZE_OPEN_CLOSE);
+				super(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, SpecialType.OPEN_CLOSE);
 			}
 
 			@Override
@@ -598,11 +624,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-	private static void call(AXMLGenerator.Type gtype, SpecialType special, int size, Unit unit)
-			throws IOException, XMLStreamException {
-		AGenerator generator = instance(gtype, special);
-		call(generator, gtype.name(), size, unit);
-	}
 
 	private static void call(ATreeGenerator.Type gtype, SpecialType special, int size, Unit unit)
 			throws IOException, XMLStreamException {
@@ -660,23 +681,13 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 					ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 					ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-
+				for(SpecialType stype : SpecialType.allowedModifiers(gtype))
 				for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
 					int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
 					for (int i : values) {
 						if (unit == Unit.GBYTE && i > 1)
 							continue;
-						call(gtype, i, unit);
-					}
-				}
-			}
-			for (Type gtype : EnumSet.of(Type.HIGH_DEPTH_NAMESPACE)) {
-				for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
-					int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
-					for (int i : values) {
-						if (unit == Unit.GBYTE && i > 1)
-							continue;
-						call(gtype, i, unit);
+						call(gtype, stype, i, unit);
 					}
 				}
 			}
