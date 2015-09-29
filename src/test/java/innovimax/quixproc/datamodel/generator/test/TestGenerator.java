@@ -1,5 +1,7 @@
 package innovimax.quixproc.datamodel.generator.test;
 
+import static org.junit.Assert.*;
+
 import java.io.InputStream;
 
 import javax.xml.transform.stream.StreamSource;
@@ -26,6 +28,7 @@ public class TestGenerator {
 		while(vqxs.hasNext()) {
 			vqxs.next();
 		}
+		assertTrue(true);
 	}
 
 }

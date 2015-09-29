@@ -114,7 +114,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 	@Override
 	public IQuiXToken process(IQuiXToken item) throws IllegalStateException {
 		QuiXToken token = item.getType();
-		System.out.println(state +", "+ token);
+		//System.out.println(state +", "+ token);
 		switch(this.state) {
 		case START:
 //			sequence := START_SEQUENCE, (document|json)*, END_SEQUENCE
