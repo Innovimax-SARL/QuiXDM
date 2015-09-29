@@ -21,12 +21,17 @@ package innovimax.quixproc.datamodel.filter;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.QuiXException;
+import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 
 public abstract class AQuiXEventStreamFilter<IEvent> implements IQuiXStream<IEvent> {
 	private IQuiXStream<IEvent> stream;
 
 	public AQuiXEventStreamFilter(IQuiXStream<IEvent> stream) {
 		this.stream = stream;
+	}
+
+	public AQuiXEventStreamFilter(IQuiXEventStreamReader stream) {
+		this.stream = (IQuiXStream<IEvent>) stream;
 	}
 
 	@Override

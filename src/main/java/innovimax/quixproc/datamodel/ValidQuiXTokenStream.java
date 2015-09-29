@@ -24,6 +24,7 @@ import java.util.Stack;
 
 import javax.xml.stream.XMLStreamReader;
 
+import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
 
 /**
@@ -80,6 +81,11 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
 
 	public ValidQuiXTokenStream(IQuiXStream<QuiXToken> stream) {
 		this(stream, ExtraProcess.NONE);
+	}
+	public ValidQuiXTokenStream(IQuiXEventStreamReader stream) {
+		super(stream);
+		this.state = State.START;
+//		ExtraProcess.NONE);
 	}
 
 //	private interface Process {

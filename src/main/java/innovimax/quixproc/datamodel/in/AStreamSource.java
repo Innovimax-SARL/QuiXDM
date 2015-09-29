@@ -32,7 +32,7 @@ public abstract class AStreamSource {
 		this.type = type;
 	}
 
-	public static AStreamSource instance(Source source) {
+	public static XMLStreamSource instance(Source source) {
 		return new XMLStreamSource(source);
 	}
 
