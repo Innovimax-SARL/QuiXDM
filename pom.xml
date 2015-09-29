@@ -27,8 +27,8 @@
   </organization>
   <build>
     <sourceDirectory>src</sourceDirectory>
-    <!--testSourceDirectory>src/test</testSourceDirectory>
-    <resources>
+    <testSourceDirectory>src/test</testSourceDirectory>
+    <!--  resources>
       <resource>
         <directory>quixdm</directory>
         <excludes>
