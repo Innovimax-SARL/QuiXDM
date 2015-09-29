@@ -24,16 +24,14 @@ import java.util.ConcurrentModificationException;
 /**
  * A truly Streamable CharSequence
  * 
- * The definition of streamable is a real problem for much of the people
- * Let's say that Streamable means, we don't need to store all in memory
- * It becomes a bit too simplistic
- * At least we know what is *NOT* the solution for nasty files
- * XML as JSON and any other document structure that doesn't limit it's content 
- * (remember why we moved from EDI which needs to say every size)
- * is that when you want to process such documents, some documents may
- * ends up having huge content and hence you loose the power of streaming
- * MOST IMPORTANT CASES =
- *  TODAY, a simple document 
+ * The definition of streamable is a real problem for much of the people Let's
+ * say that Streamable means, we don't need to store all in memory It becomes a
+ * bit too simplistic At least we know what is *NOT* the solution for nasty
+ * files XML as JSON and any other document structure that doesn't limit it's
+ * content (remember why we moved from EDI which needs to say every size) is
+ * that when you want to process such documents, some documents may ends up
+ * having huge content and hence you loose the power of streaming MOST IMPORTANT
+ * CASES = TODAY, a simple document
  * 
  * @author innovimax
  *
@@ -60,27 +58,30 @@ public abstract class QuiXCharStream {
 	public static QuiXCharStream fromSequence(CharSequence cs) {
 		return new CharSequenceQuiXCharStream(cs);
 	}
-    private static class QuiXCharStreamList extends QuiXCharStream {
-    	final QuiXCharStream a, b;
-    	private QuiXCharStreamList(QuiXCharStream a, QuiXCharStream b) {
-    		this.a = a;
-    		this.b = b;
-    	}
-    	
+
+	private static class QuiXCharStreamList extends QuiXCharStream {
+		final QuiXCharStream a, b;
+
+		private QuiXCharStreamList(QuiXCharStream a, QuiXCharStream b) {
+			this.a = a;
+			this.b = b;
+		}
+
 		@Override
 		public String toString() throws ConcurrentModificationException {
-			return a.toString()+ b.toString();
+			return a.toString() + b.toString();
 		}
 
 		@Override
 		public boolean contains(CharSequence sequence) throws ConcurrentModificationException {
-			if (a.contains(sequence)) return true;
+			if (a.contains(sequence))
+				return true;
 			return b.contains(sequence);
 		}
 
 		@Override
 		public QuiXCharStream substringBefore(CharSequence sequence) throws ConcurrentModificationException {
-			
+
 			return null;
 		}
 
@@ -93,7 +94,8 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public boolean isEmpty() {
-			if (!a.isEmpty()) return false;
+			if (!a.isEmpty())
+				return false;
 			return b.isEmpty();
 		}
 
@@ -106,8 +108,9 @@ public abstract class QuiXCharStream {
 		public QuiXCharStream append(CharSequence cs) {
 			return new QuiXCharStreamList(this, new CharSequenceQuiXCharStream(cs));
 		}
-    	
-    }
+
+	}
+
 	private static class CharSequenceQuiXCharStream extends QuiXCharStream {
 		private final CharSequence cs;
 

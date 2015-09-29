@@ -25,41 +25,86 @@ import java.util.Stack;
 import javax.xml.stream.XMLStreamReader;
 
 import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
+
 /**
- *<p>The {@code ValidQuiXTokenStream} is a lightweight state machine that checks
+ * <p>
+ * The {@code ValidQuiXTokenStream} is a lightweight state machine that checks
  * the following rules about {@code QuiXToken}
  * </p>
- * <table><tr><th>sequence</th><td>:=</td><td>{@code START_SEQUENCE}, (<b>document</b>|<b>object</b>)*, {@code END_SEQUENCE}</td></tr>
- * <tr><th>document</th><td>:=</td><td>{@code START_DOCUMENT}, ({@code PROCESSING_INSTRUCTION}|{@code COMMENT})*, <b>element</b>,
-   ({@code PROCESSING_INSTRUCTION}|{@code COMMENT})*, {@code END_DOCUMENT}</td></tr>
- * <tr><th>element</th><td>:=</td><td>{@code START_ELEMENT}, ({@code NAMESPACE}|{@code ATTRIBUTE})*,
- *	  ({@code TEXT}|<b>element</b>|{@code PROCESSING_INSTRUCTION}|{@code COMMENT})*, {@code END_ELEMENT}</td></tr>
- * <tr><th>object</th><td>:=</td><td>{@code START_OBJECT}, ({@code KEY_NAME}, <b>value</b>)*, {@code END_OBJECT}</td></tr>
- * <tr><th>value</th><td>:=</td><td><b>object</b>|<b>array</b>|{@code VALUE_FALSE}|{@code VALUE_TRUE}|{@code VALUE_NUMBER}|{@code VALUE_NULL}|{@code VALUE_STRING}</td></tr>
- * <tr><th>array</th><td>:=</td><td>{@code START_ARRAY}, <b>value</b>*, {@code END_ARRAY}</td></tr>
+ * <table>
+ * <tr>
+ * <th>sequence</th>
+ * <td>:=</td>
+ * <td>{@code START_SEQUENCE}, (<b>document</b>|<b>object</b>)*,
+ * {@code END_SEQUENCE}</td>
+ * </tr>
+ * <tr>
+ * <th>document</th>
+ * <td>:=</td>
+ * <td>{@code START_DOCUMENT}, ({@code PROCESSING_INSTRUCTION}|{@code COMMENT}
+ * )*, <b>element</b>, ({@code PROCESSING_INSTRUCTION}|{@code COMMENT})*,
+ * {@code END_DOCUMENT}</td>
+ * </tr>
+ * <tr>
+ * <th>element</th>
+ * <td>:=</td>
+ * <td>{@code START_ELEMENT}, ({@code NAMESPACE}|{@code ATTRIBUTE})*, (
+ * {@code TEXT}|<b>element</b>|{@code PROCESSING_INSTRUCTION}|{@code COMMENT})*,
+ * {@code END_ELEMENT}</td>
+ * </tr>
+ * <tr>
+ * <th>object</th>
+ * <td>:=</td>
+ * <td>{@code START_OBJECT}, ({@code KEY_NAME}, <b>value</b>)*,
+ * {@code END_OBJECT}</td>
+ * </tr>
+ * <tr>
+ * <th>value</th>
+ * <td>:=</td>
+ * <td><b>object</b>|<b>array</b>|{@code VALUE_FALSE}|{@code VALUE_TRUE}|
+ * {@code VALUE_NUMBER}|{@code VALUE_NULL}|{@code VALUE_STRING}</td>
+ * </tr>
+ * <tr>
+ * <th>array</th>
+ * <td>:=</td>
+ * <td>{@code START_ARRAY}, <b>value</b>*, {@code END_ARRAY}</td>
+ * </tr>
  * </table>
-
+ * 
  * @author innovimax
  *
  */
-public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken>{
-	
+public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
+
 	State state;
+
 	public ValidQuiXTokenStream(IQuiXStream<QuiXToken> stream) {
 		this(stream, ExtraProcess.NONE);
 	}
-	
+
 	private interface Process {
 		checkUniqueNess(QuiXCharStream )
 	}
-	enum  ExtraProcess { NONE, };
+
+	enum ExtraProcess {
+		NONE,
+	};
+
 	protected ValidQuiXTokenStream(IQuiXStream<QuiXToken> stream, ExtraProcess process) {
 		super(stream);
-		this.state = State.START;		
+		this.state = State.START;
 	}
-	private enum State { START, IN_SEQUENCE, IN_DOCUMENT, IN_DOCUMENT_AFTER_ROOT, IN_ELEMENT, IN_CONTENT_TEXT, IN_CONTENT, IN_OBJECT, IN_OBJECT_VALUE, IN_ARRAY, END }
-	private enum Node { DOCUMENT, ELEMENT, OBJECT, ARRAY }
+
+	private enum State {
+		START, IN_SEQUENCE, IN_DOCUMENT, IN_DOCUMENT_AFTER_ROOT, IN_ELEMENT, IN_CONTENT_TEXT, IN_CONTENT, IN_OBJECT, IN_OBJECT_VALUE, IN_ARRAY, END
+	}
+
+	private enum Node {
+		DOCUMENT, ELEMENT, OBJECT, ARRAY
+	}
+
 	private final Stack<Node> stack = new Stack<Node>();
+
 	@Override
 	public QuiXToken process(QuiXToken token) throws IllegalStateException {
 		switch(this.state) {
@@ -233,13 +278,15 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken>{
 		}
 		return token;
 	}
+
 	private void acceptStackAndSetState(QuiXToken token, Node node) {
 		if (this.stack.empty()) {
-			throw new IllegalStateException("Invalid state "+token+". Closing a node "+node+" that is not opened");
+			throw new IllegalStateException(
+					"Invalid state " + token + ". Closing a node " + node + " that is not opened");
 		}
 		Node last = this.stack.pop();
 		if (last == node) {
-			 // this is what is expected
+			// this is what is expected
 			// but need to set the correct state
 			if (this.stack.empty()) {
 				// this state should be illegal right ?
@@ -261,16 +308,19 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken>{
 			return;
 		}
 		// this is different
-		throw new IllegalStateException("Invalid state "+token+". Closing a node "+node+" while last open is a "+last);
+		throw new IllegalStateException(
+				"Invalid state " + token + ". Closing a node " + node + " while last open is a " + last);
 	}
+
 	private void accept(QuiXToken token, QuiXToken expected) {
 		accept(token, EnumSet.of(expected));
 	}
 
 	private void accept(QuiXToken token, EnumSet<QuiXToken> expecteds) {
-		if (expecteds.contains(token)) 
+		if (expecteds.contains(token))
 			return;
-		// 
-		throw new IllegalStateException("Invalid state "+token+". One of the following state was expected: "+expecteds.toString());
+		//
+		throw new IllegalStateException(
+				"Invalid state " + token + ". One of the following state was expected: " + expecteds.toString());
 	}
 }

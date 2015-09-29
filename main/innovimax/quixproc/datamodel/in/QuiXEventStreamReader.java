@@ -26,18 +26,20 @@ import javax.xml.transform.Source;
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import main.innovimax.quixproc.datamodel.in.xml.XMLQuiXEventStreamReader;
 
 public class QuiXEventStreamReader implements IQuiXEventStreamReader {
 
 	protected final Iterator<AStreamSource> sources;
 	private QuiXEventStreamReader delegate;
+
 	protected QuiXEventStreamReader(Iterable<AStreamSource> sources) {
 		this.sources = sources.iterator();
 	}
 
 	private AQuiXEvent loadSource() throws QuiXException {
 		AStreamSource current = this.sources.next();
-		switch(current.type) {
+		switch (current.type) {
 		case JSON:
 			this.delegate = new JSONQuiXEventStreamReader(current);
 			break;
@@ -46,10 +48,11 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader {
 			break;
 		default:
 			break;
-		
+
 		}
-		return this.delegate.load(current);		
+		return this.delegate.load(current);
 	}
+
 	protected abstract AQuiXEvent load(AStreamSource current) throws QuiXException;
 
 	@Override
@@ -66,7 +69,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader {
 	@Override
 	public AQuiXEvent next() throws QuiXException {
 		AQuiXEvent event = null;
-		switch(state) {
+		switch (state) {
 		case FINISH:
 			return null;
 		case INIT:
@@ -89,7 +92,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader {
 		return process();
 	}
 
-	protected abstract AQuiXEvent process() throws QuiXException ;
+	protected abstract AQuiXEvent process() throws QuiXException;
 
 	protected AQuiXEvent processEndSource() throws QuiXException {
 		AQuiXEvent event = null;

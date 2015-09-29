@@ -19,8 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.generator.json;
 
-import innovimax.quixproc.datamodel.generator.ATreeGenerator;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -30,6 +28,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import innovimax.quixproc.datamodel.generator.AGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 
 public abstract class AJSONGenerator extends ATreeGenerator {
 	public enum AJSONGeneratorType {

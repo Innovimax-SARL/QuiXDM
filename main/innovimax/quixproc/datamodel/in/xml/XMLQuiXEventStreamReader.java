@@ -31,8 +31,8 @@ import javax.xml.transform.Source;
 import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
-import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
+import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 
 public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 
@@ -45,7 +45,7 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 		this.ifactory = XMLInputFactory.newFactory();
 		this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
 		this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
-		
+
 	}
 
 	@Override
@@ -55,18 +55,17 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 		} catch (XMLStreamException e) {
 			throw new QuiXException(e);
 		}
-		this.baseURI = QuiXCharStream.fromSequence(current.getSystemId());		
+		this.baseURI = QuiXCharStream.fromSequence(current.getSystemId());
 		AQuiXEvent event = AQuiXEvent.getStartDocument(this.baseURI);
 		return event;
 	}
-
 
 	private QuiXCharStream charBuffer = QuiXCharStream.EMPTY;
 
 	@Override
 	public AQuiXEvent process() throws QuiXException {
-	AQuiXEvent event = null;
-	try {
+		AQuiXEvent event = null;
+		try {
 			if (!buffer.isEmpty()) {
 				return buffer.poll();
 			}
@@ -192,14 +191,17 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 			e.printStackTrace();
 		}
 	}
+
 	public static void main(String[] args) throws XMLStreamException, QuiXException {
-		Iterable<Source> sources = java.util.Arrays.asList(new Source[] {
-		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),  
-		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml")   
-		});
+		Iterable<Source> sources = java.util.Arrays
+				.asList(new Source[] {
+						new javax.xml.transform.stream.StreamSource(
+								"/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
+						new javax.xml.transform.stream.StreamSource(
+								"/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml") });
 		QuiXEventStreamReader qesr = QuiXEventStreamReader.parse(sources);
-		while(qesr.hasNext()) {
-		    System.out.println(qesr.next());
+		while (qesr.hasNext()) {
+			System.out.println(qesr.next());
 		}
 	}
 

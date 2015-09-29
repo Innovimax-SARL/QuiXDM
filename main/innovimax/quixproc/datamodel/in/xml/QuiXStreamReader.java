@@ -485,15 +485,17 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public static void main(String[] args) throws XMLStreamException, QuiXException {
-		Iterable<Source> sources = java.util.Arrays.asList(new Source[] {
-		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),  
-		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml")   
-		});
+		Iterable<Source> sources = java.util.Arrays
+				.asList(new Source[] {
+						new javax.xml.transform.stream.StreamSource(
+								"/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
+						new javax.xml.transform.stream.StreamSource(
+								"/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml") });
 		QuiXStreamReader qesr = new QuiXStreamReader(sources);
-		while(qesr.hasNext()) {
-		    System.out.println(qesr.next());
+		while (qesr.hasNext()) {
+			System.out.println(qesr.next());
 		}
 	}
 

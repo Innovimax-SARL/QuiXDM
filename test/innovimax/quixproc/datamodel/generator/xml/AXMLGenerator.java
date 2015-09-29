@@ -29,8 +29,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 import innovimax.quixproc.datamodel.generator.AGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
 	public enum SpecialType {
@@ -44,7 +44,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		case HIGH_NODE_DEPTH:
 			switch (special) {
 			case NAMESPACE:
-				return new HighDepthNamespaceGenerator();				
+				return new HighDepthNamespaceGenerator();
 			}
 			return new HighDepthGenerator();
 		case HIGH_NODE_NAME_SIZE:
@@ -59,9 +59,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return null;
 	}
 
-
 	SpecialType specialType;
-
 
 	protected AXMLGenerator(SpecialType xmlType, Type treeType) {
 		super(FileExtension.XML, treeType);
@@ -222,12 +220,12 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-
 	public static class HighTextSize extends ATreeGenerator {
 		protected HighTextSize(FileExtension type, Type treeType) {
 			super(type, treeType);
 			// TODO Auto-generated constructor stub
 		}
+
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
 
@@ -240,7 +238,9 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		protected byte[] getStart() {
 			return start;
 		}
+
 		final byte[][] patterns = { "a".getBytes() };
+
 		@Override
 		protected byte[][] getPatterns() {
 			return patterns;
@@ -267,7 +267,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected boolean notFinished(long current_size, int current_pattern, long total) {
-			
+
 			return current_size < total;
 		}
 
@@ -281,6 +281,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return current_size + 1;
 		}
 	}
+
 	public static class HighDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -455,7 +456,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	public abstract static class AHighElementNameSize extends AXMLGenerator {
 
-
 		public static class HighElementNameSizeSingle extends AHighElementNameSize {
 			@Override
 			protected byte[] getEnd() {
@@ -598,12 +598,14 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-	private static void call(AXMLGenerator.Type gtype, SpecialType special, int size, Unit unit) throws IOException, XMLStreamException {
+	private static void call(AXMLGenerator.Type gtype, SpecialType special, int size, Unit unit)
+			throws IOException, XMLStreamException {
 		AGenerator generator = instance(gtype, special);
 		call(generator, gtype.name(), size, unit);
 	}
 
-	private static void call(ATreeGenerator.Type gtype, SpecialType special, int size, Unit unit) throws IOException, XMLStreamException {
+	private static void call(ATreeGenerator.Type gtype, SpecialType special, int size, Unit unit)
+			throws IOException, XMLStreamException {
 		AGenerator generator = instance(gtype, special);
 		call(generator, gtype.name(), size, unit);
 	}
@@ -658,7 +660,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 					ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 					ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-				
+
 				for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
 					int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
 					for (int i : values) {
