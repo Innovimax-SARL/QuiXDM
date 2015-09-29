@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.in;
 
+import java.util.Arrays;
+
 import javax.xml.transform.Source;
 
 public abstract class AStreamSource {
@@ -43,6 +45,10 @@ public abstract class AStreamSource {
 			super(Type.XML);
 			this.source = source;
 		}
+
+		public Source asSource() {
+			return this.source;
+		}
 	}
 	public static class JSONStreamSource extends AStreamSource {
 
@@ -50,6 +56,15 @@ public abstract class AStreamSource {
 			super(Type.JSON);
 		}
 		
+	}
+	public static Iterable<AStreamSource> instances(Source[] sources) {
+		AStreamSource[] asources = new AStreamSource[sources.length];
+		int i = 0;
+		for(javax.xml.transform.Source source : sources) {
+			asources[i] = AStreamSource.instance(source);
+			i++;
+		}
+		return Arrays.asList(asources);
 	}
 
 }

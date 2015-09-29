@@ -25,15 +25,16 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.IQuiXToken;
 import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
-public class NamespaceContextFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter<T> {
+public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 
 	private LinkedList<Map<QuiXCharStream, QuiXCharStream>> namespaces;
 
-	public NamespaceContextFilter(IQuiXStream<T> stream) {
+	public NamespaceContextFilter(IQuiXStream<IQuiXToken> stream) {
 		super(stream);
 		// TODO Auto-generated constructor stub
 		this.namespaces = new LinkedList<Map<QuiXCharStream, QuiXCharStream>>();
@@ -42,13 +43,12 @@ public class NamespaceContextFilter<T extends IQuiXEvent> extends AQuiXEventStre
 	private boolean needCleaning = false;
 
 	@Override
-	public T process(T item) {
-		AQuiXEvent qevent = item.getEvent();
+	public IQuiXToken process(IQuiXToken item) {
 		if (needCleaning) {
 			this.namespaces.pollLast();
 			needCleaning = false;
 		}
-		switch (qevent.getType()) {
+		switch (item.getType()) {
 		case START_ELEMENT:
 			this.namespaces.add(new TreeMap<QuiXCharStream, QuiXCharStream>());
 			break;
@@ -57,7 +57,7 @@ public class NamespaceContextFilter<T extends IQuiXEvent> extends AQuiXEventStre
 			needCleaning = true;
 			break;
 		case NAMESPACE:
-			this.namespaces.getLast().put(qevent.asNamespace().getPrefix(), qevent.asNamespace().getURI());
+			//this.namespaces.getLast().put(qevent.asNamespace().getPrefix(), qevent.asNamespace().getURI());
 			break;
 		}
 		return item;

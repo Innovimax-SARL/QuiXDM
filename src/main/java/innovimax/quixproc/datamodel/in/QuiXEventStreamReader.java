@@ -1,27 +1,9 @@
-/*
-QuiXProc: efficient evaluation of XProc Pipelines.
-Copyright (C) 2011-2015 Innovimax
-All rights reserved.
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 3
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
 package innovimax.quixproc.datamodel.in;
 
+import java.util.EnumMap;
 import java.util.Iterator;
 
-import javax.xml.transform.Source;
+import javax.xml.stream.XMLStreamException;
 
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
@@ -29,44 +11,78 @@ import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.json.JSONQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.xml.XMLQuiXEventStreamReader;
 
-public abstract class QuiXEventStreamReader implements IQuiXEventStreamReader {
-
+public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEventStreamReader.CallBack {
+	
 	protected final Iterator<AStreamSource> sources;
-	private QuiXEventStreamReader delegate;
-
-	protected QuiXEventStreamReader(Iterable<AStreamSource> sources) {
-		this.sources = sources.iterator();
+	private final EnumMap<AStreamSource.Type, AQuiXEventStreamReader> delegates;
+	private AQuiXEventStreamReader delegate;
+	
+	public QuiXEventStreamReader(javax.xml.transform.Source... sources) {
+		this(AStreamSource.instances(sources));
 	}
 
+	
+	public QuiXEventStreamReader(Iterable<AStreamSource> sources) {
+		this.sources = sources.iterator();
+		this.delegates = new EnumMap<AStreamSource.Type, AQuiXEventStreamReader>(AStreamSource.Type.class);
+		this.delegate = null;
+	}
 	private AQuiXEvent loadSource() throws QuiXException {
 		AStreamSource current = this.sources.next();
 		switch (current.type) {
 		case JSON:
-			this.delegate = new JSONQuiXEventStreamReader((AStreamSource.JSONStreamSource )current);
+			if (!delegates.containsKey(current.type)) {
+			  this.delegate = new JSONQuiXEventStreamReader((AStreamSource.JSONStreamSource )current);
+			} else {
+			  this.delegate = this.delegates.get(current.type);
+			  this.delegate.reinitialize(current);
+			}
 			break;
 		case XML:
-			this.delegate = new XMLQuiXEventStreamReader((AStreamSource.XMLStreamSource )current);
+			if (!delegates.containsKey(current.type)) {
+  				this.delegate = new XMLQuiXEventStreamReader((AStreamSource.XMLStreamSource )current);
+				} else {
+				  this.delegate = this.delegates.get(current.type);
+				  this.delegate.reinitialize(current);
+				}
 			break;
 		default:
+			this.delegate = null;
 			break;
-
 		}
 		return this.delegate.load(current);
 	}
 
-	protected abstract AQuiXEvent load(AStreamSource current) throws QuiXException;
 
 	@Override
 	public boolean hasNext() {
 		return this.state != State.FINISH;
 	}
 
-	protected enum State {
+	public static class AQuiXEventAndState {
+		final AQuiXEvent event;
+		final State state;
+		public AQuiXEventAndState(AQuiXEvent event, State state) {
+			this.event = event;
+			this.state = state;
+		}
+	}
+
+	public enum State {
 		INIT, START_SEQUENCE, START_SOURCE, END_SOURCE, FINISH
 	}
 
-	protected State state = State.INIT;
+	private State state = State.INIT;
 
+	@Override
+	public void setState(State state) {
+		this.state = state;		
+	}
+	@Override
+	public State getState() {
+		return this.state;
+	}
+	
 	@Override
 	public AQuiXEvent next() throws QuiXException {
 		AQuiXEvent event = null;
@@ -90,12 +106,10 @@ public abstract class QuiXEventStreamReader implements IQuiXEventStreamReader {
 		case START_SOURCE:
 			// dealt with inside process() via callback
 		}
-		return process();
+		return  this.delegate.process(this);
 	}
-
-	protected abstract AQuiXEvent process() throws QuiXException;
-
-	protected AQuiXEvent processEndSource() throws QuiXException {
+	@Override
+	public AQuiXEvent processEndSource() throws QuiXException {
 		AQuiXEvent event = null;
 		if (this.sources.hasNext()) {
 			// there is still sources
@@ -106,13 +120,24 @@ public abstract class QuiXEventStreamReader implements IQuiXEventStreamReader {
 		return event;
 	}
 
-	public static QuiXEventStreamReader parse(Iterable<Source> sources2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public void close() {
-		this.delegate.close();
+		for(AQuiXEventStreamReader aqxsr : this.delegates.values()) {
+			aqxsr.close();
+		}	
 	}
+	
+	public static void main(String[] args) throws XMLStreamException, QuiXException {
+
+		QuiXEventStreamReader qesr = new QuiXEventStreamReader(
+				new javax.xml.transform.stream.StreamSource(
+				"/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"), 
+				new javax.xml.transform.stream.StreamSource(
+						"/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml"));
+		while (qesr.hasNext()) {
+			System.out.println(qesr.next());
+		}
+	}
+
+
 }

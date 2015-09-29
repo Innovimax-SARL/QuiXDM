@@ -75,15 +75,15 @@ import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
  * @author innovimax
  *
  */
-public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
+public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 
 	State state;
 
-	public ValidQuiXTokenStream(IQuiXStream<QuiXToken> stream) {
+	public ValidQuiXTokenStream(IQuiXStream<IQuiXToken> stream) {
 		this(stream, ExtraProcess.NONE);
 	}
 	public ValidQuiXTokenStream(IQuiXEventStreamReader stream) {
-		super(stream);
+		super(stream.asIQuiXTokenStream());
 		this.state = State.START;
 //		ExtraProcess.NONE);
 	}
@@ -96,7 +96,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
 		NONE,
 	};
 
-	protected ValidQuiXTokenStream(IQuiXStream<QuiXToken> stream, ExtraProcess process) {
+	protected ValidQuiXTokenStream(IQuiXStream<IQuiXToken> stream, ExtraProcess process) {
 		super(stream);
 		this.state = State.START;
 	}
@@ -112,14 +112,17 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
 	private final Stack<Node> stack = new Stack<Node>();
 
 	@Override
-	public QuiXToken process(QuiXToken token) throws IllegalStateException {
+	public IQuiXToken process(IQuiXToken item) throws IllegalStateException {
+		QuiXToken token = item.getType();
+		System.out.println(state +", "+ token);
 		switch(this.state) {
 		case START:
+//			sequence := START_SEQUENCE, (document|json)*, END_SEQUENCE
 			accept(token, QuiXToken.START_SEQUENCE);
 			this.state = State.IN_SEQUENCE;
 			break;
 		case IN_SEQUENCE:
-//			sequence := START_SEQUENCE, (document|json)*, END_SEQUENCE
+			accept(token, EnumSet.of(QuiXToken.START_DOCUMENT, QuiXToken.START_OBJECT, QuiXToken.END_SEQUENCE));
 			switch(token) {
 			case START_DOCUMENT:
 				this.state = State.IN_DOCUMENT;
@@ -295,8 +298,8 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
 			// this is what is expected
 			// but need to set the correct state
 			if (this.stack.empty()) {
-				// this state should be illegal right ?
-				this.state = State.END;
+				// we are in the SEQUENCE
+				this.state = State.IN_SEQUENCE;
 			} else {
 				Node current = this.stack.peek();
 				switch (current) {

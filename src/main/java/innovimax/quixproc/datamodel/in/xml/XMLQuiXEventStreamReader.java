@@ -33,8 +33,9 @@ import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 
-public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
+public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 
 	private final XMLInputFactory ifactory;
 	private XMLStreamReader sreader;
@@ -42,15 +43,13 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
 	public XMLQuiXEventStreamReader(AStreamSource.XMLStreamSource source) {
-		super(null);
 		this.ifactory = XMLInputFactory.newFactory();
 		this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
 		this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
-
 	}
 
 
-	protected AQuiXEvent load(Source current) throws QuiXException {
+	private AQuiXEvent load(Source current) throws QuiXException {
 		try {
 			this.sreader = this.ifactory.createXMLStreamReader(current);
 		} catch (XMLStreamException e) {
@@ -64,21 +63,21 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 	private QuiXCharStream charBuffer = QuiXCharStream.EMPTY;
 
 	@Override
-	public AQuiXEvent process() throws QuiXException {
+	public AQuiXEvent process(AQuiXEventStreamReader.CallBack callback) throws QuiXException {
 		AQuiXEvent event = null;
 		try {
 			if (!buffer.isEmpty()) {
 				return buffer.poll();
 			}
-			if (!sreader.hasNext() && this.state.equals(State.START_SOURCE)) {
+			if (!sreader.hasNext() && callback.getState().equals(QuiXEventStreamReader.State.START_SOURCE)) {
 				// special case if the buffer is empty but the document has not
 				// been closed
 				event = AQuiXEvent.getEndDocument(this.baseURI);
-				this.state = State.END_SOURCE;
+				callback.setState(QuiXEventStreamReader.State.END_SOURCE);
 				return event;
 			}
-			if (state.equals(State.END_SOURCE)) {
-				return processEndSource();
+			if (callback.getState().equals(QuiXEventStreamReader.State.END_SOURCE)) {
+				return callback.processEndSource();
 			}
 			while (true) {
 				int code = sreader.next();
@@ -109,7 +108,7 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 					// System.out.println("END_DOCUMENT");
 					event = AQuiXEvent.getEndDocument(this.baseURI);
 					event = updateText(event);
-					this.state = State.END_SOURCE;
+					callback.setState(QuiXEventStreamReader.State.END_SOURCE);
 					return event;
 				case XMLStreamConstants.END_ELEMENT:
 					// System.out.println("END_ELEMENT");
@@ -193,22 +192,16 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 		}
 	}
 
-	public static void main(String[] args) throws XMLStreamException, QuiXException {
-		Iterable<Source> sources = java.util.Arrays
-				.asList(new Source[] {
-						new javax.xml.transform.stream.StreamSource(
-								"/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
-						new javax.xml.transform.stream.StreamSource(
-								"/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml") });
-		QuiXEventStreamReader qesr = QuiXEventStreamReader.parse(sources);
-		while (qesr.hasNext()) {
-			System.out.println(qesr.next());
-		}
-	}
 
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
-		// TODO Auto-generated method stub
-		return null;
+		return load(((AStreamSource.XMLStreamSource )current).asSource());
+	}
+
+
+	@Override
+	public void reinitialize(AStreamSource current) {
+		//
+		this.buffer.clear();
 	}
 }

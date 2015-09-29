@@ -4,17 +4,13 @@ import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
-import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 
-public class JSONQuiXEventStreamReader extends QuiXEventStreamReader {
+public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 
-	protected JSONQuiXEventStreamReader(Iterable<AStreamSource> sources) {
-		super(sources);
-		// TODO Auto-generated constructor stub
-	}
 
 	public JSONQuiXEventStreamReader(JSONStreamSource current) {
-		super(null);
+		// todo
 	}
 
 	@Override
@@ -24,9 +20,22 @@ public class JSONQuiXEventStreamReader extends QuiXEventStreamReader {
 	}
 
 	@Override
-	protected AQuiXEvent process() throws QuiXException {
+	protected AQuiXEvent process(CallBack callback) throws QuiXException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void reinitialize(AStreamSource current) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

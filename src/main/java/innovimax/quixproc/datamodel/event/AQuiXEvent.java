@@ -22,11 +22,12 @@ package innovimax.quixproc.datamodel.event;
 import java.util.HashMap;
 import java.util.Map;
 
+import innovimax.quixproc.datamodel.IQuiXToken;
 import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.QuiXQName;
 import innovimax.quixproc.datamodel.QuiXToken;
 
-public abstract class AQuiXEvent implements IQuiXEvent {
+public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	// TODO : store namespacecontext
 	// TODO : store type information for PSVI
@@ -309,6 +310,7 @@ public abstract class AQuiXEvent implements IQuiXEvent {
 		return (Attribute) this;
 	}
 
+	@Override
 	public QuiXToken getType() {
 		return this.type;
 	}

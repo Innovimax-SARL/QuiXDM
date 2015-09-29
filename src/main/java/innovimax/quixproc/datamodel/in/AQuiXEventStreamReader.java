@@ -17,38 +17,28 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel.filter;
+package innovimax.quixproc.datamodel.in;
 
-import innovimax.quixproc.datamodel.IQuiXStream;
-import innovimax.quixproc.datamodel.IQuiXToken;
 import innovimax.quixproc.datamodel.QuiXException;
-import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
 
-public abstract class AQuiXEventStreamFilter implements IQuiXStream<IQuiXToken> {
-	private IQuiXStream<IQuiXToken> stream;
+public abstract class AQuiXEventStreamReader {
 
-	public AQuiXEventStreamFilter(IQuiXStream<IQuiXToken> stream) {
-		this.stream = stream;
+
+	public interface CallBack {
+		QuiXEventStreamReader.State getState();
+		void setState(QuiXEventStreamReader.State state);
+		AQuiXEvent processEndSource() throws QuiXException;
 	}
 
-	@Override
-	public boolean hasNext() throws QuiXException {
-		return this.stream.hasNext();
+	protected AQuiXEventStreamReader() {
 	}
+	protected abstract AQuiXEvent load(AStreamSource current) throws QuiXException;
 
-	@Override
-	public IQuiXToken next() throws QuiXException {
-		IQuiXToken item;
-		while ((item = process(this.stream.next().getType())) == null)
-			/* NOP */;
-		return item;
-	}
+	protected abstract AQuiXEvent process(CallBack callback) throws QuiXException;
 
-	@Override
-	public void close() {
-		this.stream.close();
-	}
+	public abstract void reinitialize(AStreamSource current); 
 
-	public abstract IQuiXToken process(IQuiXToken item);
+	public abstract void close();
 
 }

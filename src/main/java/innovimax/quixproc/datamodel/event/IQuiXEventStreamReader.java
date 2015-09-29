@@ -20,7 +20,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package innovimax.quixproc.datamodel.event;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.IQuiXToken;
+import innovimax.quixproc.datamodel.QuiXException;
 
 public interface IQuiXEventStreamReader extends IQuiXStream<AQuiXEvent> {
-	// marker interface
+	default IQuiXStream<IQuiXToken> asIQuiXTokenStream() {
+		final IQuiXEventStreamReader that = this;
+		return new IQuiXStream<IQuiXToken>() {
+
+			@Override
+			public boolean hasNext() throws QuiXException {
+				return that.hasNext();
+			}
+
+			@Override
+			public IQuiXToken next() throws QuiXException {
+				return that.next();
+			}
+
+			@Override
+			public void close() {
+				that.close();
+			}
+
+		};
+	}
 }
