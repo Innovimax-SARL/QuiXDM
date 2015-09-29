@@ -141,8 +141,6 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		case HIGH_NODE_NAME_SIZE:
 			// return new
 			// AXMLGenerator.AHighElementNameSize.HighElementNameSizeSingle();
-		case HIGH_ELEMENT_NAME_SIZE_OPEN_CLOSE:
-			// return new AHighElementNameSize.HighElementNameSizeOpenClose();
 		case HIGH_TEXT_SIZE:
 		case SPECIFIC:
 			break;
