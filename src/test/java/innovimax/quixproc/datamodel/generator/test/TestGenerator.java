@@ -28,8 +28,8 @@ public class TestGenerator {
 				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
 			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
-				AGenerator generator = AXMLGenerator.instance(gtype, stype);
 				for (Variation variation : Variation.values()) {
+					AGenerator generator = AXMLGenerator.instance(gtype, stype);
 					InputStream is = generator.getInputStream(1, Unit.MBYTE, variation);
 					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
 					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
