@@ -5,7 +5,8 @@
 
 To install it
 *  Checkout this code. It's Java 1.6+ compliant
-*  Get access to Saxon 9.6: http://saxon.sourceforge.net/ 
+*  Get access to Saxon 9.6: http://saxon.sourceforge.net/
+*  Get access to Jackson Core 2.6.2: https://github.com/FasterXML/jackson-core 
 
 # Why QuiXDM?
 There is SAX and StAX and DOM out there for processing XML
