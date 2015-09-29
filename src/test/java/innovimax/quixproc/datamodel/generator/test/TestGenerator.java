@@ -61,45 +61,45 @@ public class TestGenerator {
 		assertTrue(true);
 	}
 
-	@Test
-	public void testAllXML100M() throws QuiXException {
-		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
-				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
-				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
-				for (Variation variation : Variation.values()) {
-					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-					InputStream is = generator.getInputStream(100, Unit.MBYTE, variation);
-					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
-					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
-					while (vqxs.hasNext()) {
-						vqxs.next();
-					}
-				}
-			}
-		}
-		assertTrue(true);
-	}
+//	@Test
+//	public void testAllXML100M() throws QuiXException {
+//		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
+//				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
+//				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
+//			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
+//				for (Variation variation : Variation.values()) {
+//					AGenerator generator = AXMLGenerator.instance(gtype, stype);
+//					InputStream is = generator.getInputStream(100, Unit.MBYTE, variation);
+//					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
+//					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
+//					while (vqxs.hasNext()) {
+//						vqxs.next();
+//					}
+//				}
+//			}
+//		}
+//		assertTrue(true);
+//	}
 
-	@Test
-	public void testAllXML1G() throws QuiXException {
-		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
-				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
-				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
-				for (Variation variation : Variation.values()) {
-					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-					InputStream is = generator.getInputStream(1, Unit.GBYTE, variation);
-					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
-					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
-					while (vqxs.hasNext()) {
-						vqxs.next();
-					}
-				}
-			}
-		}
-		assertTrue(true);
-	}
+//	@Test
+//	public void testAllXML1G() throws QuiXException {
+//		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
+//				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
+//				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
+//			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
+//				for (Variation variation : Variation.values()) {
+//					AGenerator generator = AXMLGenerator.instance(gtype, stype);
+//					InputStream is = generator.getInputStream(1, Unit.GBYTE, variation);
+//					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
+//					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
+//					while (vqxs.hasNext()) {
+//						vqxs.next();
+//					}
+//				}
+//			}
+//		}
+//		assertTrue(true);
+//	}
 
 	public static void main(String[] args) throws QuiXException, IOException {
 		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
