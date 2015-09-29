@@ -82,9 +82,9 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
 		this(stream, ExtraProcess.NONE);
 	}
 
-	private interface Process {
-		checkUniqueNess(QuiXCharStream )
-	}
+//	private interface Process {
+//		checkUniqueNess(QuiXCharStream )
+//	}
 
 	enum ExtraProcess {
 		NONE,
@@ -143,7 +143,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter<QuiXToken> {
 			case START_ELEMENT :
 				state = State.IN_ELEMENT;
 				this.stack.push(Node.ELEMENT);
-				update
+				//update
 				break;
 			}
 			break;
