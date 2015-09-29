@@ -42,13 +42,14 @@ public class XMLQuiXEventStreamReader extends QuiXEventStreamReader {
 	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
 	public XMLQuiXEventStreamReader(AStreamSource.XMLStreamSource source) {
+		super(null);
 		this.ifactory = XMLInputFactory.newFactory();
 		this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
 		this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
 
 	}
 
-	@Override
+
 	protected AQuiXEvent load(Source current) throws QuiXException {
 		try {
 			this.sreader = this.ifactory.createXMLStreamReader(current);

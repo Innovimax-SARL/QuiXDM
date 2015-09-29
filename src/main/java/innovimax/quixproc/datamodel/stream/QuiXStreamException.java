@@ -19,8 +19,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.stream;
 
+import javax.xml.stream.XMLStreamException;
+
 import innovimax.quixproc.datamodel.QuiXException;
 
 public class QuiXStreamException extends QuiXException {
+
+	public QuiXStreamException(XMLStreamException e) {
+		super(e);
+	}
 
 }

@@ -44,5 +44,12 @@ public abstract class AStreamSource {
 			this.source = source;
 		}
 	}
+	public static class JSONStreamSource extends AStreamSource {
+
+		protected JSONStreamSource() {
+			super(Type.JSON);
+		}
+		
+	}
 
 }
