@@ -14,48 +14,39 @@ import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
-	public enum Type {
-		HIGH_DEPTH_NAMESPACE, HIGH_NAMESPACE_COUNT
+	public enum SpecialType {
+		NAMESPACE, OPEN_CLOSE, EMPTY
 	}
 
-	public static AGenerator instance(ATreeGenerator.Type type) {
+	public static AGenerator instance(Type type, SpecialType special) {
 		switch (type) {
-		case HIGH_DENSITY:
+		case HIGH_NODE_DENSITY:
 			return new HighDensityGenerator();
-		case HIGH_DEPTH:
+		case HIGH_NODE_DEPTH:
+			switch (special) {
+			case NAMESPACE:
+				return new HighDepthNamespaceGenerator();				
+			}
 			return new HighDepthGenerator();
-		case HIGH_ELEMENT_NAME_SIZE_SINGLE:
+		case HIGH_NODE_NAME_SIZE:
+			switch (special) {
+			case OPEN_CLOSE:
+				return new AHighElementNameSize.HighElementNameSizeOpenClose();
+			}
 			return new AHighElementNameSize.HighElementNameSizeSingle();
-		case HIGH_ELEMENT_NAME_SIZE_OPEN_CLOSE:
-			return new AHighElementNameSize.HighElementNameSizeOpenClose();
 		case HIGH_TEXT_SIZE:
+			return new HighTextSize();
 		}
 		return null;
 	}
 
-	public static AGenerator instance(Type type) {
-		switch (type) {
-		case HIGH_DEPTH_NAMESPACE:
-			return new HighDepthNamespaceGenerator();
-		case HIGH_NAMESPACE_COUNT:
-			// TODO
-		}
-		return null;
-	}
 
-	Type xmlType;
+	SpecialType specialType;
 
-	protected AXMLGenerator(Type xmlType) {
-		this(xmlType, ATreeGenerator.Type.SPECIFIC);
-	}
 
-	protected AXMLGenerator(ATreeGenerator.Type treeType) {
-		this(null, treeType);
-	}
-
-	protected AXMLGenerator(Type xmlType, ATreeGenerator.Type treeType) {
+	protected AXMLGenerator(SpecialType xmlType, Type treeType) {
 		super(FileExtension.XML, treeType);
-		this.xmlType = xmlType;
+		this.specialType = xmlType;
 	}
 
 	final static byte[] nextChar = initNextChar(false);
@@ -212,6 +203,65 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
+
+	public static class HighTextSize extends ATreeGenerator {
+		protected HighTextSize(FileExtension type, Type treeType) {
+			super(type, treeType);
+			// TODO Auto-generated constructor stub
+		}
+		final byte[] start = "<r>".getBytes();
+		final byte[] end = "</r>".getBytes();
+
+		@Override
+		protected byte[] getEnd() {
+			return end;
+		}
+
+		@Override
+		protected byte[] getStart() {
+			return start;
+		}
+		final byte[][] patterns = { "a".getBytes() };
+		@Override
+		protected byte[][] getPatterns() {
+			return patterns;
+		}
+
+		@Override
+		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+			int incr = 0;
+			switch (variation) {
+			case NO_VARIATION:
+				return bs[pos];
+			case RANDOM:
+				incr = random.nextInt(128);
+			case SEQUENTIAL:
+				switch (pos) {
+				case 0:
+					bs[0][0] = nextChar(bs[0][0], incr);
+					break;
+				}
+				return bs[pos];
+			}
+			return null;
+		}
+
+		@Override
+		protected boolean notFinished(long current_size, int current_pattern, long total) {
+			
+			return current_size < total;
+		}
+
+		@Override
+		protected int updatePattern(int current_pattern) {
+			return 0;
+		}
+
+		@Override
+		protected long updateSize(long current_size, int current_pattern) {
+			return current_size + 1;
+		}
+	}
 	public static class HighDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -278,7 +328,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		final byte[][] patterns = { "<a>".getBytes(), "</a>".getBytes() };
 
 		public HighDepthGenerator() {
-			super(AGenerator.FileExtension.XML, ATreeGenerator.Type.HIGH_DEPTH);
+			super(AGenerator.FileExtension.XML, ATreeGenerator.Type.HIGH_NODE_DEPTH);
 		}
 
 		protected byte[][] getPatterns() {
@@ -339,7 +389,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		public HighDepthNamespaceGenerator() {
 			// super(AXMLGenerator.Type.HIGH_DEPTH_NAMESPACE);
-			super(AGenerator.FileExtension.XML, Type.HIGH_DENSITY);
+			super(AGenerator.FileExtension.XML, Type.HIGH_NODE_DENSITY);
 		}
 
 		protected byte[][] getPatterns() {
@@ -386,13 +436,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	public abstract static class AHighElementNameSize extends AXMLGenerator {
 
-		protected AHighElementNameSize(Type type) {
-			super(type);
-		}
-
-		protected AHighElementNameSize(ATreeGenerator.Type type) {
-			super(type);
-		}
 
 		public static class HighElementNameSizeSingle extends AHighElementNameSize {
 			@Override
@@ -427,7 +470,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			}
 
 			public HighElementNameSizeSingle() {
-				super(ATreeGenerator.Type.HIGH_ELEMENT_NAME_SIZE_SINGLE);
+				super(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, null);
 			}
 
 			@Override
@@ -536,13 +579,13 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-	private static void call(AXMLGenerator.Type gtype, int size, Unit unit) throws IOException, XMLStreamException {
-		AGenerator generator = instance(gtype);
+	private static void call(AXMLGenerator.Type gtype, SpecialType special, int size, Unit unit) throws IOException, XMLStreamException {
+		AGenerator generator = instance(gtype, special);
 		call(generator, gtype.name(), size, unit);
 	}
 
-	private static void call(ATreeGenerator.Type gtype, int size, Unit unit) throws IOException, XMLStreamException {
-		AGenerator generator = instance(gtype);
+	private static void call(ATreeGenerator.Type gtype, SpecialType special, int size, Unit unit) throws IOException, XMLStreamException {
+		AGenerator generator = instance(gtype, special);
 		call(generator, gtype.name(), size, unit);
 	}
 
@@ -589,13 +632,14 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		System.out.println("nextName\t: " + display(nextName));
 		System.out.println("prevStartName\t:" + display(prevStartName));
 		if (ONE_INSTANCE) {
-			call(ATreeGenerator.Type.HIGH_DENSITY, 150, Unit.MBYTE);
-			call(Type.HIGH_DEPTH_NAMESPACE, 201, Unit.MBYTE);
-			call(ATreeGenerator.Type.HIGH_DEPTH, 112, Unit.MBYTE);
+			call(ATreeGenerator.Type.HIGH_NODE_DENSITY, null, 150, Unit.MBYTE);
+			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
+			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
-			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_ELEMENT_NAME_SIZE_SINGLE,
-					ATreeGenerator.Type.HIGH_ELEMENT_NAME_SIZE_OPEN_CLOSE, ATreeGenerator.Type.HIGH_DENSITY,
-					ATreeGenerator.Type.HIGH_DEPTH)) {
+			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
+					ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
+					ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
+				
 				for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
 					int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
 					for (int i : values) {

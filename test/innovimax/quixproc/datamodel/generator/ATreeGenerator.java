@@ -3,10 +3,9 @@ package innovimax.quixproc.datamodel.generator;
 
 public abstract class ATreeGenerator extends AGenerator {
 	public enum Type {
-		HIGH_DENSITY, 
-		HIGH_DEPTH, 
-		HIGH_ELEMENT_NAME_SIZE_SINGLE,
-		HIGH_ELEMENT_NAME_SIZE_OPEN_CLOSE,
+		HIGH_NODE_DENSITY, 
+		HIGH_NODE_DEPTH, 
+		HIGH_NODE_NAME_SIZE,
 		HIGH_TEXT_SIZE,
 		SPECIFIC
 	}
@@ -26,7 +25,7 @@ public abstract class ATreeGenerator extends AGenerator {
 
 
 		public AHighDensityGenerator(FileExtension type) {
-			super(type, Type.HIGH_DENSITY);
+			super(type, Type.HIGH_NODE_DENSITY);
 		}
 
 		@Override

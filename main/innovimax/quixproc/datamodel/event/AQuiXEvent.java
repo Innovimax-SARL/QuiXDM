@@ -226,7 +226,7 @@ public abstract class AQuiXEvent implements IQuiXEvent {
 		private final QuiXCharStream data;
 
 		private PI(QuiXCharStream target, QuiXCharStream data) {
-			super(QuiXToken.PI);
+			super(QuiXToken.PROCESSING_INSTRUCTION);
 			this.target = target;
 			this.data = data;
 		}
@@ -545,7 +545,7 @@ public abstract class AQuiXEvent implements IQuiXEvent {
 	}
 
 	public boolean isPI() {
-		return (this.type == QuiXToken.PI);
+		return (this.type == QuiXToken.PROCESSING_INSTRUCTION);
 	}
 
 	public boolean isComment() {

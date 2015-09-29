@@ -116,11 +116,11 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	public static AGenerator instance(ATreeGenerator.Type type) {
 		switch (type) {
-		case HIGH_DENSITY:
+		case HIGH_NODE_DENSITY:
 			return new AJSONGenerator.HighDensityGenerator();
-		case HIGH_DEPTH:
+		case HIGH_NODE_DEPTH:
 			return new AJSONGenerator.HighDepthGenerator();
-		case HIGH_ELEMENT_NAME_SIZE_SINGLE:
+		case HIGH_NODE_NAME_SIZE:
 			// return new
 			// AXMLGenerator.AHighElementNameSize.HighElementNameSizeSingle();
 		case HIGH_ELEMENT_NAME_SIZE_OPEN_CLOSE:
@@ -238,7 +238,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		final byte[][] patterns = { "\"a\":{".getBytes(), "}".getBytes() };
 
 		public HighDepthGenerator() {
-			super(AGenerator.FileExtension.JSON, ATreeGenerator.Type.HIGH_DEPTH);
+			super(AGenerator.FileExtension.JSON, ATreeGenerator.Type.HIGH_NODE_DEPTH);
 		}
 
 		protected byte[][] getPatterns() {
@@ -290,7 +290,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		f.disable(JsonParser.Feature.ALLOW_COMMENTS);
 		f.disable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
 		// AGenerator generator = instance(ATreeGenerator.Type.HIGH_DENSITY);
-		AGenerator generator = instance(ATreeGenerator.Type.HIGH_DEPTH);
+		AGenerator generator = instance(ATreeGenerator.Type.HIGH_NODE_DEPTH);
 
 		InputStream is = generator.getInputStream(50, Unit.MBYTE, Variation.NO_VARIATION);
 		if (false) {

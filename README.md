@@ -33,7 +33,7 @@ Mostly look at [QuiXToken.java](https://github.com/innovimax/quixdm/blob/master/
 
 # Use
 ## With Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
-Simplest way to use, is to instanciate [innovimax.quixproc.datamodel.in.QuiXEventStreamReader.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuiXEventStreamReader.java)
+Simplest way to use, is to instantiate [innovimax.quixproc.datamodel.in.QuiXEventStreamReader.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuiXEventStreamReader.java)
 ```java
 Iterable<Source> sources = Arrays.asList(new Source[] {
 		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aaa.xml"),	
@@ -63,7 +63,7 @@ Having such context, that's why [QuiXCharStream](https://github.com/innovimax/Qu
  * be able to stream even corner cases XML:
    * huge string
    * huge names
-   * huge namespace
+   * huge namespace uris
 
 # Contributors
 [Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work

@@ -5,6 +5,17 @@ import java.util.ConcurrentModificationException;
 /**
  * A truly Streamable CharSequence
  * 
+ * The definition of streamable is a real problem for much of the people
+ * Let's say that Streamable means, we don't need to store all in memory
+ * It becomes a bit too simplistic
+ * At least we know what is *NOT* the solution for nasty files
+ * XML as JSON and any other document structure that doesn't limit it's content 
+ * (remember why we moved from EDI which needs to say every size)
+ * is that when you want to process such documents, some documents may
+ * ends up having huge content and hence you loose the power of streaming
+ * MOST IMPORTANT CASES =
+ *  TODAY, a simple document 
+ * 
  * @author innovimax
  *
  */

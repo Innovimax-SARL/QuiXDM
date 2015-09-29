@@ -59,7 +59,7 @@ public class NodeKindFilter<T extends IQuiXEvent> extends AQuiXEventStreamFilter
 			if (enumset.contains(Kind.NAMESPACE))
 				return null;
 			break;
-		case PI:
+		case PROCESSING_INSTRUCTION:
 			if (enumset.contains(Kind.PI))
 				return null;
 			break;

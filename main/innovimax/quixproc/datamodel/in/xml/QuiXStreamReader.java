@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-package innovimax.quixproc.datamodel.in;
+package innovimax.quixproc.datamodel.in.xml;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -67,7 +67,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 		return this.state != State.FINISH;
 	}
 
-	enum State {
+	private enum State {
 		INIT, START_SEQUENCE, START_DOCUMENT, END_DOCUMENT, FINISH
 	}
 
@@ -485,4 +485,16 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public static void main(String[] args) throws XMLStreamException, QuiXException {
+		Iterable<Source> sources = java.util.Arrays.asList(new Source[] {
+		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),  
+		        new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml")   
+		});
+		QuiXStreamReader qesr = new QuiXStreamReader(sources);
+		while(qesr.hasNext()) {
+		    System.out.println(qesr.next());
+		}
+	}
+
 }

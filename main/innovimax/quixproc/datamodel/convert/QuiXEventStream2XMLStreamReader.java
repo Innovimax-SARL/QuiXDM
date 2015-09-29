@@ -122,7 +122,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 					break;
 				case COMMENT:
 					return XMLStreamConstants.COMMENT;
-				case PI:
+				case PROCESSING_INSTRUCTION:
 					return XMLStreamConstants.PROCESSING_INSTRUCTION;
 				case TEXT:
 					return XMLStreamConstants.CHARACTERS;
@@ -337,7 +337,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			return XMLStreamConstants.ATTRIBUTE; // Not really possible
 		case COMMENT:
 			return XMLStreamConstants.COMMENT;
-		case PI:
+		case PROCESSING_INSTRUCTION:
 			return XMLStreamConstants.PROCESSING_INSTRUCTION;
 		case TEXT:
 			return XMLStreamConstants.CHARACTERS;
