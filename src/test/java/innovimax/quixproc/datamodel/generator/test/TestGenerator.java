@@ -44,16 +44,16 @@ public class TestGenerator {
 		}
 
 	}
-	@Test
-	public void testAllXML1M() throws QuiXException {
-		testAll(1, Unit.MBYTE);
-		assertTrue(true);
-	}
-	@Test
-	public void testAllXML10M() throws QuiXException {
-		testAll(10, Unit.MBYTE);
-		assertTrue(true);
-	}
+//	@Test
+//	public void testAllXML1M() throws QuiXException {
+//		testAll(1, Unit.MBYTE);
+//		assertTrue(true);
+//	}
+//	@Test
+//	public void testAllXML10M() throws QuiXException {
+//		testAll(10, Unit.MBYTE);
+//		assertTrue(true);
+//	}
 
 	@Test
 	public void testAllXML100M() throws QuiXException {
