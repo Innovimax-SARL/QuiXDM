@@ -21,29 +21,55 @@ import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator.SpecialType;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 
 public class TestGenerator {
-
-	public static void testAll(int size, Unit unit) throws QuiXException {
+	enum Process { READ_BYTE, READ_BUFFER, PARSE }
+	public static void testAll(Process process, int size, Unit unit) throws QuiXException, IOException {
 		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
 			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
 				for (Variation variation : Variation.values()) {
-					System.out.println("Test START "+size+" "+unit+": "+gtype+", "+stype+", "+variation);
+					System.out.format("Test START %d %s {%s, %s, %s, %s}%n",size,unit,process,gtype,stype,variation);
 					long start = System.currentTimeMillis();
 					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-					
 					InputStream is = generator.getInputStream(size, unit, variation);
-					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
-					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
 					long event = 0;
-					while (vqxs.hasNext()) {
-						vqxs.next();
-						event++;
+					long totalsize = 0;
+					switch(process) {
+					case READ_BYTE:
+						int c;
+						while((c = is.read()) != -1) {
+							// do nothing
+							totalsize++;
+							// System.out.println(c);
+						}
+						break;
+					case READ_BUFFER:
+						byte[] buffer = new byte[1024*1024];
+						int length;
+						while ((length = is.read(buffer)) > 0) {
+							// do nothing
+							totalsize+=length;
+						}
+						break;
+					case PARSE:
+						QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
+						ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
+						while (vqxs.hasNext()) {
+							vqxs.next();
+							event++;
+						}
+						totalsize = size*unit.value();
+						break;					
 					}
 					long time = System.currentTimeMillis() - start;
-					long speed = 1000*size*unit.value() / time;
-					long evpers = 1000*event / time;
-					System.out.format("Test END %,dms; %,dB/s; %,dev; %,dev/s%n", time, speed, event, evpers);
+					long speed = 1000*totalsize / time;
+					System.out.format("Test END %,dms; %,dB/s", time, speed);
+					if (event > 0) {
+						long evpers = 1000*event / time;
+						long density = totalsize / event;
+						System.out.format("; %,dev; %,dev/s; %,dB/ev", event, evpers, density);
+					}
+					System.out.println();
 				}
 			}
 		}
@@ -61,8 +87,10 @@ public class TestGenerator {
 //	}
 
 	@Test
-	public void testAllXML50M() throws QuiXException {
-	testAll(50, Unit.MBYTE);
+	public void testAllXML50M() throws QuiXException, IOException {
+		for(Process process : Process.values()) {
+			testAll(Process.PARSE, 50, Unit.MBYTE);
+		}
 		assertTrue(true);
 	}
 
@@ -73,36 +101,8 @@ public class TestGenerator {
 //	}
 
 	public static void main(String[] args) throws QuiXException, IOException {
-		if (true) {
-			testAll(1, Unit.MBYTE);
-		} else {
-		
-		
-		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
-				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
-				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
-				//System.out.println(gtype+", "+stype);			
-				for (Variation variation : Variation.values()) {
-					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-					System.out.println(gtype+", "+stype+", "+variation);
-					InputStream is = generator.getInputStream(10, Unit.MBYTE, variation);
-//					if (false) {
-//						int c;
-//						while ((c = is.read()) != -1) {
-//							 System.out.println(AGenerator.display((byte) (c & 0xFF)));
-//						}
-//                
-//					} else {
-					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
-					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
-					while (vqxs.hasNext()) {
-						vqxs.next();
-					}
-//					}
-				}
+			for(Process process : Process.values()) {
+			testAll(process, 10, Unit.MBYTE);
 			}
-		}
-		}
 	}
 }
