@@ -43,7 +43,7 @@ public class TestGenerator {
 					long time = System.currentTimeMillis() - start;
 					long speed = 1000*size*unit.value() / time;
 					long evpers = 1000*event / time;
-					System.out.println("Test END "+time+"ms; "+speed+"B/s; "+event+"ev; "+evpers+"ev/s");
+					System.out.format("Test END %,dms; %,dB/s; %,dev; %,dev/s%n", time, speed, event, evpers);
 				}
 			}
 		}
@@ -73,6 +73,11 @@ public class TestGenerator {
 //	}
 
 	public static void main(String[] args) throws QuiXException, IOException {
+		if (true) {
+			testAll(1, Unit.MBYTE);
+		} else {
+		
+		
 		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
@@ -98,6 +103,6 @@ public class TestGenerator {
 				}
 			}
 		}
-
+		}
 	}
 }
