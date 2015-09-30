@@ -32,11 +32,11 @@ object   := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
 value    := object|array|VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
 array    := START_ARRAY, value*, END_ARRAY
 ```
-Mostly look at [QuiXToken.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuiXToken.java)
+Mostly look at [QuiXToken.java](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/QuiXToken.java)
 
 # Use
 ## With Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
-Simplest way to use, is to instantiate [innovimax.quixproc.datamodel.in.QuiXEventStreamReader.java](https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuiXEventStreamReader.java)
+Simplest way to use, is to instantiate [innovimax.quixproc.datamodel.in.QuiXEventStreamReader.java](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/in/QuiXEventStreamReader.java)
 ```java
 Iterable<Source> sources = Arrays.asList(new Source[] {
 		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aaa.xml"),	
@@ -52,7 +52,7 @@ while(qesr.hasNext()) {
 
 
 
-# Why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java)?
+# Why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/QuiXQName.java)?
 Well it comes from the fact that Streaming interface in XML should really be streaming.
 The truth is that there is no such character streaming interface in Java.
  * String is definitely not streamable and limited to 2^31 characters
@@ -61,7 +61,7 @@ The truth is that there is no such character streaming interface in Java.
  * CharSequence.chars() returns IntStream (instead of CharStream because Java 8 people didn't want to add it) which 
  * Java 8 Stream<Char> implies that every char is boxed (which means it's highly INEFFICIENT)
  
-Having such context, that's why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java) went live in order to :
+Having such context, that's why [QuiXCharStream](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/QuiXCharStream.java) and [QuiXQName](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/QuiXQName.java) went live in order to :
  * be able to address the TEXT recombination issue (text() node in XDM cannot be contiguous)
  * be able to stream even corner cases XML:
    * huge string
