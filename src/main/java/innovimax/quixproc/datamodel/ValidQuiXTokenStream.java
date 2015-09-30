@@ -34,7 +34,7 @@ import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
  * <tr>
  * <th>sequence</th>
  * <td>:=</td>
- * <td>{@code START_SEQUENCE}, (<b>document</b>|<b>object</b>)*,
+ * <td>{@code START_SEQUENCE}, (<b>document</b>|<b>json</b>)*,
  * {@code END_SEQUENCE}</td>
  * </tr>
  * <tr>
@@ -51,6 +51,10 @@ import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
  * {@code TEXT}|<b>element</b>|{@code PROCESSING_INSTRUCTION}|{@code COMMENT})*,
  * {@code END_ELEMENT}</td>
  * </tr>
+ * <tr>
+ * <th>json</th>
+ * <td>:=</td>
+ * <td>{@code START_JSON}, <b>object</b>, {@code END_JSON}</td>
  * <tr>
  * <th>object</th>
  * <td>:=</td>
@@ -141,8 +145,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				this.state = State.END;
 				break;
 			}
-			break;
-			
+			break;			
 		case END:
 			// will throw an error
 			accept(token, EnumSet.noneOf(QuiXToken.class));
@@ -304,6 +307,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				acceptStackAndSetState(token, Node.ARRAY);
 			}
 		case IN_JSON:
+			//json     := START_JSON, object, END_JSON
 			accept(token, EnumSet.of(QuiXToken.START_OBJECT));
 			this.stack.push(Node.OBJECT);
 			this.state = State.IN_OBJECT;

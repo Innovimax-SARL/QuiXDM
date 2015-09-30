@@ -24,9 +24,10 @@ handle json | no | no | no | **yes**
 It minimizes (as far as the XPath Data Model requires it) the number of information to manage to allow processing
 ```ANTLR
 // Here is the grammar of events
-sequence := START_SEQUENCE, (document|object)*, END_SEQUENCE
+sequence := START_SEQUENCE, (document|json)*, END_SEQUENCE
 document := START_DOCUMENT, (PROCESSING_INSTRUCTION|COMMENT)*, element, (PROCESSING_INSTRUCTION|COMMENT)*, END_DOCUMENT
 element  := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, TEXT?, ((element|PROCESSING_INSTRUCTION|COMMENT)+, TEXT)*, (element|PROCESSING_INSTRUCTION|COMMENT)*, END_ELEMENT
+json     := START_JSON, object, END_JSON
 object   := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
 value    := object|array|VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
 array    := START_ARRAY, value*, END_ARRAY
