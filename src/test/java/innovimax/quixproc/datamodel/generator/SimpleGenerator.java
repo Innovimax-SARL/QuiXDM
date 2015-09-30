@@ -26,7 +26,7 @@ public class SimpleGenerator {
 	private static class SimpleStableInputStream extends InputStream {
 
 		@Override
-		public int read() throws IOException {
+		public int read() {
 			return 0;
 		}
 
@@ -37,9 +37,9 @@ public class SimpleGenerator {
 		int i = 10;
 
 		@Override
-		public int read() throws IOException {
-			i = 30 - i;
-			return i;
+		public int read() {
+			this.i = 30 - this.i;
+			return this.i;
 		}
 
 	}
@@ -49,9 +49,9 @@ public class SimpleGenerator {
 		int i = 0;
 
 		@Override
-		public int read() throws IOException {
-			i = (i + 1) % buffer.length;
-			return buffer[i];
+		public int read() {
+			this.i = (this.i + 1) % this.buffer.length;
+			return this.buffer[this.i];
 		}
 
 	}

@@ -42,9 +42,9 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 
 	@Override
 	public IQuiXToken process(IQuiXToken item) {
-		if (needCleaning) {
+		if (this.needCleaning) {
 			this.namespaces.pollLast();
-			needCleaning = false;
+			this.needCleaning = false;
 		}
 		switch (item.getType()) {
 		case START_ELEMENT:
@@ -52,7 +52,7 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 			break;
 		case END_ELEMENT:
 			// differ the cleaning to the next event
-			needCleaning = true;
+			this.needCleaning = true;
 			break;
 		case NAMESPACE:
 			// this.namespaces.getLast().put(qevent.asNamespace().getPrefix(),
