@@ -22,7 +22,9 @@
       <h1>
 <a id="quixdm" class="anchor" href="#quixdm" aria-hidden="true"><span class="octicon octicon-link"></span></a>QuiXDM</h1>
 
-<p><strong>QuiXDM</strong> is an open-source implementation of an <a href="http://www.w3.org/TR/xpath-datamodel/">XQuery and XPath Data Model (XDM)</a> able to do Streaming Processing.</p>
+<p><strong>QuiXDM</strong> is an open-source datamodel to process XML (via <a href="http://www.w3.org/TR/xpath-datamodel/">XQuery and XPath Data Model (XDM)</a>) or JSON or both in a Streaming fashion.</p>
+
+<p><a href="https://travis-ci.org/innovimax/QuiXDM"><img src="https://travis-ci.org/innovimax/QuiXDM.svg?branch=master" alt="Build Status"></a></p>
 
 <h1>
 <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h1>
@@ -30,8 +32,10 @@
 <p>To install it</p>
 
 <ul>
-<li> Checkout this code. It's Java 1.6+ compliant</li>
-<li> Get access to Saxon 9.6: <a href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a> </li>
+<li> Checkout this code. It's Java 1.8+ compliant</li>
+<li> Get access to Saxon 9.6: <a href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a>
+</li>
+<li> Get access to Jackson Core 2.6.2: <a href="https://github.com/FasterXML/jackson-core">https://github.com/FasterXML/jackson-core</a> </li>
 </ul>
 
 <h1>
@@ -78,18 +82,29 @@
 <td>no</td>
 <td><strong>yes</strong></td>
 </tr>
+<tr>
+<td>handle json</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes</strong></td>
+</tr>
 </tbody>
 </table>
 
 <h1>
 <a id="how-does-it-work" class="anchor" href="#how-does-it-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does it work?</h1>
 
-<p>It minimizes (as far as the XPath Data Model requires it) the number of XML information to manage</p>
+<p>It minimizes (as far as the XPath Data Model requires it) the number of information to manage to allow processing</p>
 
-<div class="highlight highlight-ANTLR"><pre><span class="pl-c">// Here is the grammar of events</span>
-<span class="pl-en">sequence</span> := <span class="pl-c1">START_SEQUENCE</span>, document*, <span class="pl-c1">END_SEQUENCE</span>
-<span class="pl-en">document</span> := <span class="pl-c1">START_DOCUMENT</span>, (<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, element, (<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_DOCUMENT</span>
-<span class="pl-en">element</span> := <span class="pl-c1">START_ELEMENT</span>, (<span class="pl-c1">NAMESPACE</span>|<span class="pl-c1">ATTRIBUTE</span>)*, (<span class="pl-c1">TEXT</span>|element|<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_ELEMENT</span></pre></div>
+<div class="highlight highlight-source-antlr"><pre><span class="pl-c">// Here is the grammar of events</span>
+<span class="pl-en">sequence</span> := <span class="pl-c1">START_SEQUENCE</span>, (document|json)*, <span class="pl-c1">END_SEQUENCE</span>
+<span class="pl-en">document</span> := <span class="pl-c1">START_DOCUMENT</span>, (<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, element, (<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_DOCUMENT</span>
+<span class="pl-en">element</span>  := <span class="pl-c1">START_ELEMENT</span>, (<span class="pl-c1">NAMESPACE</span>|<span class="pl-c1">ATTRIBUTE</span>)*, <span class="pl-c1">TEXT</span>?, ((element|<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)+, <span class="pl-c1">TEXT</span>)*, (element|<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_ELEMENT</span>
+<span class="pl-en">json</span>     := <span class="pl-c1">START_JSON</span>, object, <span class="pl-c1">END_JSON</span>
+<span class="pl-en">object</span>   := <span class="pl-c1">START_OBJECT</span>, (<span class="pl-c1">KEY_NAME</span>, value)*, <span class="pl-c1">END_OBJECT</span>
+<span class="pl-en">value</span>    := object|array|<span class="pl-c1">VALUE_FALSE</span>|<span class="pl-c1">VALUE_TRUE</span>|<span class="pl-c1">VALUE_NUMBER</span>|<span class="pl-c1">VALUE_NULL</span>|<span class="pl-c1">VALUE_STRING</span>
+<span class="pl-en">array</span>    := <span class="pl-c1">START_ARRAY</span>, value*, <span class="pl-c1">END_ARRAY</span></pre></div>
 
 <p>Mostly look at <a href="https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/QuiXToken.java">QuiXToken.java</a></p>
 
@@ -99,9 +114,9 @@
 <h2>
 <a id="with-object-creation-à-la-javaxxmlstreamxmleventreader" class="anchor" href="#with-object-creation-%C3%A0-la-javaxxmlstreamxmleventreader" aria-hidden="true"><span class="octicon octicon-link"></span></a>With Object creation (à la <a href="https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html">javax.xml.stream.XMLEventReader</a>)</h2>
 
-<p>Simplest way to use, is to instanciate <a href="https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuiXEventStreamReader.java">innovimax.quixproc.datamodel.in.QuiXEventStreamReader.java</a></p>
+<p>Simplest way to use, is to instantiate <a href="https://github.com/innovimax/quixdm/blob/master/main/innovimax/quixproc/datamodel/in/QuiXEventStreamReader.java">innovimax.quixproc.datamodel.in.QuiXEventStreamReader.java</a></p>
 
-<div class="highlight highlight-java"><pre><span class="pl-k">Iterable&lt;<span class="pl-smi">Source</span>&gt;</span> sources <span class="pl-k">=</span> <span class="pl-smi">Arrays</span><span class="pl-k">.</span>asList(<span class="pl-k">new</span> <span class="pl-smi">Source</span>[] {
+<div class="highlight highlight-source-java"><pre><span class="pl-k">Iterable&lt;<span class="pl-smi">Source</span>&gt;</span> sources <span class="pl-k">=</span> <span class="pl-smi">Arrays</span><span class="pl-k">.</span>asList(<span class="pl-k">new</span> <span class="pl-smi">Source</span>[] {
         <span class="pl-k">new</span> <span class="pl-smi">javax.xml.transform.stream<span class="pl-k">.</span>StreamSource</span>(<span class="pl-s"><span class="pl-pds">"</span>/tmp/file/file_aaa.xml<span class="pl-pds">"</span></span>),  
         <span class="pl-k">new</span> <span class="pl-smi">javax.xml.transform.stream<span class="pl-k">.</span>StreamSource</span>(<span class="pl-s"><span class="pl-pds">"</span>/tmp/file/file_aab.xml<span class="pl-pds">"</span></span>)   
 });
@@ -114,6 +129,35 @@
 <a id="lightweight-iterator-without-object-creation-à-la-javaxxmlstreamxmlstreamreader" class="anchor" href="#lightweight-iterator-without-object-creation-%C3%A0-la-javaxxmlstreamxmlstreamreader" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lightweight iterator without Object creation (à la <a href="https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLStreamReader.html">javax.xml.stream.XMLStreamReader</a>)</h2>
 
 <p><strong><em>TODO</em></strong></p>
+
+<h1>
+<a id="why-quixcharstream-and-quixqname" class="anchor" href="#why-quixcharstream-and-quixqname" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why <a href="https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java">QuiXCharStream</a> and <a href="https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java">QuiXQName</a>?</h1>
+
+<p>Well it comes from the fact that Streaming interface in XML should really be streaming.
+The truth is that there is no such character streaming interface in Java.</p>
+
+<ul>
+<li>String is definitely not streamable and limited to 2^31 characters</li>
+<li>CharSequence, which could have been, is neither because it has <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/CharSequence.html#length--">length()</a>
+</li>
+<li>CharIterator doesn't exist in the JDK (but you can find it <a href="http://fastutil.di.unimi.it/docs/it/unimi/dsi/fastutil/chars/CharIterator.html">here</a>)</li>
+<li>CharSequence.chars() returns IntStream (instead of CharStream because Java 8 people didn't want to add it) which </li>
+<li>Java 8 Stream implies that every char is boxed (which means it's highly INEFFICIENT)</li>
+</ul>
+
+<p>Having such context, that's why <a href="https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXCharStream.java">QuiXCharStream</a> and <a href="https://github.com/innovimax/QuiXDM/blob/master/main/innovimax/quixproc/datamodel/QuiXQName.java">QuiXQName</a> went live in order to :</p>
+
+<ul>
+<li>be able to address the TEXT recombination issue (text() node in XDM cannot be contiguous)</li>
+<li>be able to stream even corner cases XML:
+
+<ul>
+<li>huge string</li>
+<li>huge names</li>
+<li>huge namespace uris</li>
+</ul>
+</li>
+</ul>
 
 <h1>
 <a id="contributors" class="anchor" href="#contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributors</h1>
