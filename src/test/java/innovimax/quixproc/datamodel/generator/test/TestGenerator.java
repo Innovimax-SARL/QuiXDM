@@ -56,8 +56,8 @@ public class TestGenerator {
 //	}
 
 	@Test
-	public void testAllXML100M() throws QuiXException {
-	testAll(100, Unit.MBYTE);
+	public void testAllXML50M() throws QuiXException {
+	testAll(50, Unit.MBYTE);
 		assertTrue(true);
 	}
 
