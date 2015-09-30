@@ -12,13 +12,13 @@ To install it
 # Why QuiXDM?
 There is SAX and StAX and DOM out there for processing XML
 
- Feature\API | SAX | StAX | DOM | **QuiXDM**
+ Feature\API | SAX | StAX | DOM | Jackson | **QuiXDM**
 ------|-----|------|-----|-------
-in memory/streaming | streaming | streaming | in memory | **streaming**
-push/pull | push | pull | -- | **pull**
-data model | low level XML | low level XML | low level XML | **XPath Data Model**
-handle sequence | no | no | no | **yes**
-handle json | no | no | no | **yes**
+in memory/streaming | streaming | streaming | in memory | streaming | **streaming**
+push/pull | push | pull | -- | pull | **pull**
+data model | low level XML | low level XML | low level XML | low level JSON | **XPath Data Model**
+handle sequence | no | no | no | no | **yes**
+handle json | no | no | no | yes | **yes**
 
 # How does it work?
 It minimizes (as far as the XPath Data Model requires it) the number of information to manage to allow processing
