@@ -22,82 +22,48 @@ import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 
 public class TestGenerator {
 
-	@Test
-	public void testAllXML1M() throws QuiXException {
+	public static void testAll(int size, Unit unit) throws QuiXException {
 		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
 			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
 				for (Variation variation : Variation.values()) {
+					System.out.println("Test START "+size+" "+unit+": "+gtype+", "+stype+", "+variation);
+					long start = System.currentTimeMillis();
 					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-					InputStream is = generator.getInputStream(1, Unit.MBYTE, variation);
+					
+					InputStream is = generator.getInputStream(size, unit, variation);
 					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
 					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
 					while (vqxs.hasNext()) {
 						vqxs.next();
 					}
+					System.out.println("Test END "+(System.currentTimeMillis() - start));
 				}
 			}
 		}
+
+	}
+	@Test
+	public void testAllXML1M() throws QuiXException {
+		testAll(1, Unit.MBYTE);
 		assertTrue(true);
 	}
 	@Test
 	public void testAllXML10M() throws QuiXException {
-		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
-				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
-				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
-				for (Variation variation : Variation.values()) {
-					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-					InputStream is = generator.getInputStream(10, Unit.MBYTE, variation);
-					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
-					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
-					while (vqxs.hasNext()) {
-						vqxs.next();
-					}
-				}
-			}
-		}
+		testAll(10, Unit.MBYTE);
+		assertTrue(true);
+	}
+
+	@Test
+	public void testAllXML100M() throws QuiXException {
+	testAll(100, Unit.MBYTE);
 		assertTrue(true);
 	}
 
 //	@Test
-//	public void testAllXML100M() throws QuiXException {
-//		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
-//				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
-//				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-//			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
-//				for (Variation variation : Variation.values()) {
-//					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-//					InputStream is = generator.getInputStream(100, Unit.MBYTE, variation);
-//					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
-//					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
-//					while (vqxs.hasNext()) {
-//						vqxs.next();
-//					}
-//				}
-//			}
-//		}
-//		assertTrue(true);
-//	}
-
-//	@Test
 //	public void testAllXML1G() throws QuiXException {
-//		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
-//				ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
-//				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-//			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
-//				for (Variation variation : Variation.values()) {
-//					AGenerator generator = AXMLGenerator.instance(gtype, stype);
-//					InputStream is = generator.getInputStream(1, Unit.GBYTE, variation);
-//					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
-//					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
-//					while (vqxs.hasNext()) {
-//						vqxs.next();
-//					}
-//				}
-//			}
-//		}
+//      		testAll(1, Unit.GBYTE);
 //		assertTrue(true);
 //	}
 
