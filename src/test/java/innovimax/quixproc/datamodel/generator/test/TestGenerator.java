@@ -38,6 +38,7 @@ public class TestGenerator {
 					long event = 0;
 					while (vqxs.hasNext()) {
 						vqxs.next();
+						event++;
 					}
 					long time = System.currentTimeMillis() - start;
 					long speed = 1000*size*unit.value() / time;
