@@ -89,7 +89,7 @@ public class TestGenerator {
 	@Test
 	public void testAllXML50M() throws QuiXException, IOException {
 		for(Process process : Process.values()) {
-			testAll(Process.PARSE, 50, Unit.MBYTE);
+			testAll(process, 50, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
