@@ -33,7 +33,7 @@ public class TestGenerator {
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
 			for (SpecialType stype : SpecialType.allowedModifiers(gtype)) {
 				for (Variation variation : Variation.values()) {
-					System.out.format("Test START %d %s {%s, %s, %s, %s}%n", size, unit, process, gtype, stype,
+					System.out.format("Test XML START %d %s {%s, %s, %s, %s}%n", size, unit, process, gtype, stype,
 							variation);
 					long start = System.currentTimeMillis();
 					AGenerator generator = AXMLGenerator.instance(gtype, stype);
@@ -69,7 +69,7 @@ public class TestGenerator {
 					}
 					long time = System.currentTimeMillis() - start;
 					long speed = 1000 * totalsize / time;
-					System.out.format("Test END %,dms; %,dB/s", time, speed);
+					System.out.format("Test XML END %,dms; %,dB/s", time, speed);
 					if (event > 0) {
 						long evpers = 1000 * event / time;
 						long density = totalsize / event;
@@ -86,7 +86,7 @@ public class TestGenerator {
 		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_DENSITY,
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
 				for (Variation variation : Variation.values()) {
-					System.out.format("Test START %d %s {%s, %s, %s}%n", size, unit, process, gtype,
+					System.out.format("Test JSON START %d %s {%s, %s, %s}%n", size, unit, process, gtype,
 							variation);
 					long start = System.currentTimeMillis();
 					AGenerator generator = AJSONGenerator.instance(gtype);
@@ -122,7 +122,7 @@ public class TestGenerator {
 					}
 					long time = System.currentTimeMillis() - start+1;
 					long speed = 1000 * totalsize / time;
-					System.out.format("Test END %,dms; %,dB/s", time, speed);
+					System.out.format("Test JSON END %,dms; %,dB/s", time, speed);
 					if (event > 0) {
 						long evpers = 1000 * event / time;
 						long density = totalsize / event;
