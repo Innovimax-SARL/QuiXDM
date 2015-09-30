@@ -35,10 +35,14 @@ public class TestGenerator {
 					InputStream is = generator.getInputStream(size, unit, variation);
 					QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
 					ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
+					long event = 0;
 					while (vqxs.hasNext()) {
 						vqxs.next();
 					}
-					System.out.println("Test END "+(System.currentTimeMillis() - start));
+					long time = System.currentTimeMillis() - start;
+					long speed = 1000*size*unit.value() / time;
+					long evpers = 1000*event / time;
+					System.out.println("Test END "+time+"ms; "+speed+"B/s; "+event+"ev; "+evpers+"ev/s");
 				}
 			}
 		}
