@@ -63,6 +63,10 @@ public abstract class AStreamSource {
 			return this.is;
 		}
 
+		public static AStreamSource instance(InputStream is) {
+			return new JSONStreamSource(is);
+		}
+
 	}
 
 	public static Iterable<AStreamSource> instances(Source[] sources) {

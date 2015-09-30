@@ -1,5 +1,6 @@
 package innovimax.quixproc.datamodel.in;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
 
@@ -20,7 +21,9 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 	public QuiXEventStreamReader(javax.xml.transform.Source... sources) {
 		this(AStreamSource.instances(sources));
 	}
-
+	public QuiXEventStreamReader(AStreamSource ass) {
+		this(Collections.singleton(ass));
+	}
 	public QuiXEventStreamReader(Iterable<AStreamSource> sources) {
 		this.sources = sources.iterator();
 		this.delegates = new EnumMap<AStreamSource.Type, AQuiXEventStreamReader>(AStreamSource.Type.class);
@@ -86,6 +89,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 
 	@Override
 	public AQuiXEvent next() throws QuiXException {
+		//System.out.println(state);
 		AQuiXEvent event = null;
 		switch (state) {
 		case FINISH:

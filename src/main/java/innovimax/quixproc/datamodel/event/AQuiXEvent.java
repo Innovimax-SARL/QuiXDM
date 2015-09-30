@@ -120,7 +120,16 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 			return type + " " + this.uri;
 		}
 	}
-	
+	public static class StartJSON extends AJSONQuiXEvent {
+		public StartJSON() {
+			super(QuiXToken.START_JSON);
+		}
+	}
+	public static class EndJSON extends AJSONQuiXEvent {
+		public EndJSON() {
+			super(QuiXToken.END_JSON);
+		}
+	}
 	public static class StartObject extends AJSONQuiXEvent {
 		public StartObject() {
 			super(QuiXToken.START_OBJECT);
@@ -592,6 +601,14 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new Comment(comment);
 	}
 
+	public static AJSONQuiXEvent getStartJSON() {
+		return new StartJSON();
+	}
+
+	public static AJSONQuiXEvent getEndJSON() {
+		return new EndJSON();
+	}
+
 	public static AJSONQuiXEvent getStartObject() {
 		return new StartObject();
 	}
@@ -599,7 +616,6 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static AJSONQuiXEvent getEndObject() {
 		return new EndObject();
 	}
-
 	public static AJSONQuiXEvent getStartArray() {
 		return new StartArray();
 	}

@@ -122,14 +122,14 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	static byte nextChar(byte b, int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextChar[(b + incr) & 0xFF];
+		byte r = nextChar[(b + incr) & 0x7F];
 		// System.out.println("nextChar : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
 	static byte nextDigit(byte b, int incr) {
-		byte r = nextDigit[(b + incr) & 0xFF];
+		byte r = nextDigit[(b + incr) % 10];
 		return r;
 	}
 

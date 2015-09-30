@@ -101,11 +101,17 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 	}
 
 	private enum State {
-		START, IN_SEQUENCE, IN_DOCUMENT, IN_DOCUMENT_AFTER_ROOT, IN_ELEMENT, IN_CONTENT_TEXT, IN_CONTENT, IN_OBJECT, IN_OBJECT_VALUE, IN_ARRAY, END
+		START, 
+		IN_SEQUENCE, 
+		IN_DOCUMENT, IN_DOCUMENT_AFTER_ROOT, 
+		IN_ELEMENT, IN_CONTENT_TEXT, IN_CONTENT, 
+		IN_JSON, IN_JSON_AFTER_ROOT,
+		IN_OBJECT, IN_OBJECT_VALUE, IN_ARRAY, 
+		END
 	}
 
 	private enum Node {
-		DOCUMENT, ELEMENT, OBJECT, ARRAY
+		DOCUMENT, ELEMENT, JSON, OBJECT, ARRAY
 	}
 
 	private final Stack<Node> stack = new Stack<Node>();
@@ -121,21 +127,22 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			this.state = State.IN_SEQUENCE;
 			break;
 		case IN_SEQUENCE:
-			accept(token, EnumSet.of(QuiXToken.START_DOCUMENT, QuiXToken.START_OBJECT, QuiXToken.END_SEQUENCE));
+			accept(token, EnumSet.of(QuiXToken.START_DOCUMENT, QuiXToken.START_JSON, QuiXToken.END_SEQUENCE));
 			switch (token) {
 			case START_DOCUMENT:
 				this.state = State.IN_DOCUMENT;
 				this.stack.push(Node.DOCUMENT);
 				break;
-			case START_OBJECT:
-				this.state = State.IN_OBJECT;
-				this.stack.push(Node.OBJECT);
+			case START_JSON:
+				this.state = State.IN_JSON;
+				this.stack.push(Node.JSON);
 				break;
 			case END_SEQUENCE:
 				this.state = State.END;
 				break;
 			}
 			break;
+			
 		case END:
 			// will throw an error
 			accept(token, EnumSet.noneOf(QuiXToken.class));
@@ -296,6 +303,16 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				// unpile
 				acceptStackAndSetState(token, Node.ARRAY);
 			}
+		case IN_JSON:
+			accept(token, EnumSet.of(QuiXToken.START_OBJECT));
+			this.stack.push(Node.OBJECT);
+			this.state = State.IN_OBJECT;
+			break;
+		case IN_JSON_AFTER_ROOT:
+			accept(token, EnumSet.of(QuiXToken.END_JSON));
+			acceptStackAndSetState(token, Node.JSON);
+			break;
+			
 		}
 		return token;
 	}
@@ -317,6 +334,9 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				switch (current) {
 				case DOCUMENT:
 					this.state = State.IN_DOCUMENT_AFTER_ROOT;
+					break;
+				case JSON:
+					this.state = State.IN_JSON_AFTER_ROOT;
 					break;
 				case ELEMENT:
 					this.state = State.IN_CONTENT;

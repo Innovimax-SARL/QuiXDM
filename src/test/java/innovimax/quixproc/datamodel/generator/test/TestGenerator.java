@@ -19,6 +19,7 @@ import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 import innovimax.quixproc.datamodel.generator.json.AJSONGenerator;
 import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator;
 import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator.SpecialType;
+import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 
 public class TestGenerator {
@@ -85,7 +86,7 @@ public class TestGenerator {
 		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_DENSITY,
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
 				for (Variation variation : Variation.values()) {
-					System.out.format("Test START %d %s {%s, %s, %s, %s}%n", size, unit, process, gtype, stype,
+					System.out.format("Test START %d %s {%s, %s, %s}%n", size, unit, process, gtype,
 							variation);
 					long start = System.currentTimeMillis();
 					AGenerator generator = AJSONGenerator.instance(gtype);
@@ -98,7 +99,7 @@ public class TestGenerator {
 						while ((c = is.read()) != -1) {
 							// do nothing
 							totalsize++;
-							// System.out.println(c);
+							//System.out.println(AGenerator.display((byte )(c & 0xFF)));
 						}
 						break;
 					case READ_BUFFER:
@@ -110,7 +111,7 @@ public class TestGenerator {
 						}
 						break;
 					case PARSE:
-						QuiXEventStreamReader xqesr = new QuiXEventStreamReader(new StreamSource(is));
+						QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.JSONStreamSource.instance(is));
 						ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
 						while (vqxs.hasNext()) {
 							vqxs.next();
@@ -119,7 +120,7 @@ public class TestGenerator {
 						totalsize = size * unit.value();
 						break;
 					}
-					long time = System.currentTimeMillis() - start;
+					long time = System.currentTimeMillis() - start+1;
 					long speed = 1000 * totalsize / time;
 					System.out.format("Test END %,dms; %,dB/s", time, speed);
 					if (event > 0) {
@@ -149,15 +150,18 @@ public class TestGenerator {
 		assertTrue(true);
 	}
 
-	// @Test
-	// public void testAllXML1G() throws QuiXException {
-	// testAll(1, Unit.GBYTE);
-	// assertTrue(true);
-	// }
+	 @Test
+	 public void testAllJSON50M() throws QuiXException, IOException {
+			for (Process process : Process.values()) {
+				testAllJSON(process, 50, Unit.MBYTE);
+			}
+	 assertTrue(true);
+	 }
 
 	public static void main(String[] args) throws QuiXException, IOException {
-		for (Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE)) {
-			testAllXML(process, 5, Unit.BYTE);
+		for (Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE, Process.PARSE)) {
+			//testAllXML(process, 5, Unit.BYTE);
+			testAllJSON(process, 50, Unit.MBYTE);
 		}
 	}
 }
