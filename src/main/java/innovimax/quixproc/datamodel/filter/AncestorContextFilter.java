@@ -39,10 +39,10 @@ public class AncestorContextFilter extends AQuiXEventStreamFilter {
 	public IQuiXToken process(IQuiXToken item) {
 		switch (item.getType()) {
 		case START_ELEMENT:
-			//this.ancestors.push(qevent.asNamedEvent().getQName());
+			// this.ancestors.push(qevent.asNamedEvent().getQName());
 			break;
 		case END_ELEMENT:
-			//this.ancestors.pop();
+			// this.ancestors.pop();
 			break;
 		default:
 			break;

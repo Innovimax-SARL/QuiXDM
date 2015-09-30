@@ -112,7 +112,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			// if here we have to extend the buffer
 			byte[] replace = new byte[this.array[this.selector].length + 1];
 			System.arraycopy(this.array[this.selector], 0, replace, 0, this.start + 1);
-			System.arraycopy(this.array[this.selector], this.start, replace, this.start + 1, replace.length - this.start - 1);
+			System.arraycopy(this.array[this.selector], this.start, replace, this.start + 1,
+					replace.length - this.start - 1);
 			this.end++;
 			this.array[this.selector] = replace;
 		}

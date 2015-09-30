@@ -157,19 +157,21 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 				case XMLStreamConstants.END_ELEMENT:
 					// System.out.println("END_ELEMENT");
 					event = QuiXToken.END_ELEMENT;
-//					AQuiXEvent.getEndElement(sreader.getLocalName(), sreader.getNamespaceURI(),
-//							sreader.getPrefix());
+					// AQuiXEvent.getEndElement(sreader.getLocalName(),
+					// sreader.getNamespaceURI(),
+					// sreader.getPrefix());
 					event = updateText(event);
 					return event;
 				case XMLStreamConstants.ATTRIBUTE:
 					// System.out.println("ATTRIBUTE");
 					for (int i = 0; i < sreader.getAttributeCount(); i++) {
-//						buffer.add(
-//								QuiXToken.ATTRIBUTE
-//								AQuiXEvent.getAttribute(sreader.getAttributeLocalName(i),
-//								sreader.getAttributeNamespace(i), sreader.getAttributePrefix(i),
-//								sreader.getAttributeValue(i))
-//								);
+						// buffer.add(
+						// QuiXToken.ATTRIBUTE
+						// AQuiXEvent.getAttribute(sreader.getAttributeLocalName(i),
+						// sreader.getAttributeNamespace(i),
+						// sreader.getAttributePrefix(i),
+						// sreader.getAttributeValue(i))
+						// );
 					}
 					return buffer.poll().getType();
 				case XMLStreamConstants.CDATA:
@@ -189,15 +191,16 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 					break;
 				case XMLStreamConstants.COMMENT:
 					// System.out.println("COMMENT");
-//					event = AQuiXEvent.getComment(sreader.getText());
-//					event = updateText(event);
-//					return event;
+					// event = AQuiXEvent.getComment(sreader.getText());
+					// event = updateText(event);
+					// return event;
 					return null;
 				case XMLStreamConstants.PROCESSING_INSTRUCTION:
 					// System.out.println("PI");
-					//event = AQuiXEvent.getPI(sreader.getPITarget(), sreader.getPIData());
-//					event = updateText(event);
-//					return event;
+					// event = AQuiXEvent.getPI(sreader.getPITarget(),
+					// sreader.getPIData());
+					// event = updateText(event);
+					// return event;
 					return null;
 				// case XMLStreamConstants.NAMESPACE:
 				// System.out.println("NAMESPACE");
@@ -224,7 +227,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 			QuiXToken text = QuiXToken.TEXT;
 			// AQuiXEvent.getText(charBuffer.toString());
 			charBuffer.setLength(0);
-			//this.buffer.add(event);
+			// this.buffer.add(event);
 			return text;
 		}
 		return event;

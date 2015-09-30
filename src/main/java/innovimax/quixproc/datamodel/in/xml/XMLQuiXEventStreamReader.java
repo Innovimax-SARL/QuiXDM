@@ -48,7 +48,6 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 		this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
 	}
 
-
 	private AQuiXEvent load(Source current) throws QuiXException {
 		try {
 			this.sreader = this.ifactory.createXMLStreamReader(current);
@@ -192,12 +191,10 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 		}
 	}
 
-
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
-		return load(((AStreamSource.XMLStreamSource )current).asSource());
+		return load(((AStreamSource.XMLStreamSource) current).asSource());
 	}
-
 
 	@Override
 	public void reinitialize(AStreamSource current) {

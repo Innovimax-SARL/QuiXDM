@@ -50,17 +50,19 @@ public abstract class AStreamSource {
 			return this.source;
 		}
 	}
+
 	public static class JSONStreamSource extends AStreamSource {
 
 		protected JSONStreamSource() {
 			super(Type.JSON);
 		}
-		
+
 	}
+
 	public static Iterable<AStreamSource> instances(Source[] sources) {
 		AStreamSource[] asources = new AStreamSource[sources.length];
 		int i = 0;
-		for(javax.xml.transform.Source source : sources) {
+		for (javax.xml.transform.Source source : sources) {
 			asources[i] = AStreamSource.instance(source);
 			i++;
 		}

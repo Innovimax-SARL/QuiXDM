@@ -55,7 +55,8 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 			needCleaning = true;
 			break;
 		case NAMESPACE:
-			//this.namespaces.getLast().put(qevent.asNamespace().getPrefix(), qevent.asNamespace().getURI());
+			// this.namespaces.getLast().put(qevent.asNamespace().getPrefix(),
+			// qevent.asNamespace().getURI());
 			break;
 		}
 		return item;

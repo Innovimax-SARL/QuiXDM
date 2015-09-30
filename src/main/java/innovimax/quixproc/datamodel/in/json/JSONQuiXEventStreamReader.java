@@ -8,7 +8,6 @@ import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
 
 public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 
-
 	public JSONQuiXEventStreamReader(JSONStreamSource current) {
 		// todo
 	}
@@ -28,14 +27,13 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	@Override
 	public void reinitialize(AStreamSource current) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 }

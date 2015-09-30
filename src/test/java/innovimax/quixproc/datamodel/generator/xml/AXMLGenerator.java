@@ -38,7 +38,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		NAMESPACE, OPEN_CLOSE;
 
 		public static EnumSet<SpecialType> allowedModifiers(Type gtype) {
-			switch(gtype) {
+			switch (gtype) {
 			case HIGH_NODE_DENSITY:
 				return EnumSet.of(STANDARD);
 			case HIGH_NODE_DEPTH:
@@ -51,7 +51,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				return EnumSet.of(STANDARD);
 			default:
 				break;
-			
+
 			}
 			// TODO Auto-generated method stub
 			return null;
@@ -381,10 +381,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected int getPatternsLength() { 
-		
-			int result =  this.patterns[0].length + this.patterns[1].length;
-			//System.out.println("get patterns lenght " +result);
+		protected int getPatternsLength() {
+
+			int result = this.patterns[0].length + this.patterns[1].length;
+			// System.out.println("get patterns lenght " +result);
 			return result;
 		}
 
@@ -489,7 +489,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	public abstract static class AHighElementNameSize extends AXMLGenerator {
 
-
 		protected AHighElementNameSize(Type treeType, SpecialType xmlType) {
 			super(treeType, xmlType);
 		}
@@ -549,8 +548,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		public static class HighElementNameSizeOpenClose extends AHighElementNameSize {
-			
-			
+
 			public HighElementNameSizeOpenClose() {
 				super(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, SpecialType.OPEN_CLOSE);
 				this.random.setSeed(0);
@@ -641,7 +639,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-
 	private static void call(ATreeGenerator.Type gtype, SpecialType special, int size, Unit unit)
 			throws IOException, XMLStreamException {
 		AGenerator generator = instance(gtype, special);
@@ -691,22 +688,23 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		System.out.println("nextName\t: " + display(nextName));
 		System.out.println("prevStartName\t:" + display(prevStartName));
 		if (ONE_INSTANCE) {
-//			call(ATreeGenerator.Type.HIGH_NODE_DENSITY, null, 150, Unit.MBYTE);
+			// call(ATreeGenerator.Type.HIGH_NODE_DENSITY, null, 150,
+			// Unit.MBYTE);
 			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
-//			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
+			// call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
 			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 					ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 					ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-				for(SpecialType stype : SpecialType.allowedModifiers(gtype))
-				for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
-					int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
-					for (int i : values) {
-						if (unit == Unit.GBYTE && i > 1)
-							continue;
-						call(gtype, stype, i, unit);
+				for (SpecialType stype : SpecialType.allowedModifiers(gtype))
+					for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
+						int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
+						for (int i : values) {
+							if (unit == Unit.GBYTE && i > 1)
+								continue;
+							call(gtype, stype, i, unit);
+						}
 					}
-				}
 			}
 		}
 	}

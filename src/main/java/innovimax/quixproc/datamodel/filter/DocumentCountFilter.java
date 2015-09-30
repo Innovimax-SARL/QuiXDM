@@ -22,7 +22,7 @@ package innovimax.quixproc.datamodel.filter;
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.IQuiXToken;
 
-public class DocumentCountFilter extends AQuiXEventStreamFilter{
+public class DocumentCountFilter extends AQuiXEventStreamFilter {
 
 	private int count;
 

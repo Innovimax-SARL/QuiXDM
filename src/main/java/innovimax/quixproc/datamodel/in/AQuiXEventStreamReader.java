@@ -24,20 +24,22 @@ import innovimax.quixproc.datamodel.event.AQuiXEvent;
 
 public abstract class AQuiXEventStreamReader {
 
-
 	public interface CallBack {
 		QuiXEventStreamReader.State getState();
+
 		void setState(QuiXEventStreamReader.State state);
+
 		AQuiXEvent processEndSource() throws QuiXException;
 	}
 
 	protected AQuiXEventStreamReader() {
 	}
+
 	protected abstract AQuiXEvent load(AStreamSource current) throws QuiXException;
 
 	protected abstract AQuiXEvent process(CallBack callback) throws QuiXException;
 
-	public abstract void reinitialize(AStreamSource current); 
+	public abstract void reinitialize(AStreamSource current);
 
 	public abstract void close();
 

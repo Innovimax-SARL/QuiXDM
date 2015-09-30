@@ -96,7 +96,6 @@ public abstract class AGenerator {
 		generate(output, size, unit, Variation.NO_VARIATION);
 	}
 
-
 	public void generate(File output, long size, Unit unit, Variation variation) throws IOException {
 		output.getParentFile().mkdirs();
 		final long total = size * unit.value();
@@ -117,7 +116,7 @@ public abstract class AGenerator {
 			// System.out.println(current_size);
 			// write the alternate pattern
 			byte[] toWrite = applyVariation(variation, patterns, current_pattern);
-			System.out.println(display(toWrite));		
+			System.out.println(display(toWrite));
 			bos.write(toWrite);
 			// update the size
 			current_size = updateSize(current_size, current_pattern);
@@ -169,7 +168,8 @@ public abstract class AGenerator {
 		public GeneratorInputStream(long size, Unit unit, Variation variation) {
 			this.state = InputStreamState.START;
 			this.buffer = this.start;
-			//System.out.println("START : length : "+this.buffer.length+" : "+display(this.buffer));
+			// System.out.println("START : length : "+this.buffer.length+" :
+			// "+display(this.buffer));
 
 			this.total = size * unit.value();
 			this.variation = variation;
@@ -177,7 +177,8 @@ public abstract class AGenerator {
 
 		@Override
 		public int read(byte[] b, int off, int len) {
-			 //System.out.println("READ : off : "+off+" ; len : "+len+" : "+display(b));
+			// System.out.println("READ : off : "+off+" ; len : "+len+" :
+			// "+display(b));
 			if (b == null) {
 				throw new NullPointerException();
 			}
@@ -191,11 +192,11 @@ public abstract class AGenerator {
 				return -1;
 			int total = 0;
 			if (this.offset + 1 == this.buffer.length) {
-//				 System.out.println("offset : "+this.offset);
-//				 System.out.println("length : "+len);
+				// System.out.println("offset : "+this.offset);
+				// System.out.println("length : "+len);
 				update();
-//				 System.out.println("offset : "+this.offset);
-//				 System.out.println("length : "+len);
+				// System.out.println("offset : "+this.offset);
+				// System.out.println("length : "+len);
 				if (this.buffer == null)
 					return -1;
 			}
@@ -212,25 +213,27 @@ public abstract class AGenerator {
 				if (this.offset == this.buffer.length - 1)
 					update();
 				if (total == len) {
-					//System.out.println("offset : "+ this.offset+"; length : "+len+" : "+display(b));
+					// System.out.println("offset : "+ this.offset+"; length :
+					// "+len+" : "+display(b));
 					return len;
 
 				}
 				if (this.buffer == null) {
-					// System.out.println("offset : "+ this.offset+"; length : "+total+" : "+display(b));
+					// System.out.println("offset : "+ this.offset+"; length :
+					// "+total+" : "+display(b));
 					return total;
 				}
 			} while (true);
 		}
 
 		private void update() {
-			//System.out.println(this.state);
+			// System.out.println(this.state);
 			// offset == buffer.length
 			switch (this.state) {
 			case START:
-				//System.out.println("NotFinished");
+				// System.out.println("NotFinished");
 				if (notFinished(this.current_size, this.current_pattern, this.total)) {
-					//System.out.println("NotFinished : no");
+					// System.out.println("NotFinished : no");
 					// move to next pattern
 					this.current_pattern = updatePattern(this.current_pattern);
 					// System.out.println(current_size);
@@ -260,7 +263,7 @@ public abstract class AGenerator {
 			this.offset++;
 			if (this.offset < this.buffer.length) {
 				int c = this.buffer[this.offset];
-				//System.out.println("read : "+display((byte) (c & 0xFF)));
+				// System.out.println("read : "+display((byte) (c & 0xFF)));
 				return c;
 			}
 			update();
@@ -268,7 +271,7 @@ public abstract class AGenerator {
 				return -1;
 			this.offset++;
 			int c = this.buffer[this.offset];
-		    //System.out.println("read : "+display((byte) (c & 0xFF)));
+			// System.out.println("read : "+display((byte) (c & 0xFF)));
 			return c;
 		}
 

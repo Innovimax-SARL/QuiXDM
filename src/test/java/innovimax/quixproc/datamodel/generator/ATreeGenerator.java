@@ -69,8 +69,9 @@ public abstract class ATreeGenerator extends AGenerator {
 
 		@Override
 		protected int updatePattern(int current_pattern) {
-			//System.out.println("update pattern " + current_pattern + " --> "+this.next_pattern);
-			
+			// System.out.println("update pattern " + current_pattern + " -->
+			// "+this.next_pattern);
+
 			// return internal state
 			return this.next_pattern;
 		}
@@ -78,9 +79,10 @@ public abstract class ATreeGenerator extends AGenerator {
 		@Override
 		protected long updateSize(long current_size, int current_pattern) {
 			// update the size by adding open and closing tag
-			//System.out.println("update size " + current_size+", current_pattern "+current_pattern);
+			// System.out.println("update size " + current_size+",
+			// current_pattern "+current_pattern);
 			long result = current_size + (current_pattern == 0 ? getPatternsLength() : 0);
-			//System.out.println("after update size " + result);
+			// System.out.println("after update size " + result);
 			return result;
 		}
 
@@ -88,17 +90,18 @@ public abstract class ATreeGenerator extends AGenerator {
 
 		@Override
 		protected boolean notFinished(long current_size, int current_pattern, long total) {
-		//	 System.out.println("not finished " + current_size + ", "+current_pattern+", "+total);
-		//	 try {
-		//		System.in.read();
-		//	} catch (IOException e) {
-		//		// TODO Auto-generated catch block
-		//		e.printStackTrace();
-		//	}
+			// System.out.println("not finished " + current_size + ",
+			// "+current_pattern+", "+total);
+			// try {
+			// System.in.read();
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
 			if (current_size < total) {
 				this.loop++;
-		//		 System.out.println("not finished loop " + loop);
-					return true;
+				// System.out.println("not finished loop " + loop);
+				return true;
 			}
 			// current_size >= total
 			if (current_pattern == 0) {
