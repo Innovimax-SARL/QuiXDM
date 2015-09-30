@@ -22,8 +22,6 @@ package innovimax.quixproc.datamodel;
 import java.util.EnumSet;
 import java.util.Stack;
 
-import javax.xml.stream.XMLStreamReader;
-
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
 

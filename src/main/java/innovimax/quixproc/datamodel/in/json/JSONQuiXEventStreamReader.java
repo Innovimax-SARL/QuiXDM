@@ -2,9 +2,9 @@ package innovimax.quixproc.datamodel.in.json;
 
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
-import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 
 public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 

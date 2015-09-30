@@ -19,9 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel;
 
-import innovimax.quixproc.datamodel.event.AQuiXEvent;
-import innovimax.quixproc.datamodel.event.IQuiXEvent;
-
 /**
  * The {@code QuiXToken} is the central enum of QuiXDM It contains all the
  * Events that a full QuiXDM implementation must support

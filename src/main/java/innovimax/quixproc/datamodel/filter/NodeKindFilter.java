@@ -23,8 +23,6 @@ import java.util.EnumSet;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.IQuiXToken;
-import innovimax.quixproc.datamodel.event.AQuiXEvent;
-import innovimax.quixproc.datamodel.event.IQuiXEvent;
 
 public class NodeKindFilter extends AQuiXEventStreamFilter {
 	enum Kind {
