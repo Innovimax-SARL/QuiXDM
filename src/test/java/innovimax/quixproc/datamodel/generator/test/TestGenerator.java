@@ -94,6 +94,14 @@ public class TestGenerator {
 		assertTrue(true);
 	}
 
+	@Test
+	public void testAllXML1GNotParse() throws QuiXException, IOException {
+		for(Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE)) {		
+			testAll(process, 1, Unit.GBYTE);
+		}
+		assertTrue(true);
+	}
+
 //	@Test
 //	public void testAllXML1G() throws QuiXException {
 //      		testAll(1, Unit.GBYTE);
@@ -101,8 +109,8 @@ public class TestGenerator {
 //	}
 
 	public static void main(String[] args) throws QuiXException, IOException {
-			for(Process process : Process.values()) {
-			testAll(process, 10, Unit.MBYTE);
-			}
+		for(Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE)) {		
+			testAll(process, 5, Unit.GBYTE);
+		}
 	}
 }
