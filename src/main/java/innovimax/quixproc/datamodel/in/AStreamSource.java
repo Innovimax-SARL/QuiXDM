@@ -23,6 +23,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+
+import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
 
 public abstract class AStreamSource {
 	enum Type {
@@ -77,6 +80,23 @@ public abstract class AStreamSource {
 			i++;
 		}
 		return Arrays.asList(asources);
+	}
+
+	public static AStreamSource instance(FileExtension ext, InputStream is) {
+		switch(ext) {
+		case HTML:
+			break;
+		case JSON:
+			return JSONStreamSource.instance(is);
+		case XML:
+			return AStreamSource.instance(new StreamSource(is));
+		case YAML:
+			break;
+		default:
+			break;
+		
+		}
+		return null;
 	}
 
 }

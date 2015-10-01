@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
@@ -21,8 +20,7 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	private JsonParser iparser;
 	public JSONQuiXEventStreamReader(JSONStreamSource current) {
 		 this.ifactory = new JsonFactory();
-		 //ifactory.s
-		// todo
+		 this.ifactory.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
 	}
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {

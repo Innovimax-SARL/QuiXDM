@@ -31,9 +31,6 @@ import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 
 public abstract class AJSONGenerator extends ATreeGenerator {
-	public enum AJSONGeneratorType {
-
-	}
 
 	protected AJSONGenerator(ATreeGenerator.Type treeType) {
 		super(FileExtension.JSON, treeType);
@@ -133,7 +130,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	public static AGenerator instance(ATreeGenerator.Type type) {
+	public static AGenerator instance(ATreeGenerator.Type type, SpecialType stype) {
 		switch (type) {
 		case HIGH_NODE_DENSITY:
 			return new AJSONGenerator.HighDensityGenerator();
@@ -151,19 +148,29 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return null;
 	}
 
-	public static AGenerator instance(AJSONGeneratorType type) {
-		switch (type) {
+
+	public static abstract class HighNodeNameSizeGenerator extends ATreeGenerator.ANodeNameSizeGenerator {
+
+		protected HighNodeNameSizeGenerator(FileExtension ext, SpecialType xmlType) {
+			super(ext, xmlType);
+			// TODO Auto-generated constructor stub
 		}
-		return null;
+		
 	}
 
+	
 	public static class HighDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
+	
 		final byte[] start = "{".getBytes();
-		final byte[] end = "}".getBytes();
+		final byte[][] end = {
+				"}".getBytes(),
+				"]}".getBytes()
+		};
 
+		int choose_end = 0;
 		@Override
 		protected byte[] getEnd() {
-			return this.end;
+			return this.end[choose_end];
 		}
 
 		@Override
@@ -174,15 +181,20 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		// {} => 2 smallest
 		// {"A":1} => 7
 		// {"A":1,"B":1} => 13
+		// {"A":[1,1,1,1,1]}
 		// since key must be different at some point you need bigger key
 		// ..."AA":1, ...
 		// more or less 7 bytes per key value looks like the densest
 
 		private final byte[][] patterns = { // empty object is allowed
-				"\"A\":1".getBytes(), // first used only once
-				",\"A\":1".getBytes() };
+		//		"\"A\":1".getBytes(), // first used only once
+		//		",\"A\":1".getBytes() 
+				"\"\":[".getBytes(), // first used only once
+				"{}".getBytes(), 
+				",{}".getBytes() 				
+		};
 
-		private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
+//		private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
 
 		public HighDensityGenerator() {
 			super(FileExtension.JSON);
@@ -195,33 +207,37 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		protected int updatePattern(int current_pattern) {
+			if (current_pattern == 2)
+				return 2;
 			if (current_pattern == 1)
+				return 2;
+			if (current_pattern == 0) 
 				return 1;
-			if (current_pattern == 0)
-				return 1;
+			this.choose_end = 1;
 			return 0;
 		}
 
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
 			int incr = 0;
+			// IMPORTANT : the uniqueness is mandatory
+			// it doesn't depends on applyRandom hence
+//			if (pos == 1)
+//				this.baA.nextUnique();
 			switch (variation) {
 			case NO_VARIATION:
-				// IMPORTANT : the uniqueness is mandatory
-				// it doesn't depends on applyRandom hence
-				if (pos == 1)
-					this.baA.nextUnique();
 				return bs[pos];
 			case RANDOM:
-				incr = this.random.nextInt(10);
+				//incr = this.random.nextInt(10);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
+				case 1:
 					// no op
 					break;
-				case 1:
-					bs[1][bs[1].length - 1] = nextDigit(bs[1][bs[1].length - 1], incr);
+				case 2:
+					//bs[2][1] = nextDigit(bs[2][1], incr);
 					break;
 				}
 				return bs[pos];
@@ -233,11 +249,11 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	// high depth
 	// {} -> 2
-	// {"a":{}} -> 8
-	// {"a":{"a":{}}} -> 14
+	// {"":{}} -> 7
+	// {"":{"":{}}} -> 12
 	// start "{"
 	// end "}"
-	// '"a":{' and '}'
+	// '"":{' and '}'
 	public static class HighDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "{".getBytes();
 		final byte[] end = "}".getBytes();
@@ -252,7 +268,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "\"a\":{".getBytes(), "}".getBytes() };
+		final byte[][] patterns = { "\"\":{".getBytes(), "}".getBytes() };
 
 		public HighDepthGenerator() {
 			super(AGenerator.FileExtension.JSON, ATreeGenerator.Type.HIGH_NODE_DEPTH);
@@ -275,12 +291,12 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-				incr = this.random.nextInt(128);
+				//incr = this.random.nextInt(128);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-					bs[0][1] = nextChar(bs[0][1], incr);
+				//	bs[0][1] = nextChar(bs[0][1], incr);
 					break;
 				case 1:
 					// no op
@@ -309,7 +325,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		f.disable(JsonParser.Feature.ALLOW_COMMENTS);
 		f.disable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
 		// AGenerator generator = instance(ATreeGenerator.Type.HIGH_DENSITY);
-		AGenerator generator = instance(ATreeGenerator.Type.HIGH_NODE_DEPTH);
+		AGenerator generator = instance(ATreeGenerator.Type.HIGH_NODE_DEPTH, SpecialType.STANDARD);
 
 		InputStream is = generator.getInputStream(50, Unit.MBYTE, Variation.NO_VARIATION);
 		if (false) {

@@ -34,11 +34,9 @@ public abstract class AGenerator {
 
 	public enum Variation {
 		NO_VARIATION, SEQUENTIAL, RANDOM
-
 	}
 
 	public enum Encoding {
-
 		SEVEN_BITS, // 1 byte (minus the upper bit) is one char
 		EIGHT_BITS, // 1 byte (including upper bit) is one char
 		TWO_BYTES, // 2 bytes per char
@@ -103,27 +101,26 @@ public abstract class AGenerator {
 		BufferedOutputStream bos = new BufferedOutputStream(fos, 1000 * 1000);
 		final byte[] start = getStart();
 		final byte[][] patterns = getPatterns();
-		final byte[] end = getEnd();
 		// ensure that at minimum the size is start+end
-		long current_size = start.length + end.length;
+		long current_size = start.length + getEnd().length;
 		int current_pattern = -1;
 		// write the start pattern
 		bos.write(start);
-		System.out.println(display(start));
+//		System.out.println(display(start));
 		while (notFinished(current_size, current_pattern, total)) {
 			// move to next pattern
 			current_pattern = updatePattern(current_pattern);
 			// System.out.println(current_size);
 			// write the alternate pattern
 			byte[] toWrite = applyVariation(variation, patterns, current_pattern);
-			System.out.println(display(toWrite));
+//			System.out.println(display(toWrite));
 			bos.write(toWrite);
 			// update the size
 			current_size = updateSize(current_size, current_pattern);
 		}
 		// write the end pattern
-		bos.write(end);
-		System.out.println(display(end));
+		bos.write(getEnd());
+//		System.out.println(display(getEnd()));
 		bos.flush();
 		bos.close();
 		fos.close();
@@ -155,9 +152,9 @@ public abstract class AGenerator {
 
 		final byte[] start = getStart();
 		final byte[][] patterns = getPatterns();
-		final byte[] end = getEnd();
+		//final byte[] end = getEnd();
 		// ensure that at minimum the size is start+end
-		long current_size = this.start.length + this.end.length;
+		long current_size = this.start.length + getEnd().length;
 		int current_pattern = -1;
 		int offset = -1;
 		byte[] buffer = null;
@@ -247,7 +244,7 @@ public abstract class AGenerator {
 				this.state = InputStreamState.CURRENT;
 				//$FALL-THROUGH$
 			case CURRENT:
-				this.buffer = this.end;
+				this.buffer = getEnd();
 				this.offset = -1;
 				this.state = InputStreamState.END;
 				return;
@@ -295,6 +292,10 @@ public abstract class AGenerator {
 
 	protected AGenerator(FileExtension type) {
 		this.type = type;
+	}
+
+	public static String display(int c) {
+		return display((byte )(c & 0XFF));
 	}
 
 }

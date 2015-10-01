@@ -141,7 +141,7 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public boolean isEmpty() {
-			return this.cs.toString().isEmpty();
+			return this.cs.length() == 0;
 		}
 
 		@Override

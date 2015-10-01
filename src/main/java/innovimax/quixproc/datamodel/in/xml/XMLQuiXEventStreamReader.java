@@ -65,10 +65,10 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 	public AQuiXEvent process(AQuiXEventStreamReader.CallBack callback) throws QuiXException {
 		AQuiXEvent event = null;
 		try {
-			if (!buffer.isEmpty()) {
-				return buffer.poll();
+			if (!this.buffer.isEmpty()) {
+				return this.buffer.poll();
 			}
-			if (!sreader.hasNext() && callback.getState() == QuiXEventStreamReader.State.START_SOURCE) {
+			if (!this.sreader.hasNext() && callback.getState() == QuiXEventStreamReader.State.START_SOURCE) {
 				// special case if the buffer is empty but the document has not
 				// been closed
 				event = AQuiXEvent.getEndDocument(this.baseURI);
@@ -79,7 +79,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 				return callback.processEndSource();
 			}
 			while (true) {
-				int code = sreader.next();
+				int code = this.sreader.next();
 				switch (code) {
 				case XMLStreamConstants.START_DOCUMENT:
 					// System.out.println("START_DOCUMENT");
@@ -87,20 +87,20 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 					break;
 				case XMLStreamConstants.START_ELEMENT:
 					// System.out.println("START_ELEMENT");
-					event = AQuiXEvent.getStartElement(QuiXCharStream.fromSequence(sreader.getLocalName()),
-							QuiXCharStream.fromSequence(sreader.getNamespaceURI()),
-							QuiXCharStream.fromSequence(sreader.getPrefix()));
+					event = AQuiXEvent.getStartElement(QuiXCharStream.fromSequence(this.sreader.getLocalName()),
+							QuiXCharStream.fromSequence(this.sreader.getNamespaceURI()),
+							QuiXCharStream.fromSequence(this.sreader.getPrefix()));
 					event = updateText(event);
-					for (int i = 0; i < sreader.getNamespaceCount(); i++) {
-						buffer.add(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(sreader.getNamespacePrefix(i)),
-								QuiXCharStream.fromSequence(sreader.getNamespaceURI(i))));
+					for (int i = 0; i < this.sreader.getNamespaceCount(); i++) {
+						this.buffer.add(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(this.sreader.getNamespacePrefix(i)),
+								QuiXCharStream.fromSequence(this.sreader.getNamespaceURI(i))));
 					}
-					for (int i = 0; i < sreader.getAttributeCount(); i++) {
-						buffer.add(
-								AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(sreader.getAttributeLocalName(i)),
-										QuiXCharStream.fromSequence(sreader.getAttributeNamespace(i)),
-										QuiXCharStream.fromSequence(sreader.getAttributePrefix(i)),
-										QuiXCharStream.fromSequence(sreader.getAttributeValue(i))));
+					for (int i = 0; i < this.sreader.getAttributeCount(); i++) {
+						this.buffer.add(
+								AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
+										QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
+										QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
+										QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
 					}
 					return event;
 				case XMLStreamConstants.END_DOCUMENT:
@@ -111,45 +111,45 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 					return event;
 				case XMLStreamConstants.END_ELEMENT:
 					// System.out.println("END_ELEMENT");
-					event = AQuiXEvent.getEndElement(QuiXCharStream.fromSequence(sreader.getLocalName()),
-							QuiXCharStream.fromSequence(sreader.getNamespaceURI()),
-							QuiXCharStream.fromSequence(sreader.getPrefix()));
+					event = AQuiXEvent.getEndElement(QuiXCharStream.fromSequence(this.sreader.getLocalName()),
+							QuiXCharStream.fromSequence(this.sreader.getNamespaceURI()),
+							QuiXCharStream.fromSequence(this.sreader.getPrefix()));
 					event = updateText(event);
 					return event;
 				case XMLStreamConstants.ATTRIBUTE:
 					// System.out.println("ATTRIBUTE");
-					for (int i = 0; i < sreader.getAttributeCount(); i++) {
-						buffer.add(
-								AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(sreader.getAttributeLocalName(i)),
-										QuiXCharStream.fromSequence(sreader.getAttributeNamespace(i)),
-										QuiXCharStream.fromSequence(sreader.getAttributePrefix(i)),
-										QuiXCharStream.fromSequence(sreader.getAttributeValue(i))));
+					for (int i = 0; i < this.sreader.getAttributeCount(); i++) {
+						this.buffer.add(
+								AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
+										QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
+										QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
+										QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
 					}
-					return buffer.poll();
+					return this.buffer.poll();
 				case XMLStreamConstants.CDATA:
 					// System.out.println("CDATA");
-					this.charBuffer.append(sreader.getText());
+					this.charBuffer = this.charBuffer.append(this.sreader.getText());
 					// do loop
 					break;
 				case XMLStreamConstants.CHARACTERS:
 					// System.out.println("CHARACTERS");
-					this.charBuffer.append(sreader.getText());
+					 this.charBuffer = this.charBuffer.append(this.sreader.getText());
 					// do loop
 					break;
 				case XMLStreamConstants.SPACE:
 					// System.out.println("SPACE");
-					this.charBuffer.append(sreader.getText());
+					this.charBuffer.append(this.sreader.getText());
 					// do loop
 					break;
 				case XMLStreamConstants.COMMENT:
 					// System.out.println("COMMENT");
-					event = AQuiXEvent.getComment(QuiXCharStream.fromSequence(sreader.getText()));
+					event = AQuiXEvent.getComment(QuiXCharStream.fromSequence(this.sreader.getText()));
 					event = updateText(event);
 					return event;
 				case XMLStreamConstants.PROCESSING_INSTRUCTION:
 					// System.out.println("PI");
-					event = AQuiXEvent.getPI(QuiXCharStream.fromSequence(sreader.getPITarget()),
-							QuiXCharStream.fromSequence(sreader.getPIData()));
+					event = AQuiXEvent.getPI(QuiXCharStream.fromSequence(this.sreader.getPITarget()),
+							QuiXCharStream.fromSequence(this.sreader.getPIData()));
 					event = updateText(event);
 					return event;
 				// case XMLStreamConstants.NAMESPACE:
@@ -173,9 +173,9 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 	 * @return
 	 */
 	private AQuiXEvent updateText(AQuiXEvent event) {
-		if (!charBuffer.isEmpty()) {
-			AQuiXEvent text = AQuiXEvent.getText(charBuffer);
-			charBuffer = QuiXCharStream.EMPTY;
+		if (!this.charBuffer.isEmpty()) {
+			AQuiXEvent text = AQuiXEvent.getText(this.charBuffer);
+			this.charBuffer = QuiXCharStream.EMPTY;
 			this.buffer.add(event);
 			return text;
 		}

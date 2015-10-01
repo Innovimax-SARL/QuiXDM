@@ -19,9 +19,49 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.generator;
 
+import java.util.EnumSet;
+
+import innovimax.quixproc.datamodel.generator.json.AJSONGenerator;
+import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator;
+
+
 public abstract class ATreeGenerator extends AGenerator {
 	public enum Type {
 		HIGH_NODE_DENSITY, HIGH_NODE_DEPTH, HIGH_NODE_NAME_SIZE, HIGH_TEXT_SIZE, SPECIFIC
+	}
+	public enum SpecialType {
+		STANDARD, // no specific
+		NAMESPACE, OPEN_CLOSE;
+
+		public static EnumSet<SpecialType> allowedModifiers(FileExtension ext, Type gtype) {
+			switch (ext) {
+			case HTML:
+				break;
+			case JSON:
+				switch(gtype) {
+				case HIGH_NODE_DENSITY:
+				case HIGH_NODE_DEPTH:
+					return EnumSet.of(STANDARD);
+				}
+				break;
+			case XML:
+				switch (gtype) {
+				case HIGH_NODE_DENSITY:
+					return EnumSet.of(STANDARD);
+				case HIGH_NODE_DEPTH:
+					return EnumSet.of(STANDARD, NAMESPACE);
+				case HIGH_NODE_NAME_SIZE:
+					return EnumSet.of(STANDARD, OPEN_CLOSE);
+				case HIGH_TEXT_SIZE:
+					return EnumSet.of(STANDARD);
+				case SPECIFIC:
+				}
+				break;
+			case YAML:
+				break;
+			}
+			return EnumSet.noneOf(SpecialType.class);
+		}
 	}
 
 	private final Type treeType;
@@ -35,7 +75,13 @@ public abstract class ATreeGenerator extends AGenerator {
 		super(type);
 		this.treeType = Type.SPECIFIC;
 	}
+	public abstract static class ANodeNameSizeGenerator extends ATreeGenerator {
 
+		protected ANodeNameSizeGenerator(FileExtension ext, SpecialType xmlType) {
+			super(ext, Type.HIGH_NODE_NAME_SIZE); //, xmlType);
+		}
+
+	}
 	public abstract static class AHighDensityGenerator extends ATreeGenerator {
 
 		public AHighDensityGenerator(FileExtension type) {
@@ -114,6 +160,23 @@ public abstract class ATreeGenerator extends AGenerator {
 
 		protected abstract int getPatternsLength();
 
+	}
+
+	public static AGenerator instance(FileExtension ext, Type gtype, SpecialType stype) {
+		switch(ext) {
+		case HTML:
+			break;
+		case JSON:
+			return AJSONGenerator.instance(gtype, stype);
+		case XML:
+			return AXMLGenerator.instance(gtype, stype);
+		case YAML:
+			break;
+		default:
+			break;
+		
+		}
+		return null;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
-QuiXProc: efficient evaluation of XProc Pipelines.
+`QuiXProc: efficient evaluation of XProc Pipelines.
 Copyright (C) 2011-2015 Innovimax
 All rights reserved.
 

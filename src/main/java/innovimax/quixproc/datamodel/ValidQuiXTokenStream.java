@@ -132,7 +132,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			this.pos++;
 			if (this.pos >= this.size) {
 				this.size = (this.size * 3)/2 + 1;
-				System.out.println(this.size);
+				//System.out.println(this.size);
 				this.data = Arrays.copyOf(this.data, this.size);
 			}
 			this.data[this.pos] = (byte) node.ordinal();			
@@ -339,6 +339,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				// unpile
 				acceptStackAndSetState(token, Node.ARRAY);
 			}
+			break;
 		case IN_JSON:
 			//json     := START_JSON, object, END_JSON
 			accept(token, EnumSet.of(QuiXToken.START_OBJECT));
@@ -380,7 +381,9 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 					break;
 				case OBJECT:
 					this.state = State.IN_OBJECT;
+					break;
 				case ARRAY:
+					this.state = State.IN_ARRAY;
 				}
 			}
 			return;
