@@ -24,7 +24,7 @@ public abstract class ATreeGenerator extends AGenerator {
 		HIGH_NODE_DENSITY, HIGH_NODE_DEPTH, HIGH_NODE_NAME_SIZE, HIGH_TEXT_SIZE, SPECIFIC
 	}
 
-	private Type treeType;
+	private final Type treeType;
 
 	protected ATreeGenerator(FileExtension type, Type treeType) {
 		super(type);

@@ -28,7 +28,7 @@ import innovimax.quixproc.datamodel.QuiXQName;
 
 public class AncestorContextFilter extends AQuiXEventStreamFilter {
 
-	private Stack<QuiXQName> ancestors;
+	private final Stack<QuiXQName> ancestors;
 
 	public AncestorContextFilter(IQuiXStream<IQuiXToken> stream) {
 		super(stream);

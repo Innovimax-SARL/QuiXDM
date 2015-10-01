@@ -80,7 +80,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return null;
 	}
 
-	SpecialType specialType;
+	final SpecialType specialType;
 
 	protected AXMLGenerator(Type treeType, SpecialType xmlType) {
 		super(FileExtension.XML, treeType);

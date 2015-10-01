@@ -68,8 +68,8 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 
 	private AQuiXEvent current = null;
 	private AQuiXEvent future = null;
-	private List<AQuiXEvent.Namespace> namespaces = new ArrayList<AQuiXEvent.Namespace>();
-	private List<AQuiXEvent.Attribute> attributes = new ArrayList<AQuiXEvent.Attribute>();
+	private final List<AQuiXEvent.Namespace> namespaces = new ArrayList<AQuiXEvent.Namespace>();
+	private final List<AQuiXEvent.Attribute> attributes = new ArrayList<AQuiXEvent.Attribute>();
 
 	@Override
 	public int next() throws XMLStreamException {

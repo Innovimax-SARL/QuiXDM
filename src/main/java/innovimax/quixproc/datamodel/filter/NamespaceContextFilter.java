@@ -30,7 +30,7 @@ import innovimax.quixproc.datamodel.QuiXCharStream;
 
 public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 
-	private LinkedList<Map<QuiXCharStream, QuiXCharStream>> namespaces;
+	private final LinkedList<Map<QuiXCharStream, QuiXCharStream>> namespaces;
 
 	public NamespaceContextFilter(IQuiXStream<IQuiXToken> stream) {
 		super(stream);

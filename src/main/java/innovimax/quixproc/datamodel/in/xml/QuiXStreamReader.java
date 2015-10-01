@@ -72,7 +72,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	}
 
 	private State state = State.INIT;
-	private StringBuilder charBuffer = new StringBuilder();
+	private final StringBuilder charBuffer = new StringBuilder();
 
 	@Override
 	public QuiXToken next() throws QuiXStreamException {

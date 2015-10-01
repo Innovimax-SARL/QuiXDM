@@ -64,8 +64,8 @@ public abstract class AGenerator {
 
 	public enum Unit {
 		BYTE(1, "B"), KBYTE(1000, "KB"), MBYTE(1000000, "MB"), GBYTE(1000000000, "GB"), TBYTE(1000000000000l, "TB");
-		private long value;
-		private String display;
+		private final long value;
+		private final String display;
 
 		Unit(long value, String display) {
 			this.value = value;

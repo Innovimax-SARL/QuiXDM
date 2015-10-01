@@ -29,7 +29,7 @@ public class NodeKindFilter extends AQuiXEventStreamFilter {
 		ATTRIBUTE, TEXT, COMMENT, PI, NAMESPACE
 	}
 
-	private EnumSet<Kind> enumset;
+	private final EnumSet<Kind> enumset;
 
 	public NodeKindFilter(IQuiXStream<IQuiXToken> stream, EnumSet<Kind> enumset) {
 		super(stream);

@@ -178,7 +178,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	}
 
 	public static class ValueNumber extends AJSONValue {
-		double value;
+		final double value;
 		public ValueNumber(double value) {
 			super(QuiXToken.VALUE_NUMBER);
 			this.value = value;
@@ -186,7 +186,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	}
 
 	public static class ValueString extends AJSONValue {
-		QuiXCharStream value;
+		final QuiXCharStream value;
 		public ValueString(QuiXCharStream value) {
 			super(QuiXToken.VALUE_STRING);
 			this.value = value;
