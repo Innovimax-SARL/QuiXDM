@@ -29,7 +29,7 @@ public abstract class AQuiXEventStreamReader {
 
 		void setState(QuiXEventStreamReader.State state);
 
-		AQuiXEvent processEndSource();
+		AQuiXEvent processEndSource() throws QuiXException;
 	}
 
 	protected AQuiXEventStreamReader() {

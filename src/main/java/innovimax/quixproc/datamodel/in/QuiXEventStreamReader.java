@@ -30,7 +30,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 		this.delegate = null;
 	}
 
-	private AQuiXEvent loadSource() {
+	private AQuiXEvent loadSource() throws QuiXException {
 		AStreamSource current = this.sources.next();
 		switch (current.type) {
 		case JSON:
@@ -115,7 +115,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 	}
 
 	@Override
-	public AQuiXEvent processEndSource() {
+	public AQuiXEvent processEndSource() throws QuiXException {
 		AQuiXEvent event = null;
 		if (this.sources.hasNext()) {
 			// there is still sources
