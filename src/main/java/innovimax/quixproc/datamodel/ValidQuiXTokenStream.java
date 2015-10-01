@@ -19,8 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel;
 
+import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.Stack;
 
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
@@ -118,7 +118,40 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 		DOCUMENT, ELEMENT, JSON, OBJECT, ARRAY
 	}
 
-	private final Stack<Node> stack = new Stack<Node>();
+	private static class NodeStack {
+		byte[] data;
+		private final static int START_SIZE = 8;
+		int size, pos;
+		NodeStack() {
+			this.data = new byte[START_SIZE];
+			this.size = 8;
+			this.pos = -1;
+		}
+		
+		public void push(Node node) {
+			this.pos++;
+			if (this.pos >= this.size) {
+				this.size = (this.size * 3)/2 + 1;
+				System.out.println(this.size);
+				this.data = Arrays.copyOf(this.data, this.size);
+			}
+			this.data[this.pos] = (byte) node.ordinal();			
+		}
+
+		public boolean empty() {
+			return this.pos < 0;
+		}
+
+		public Node pop() {
+			return Node.values()[this.data[this.pos--]];
+		}
+
+		public Node peek() {
+			return Node.values()[this.data[this.pos]];
+		}
+		
+	}
+	private final NodeStack stack = new NodeStack();
 
 	@Override
 	public IQuiXToken process(IQuiXToken item) throws IllegalStateException {
