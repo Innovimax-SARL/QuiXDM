@@ -63,7 +63,7 @@ public abstract class AGenerator {
 	protected final Random random = new Random();
 
 	public enum Unit {
-		BYTE(1, "B"), KBYTE(1000, "KB"), MBYTE(1000000, "MB"), GBYTE(1000000000, "GB"), TBYTE(1000000000000l, "TB");
+		BYTE(1, "B"), KBYTE(1000, "KB"), MBYTE(1000000, "MB"), GBYTE(1000000000, "GB"), TBYTE(1000000000000L, "TB");
 		private final long value;
 		private final String display;
 

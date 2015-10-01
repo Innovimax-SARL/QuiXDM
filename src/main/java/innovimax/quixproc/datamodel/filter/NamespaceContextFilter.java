@@ -73,6 +73,7 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 		for (Iterator<Map<QuiXCharStream, QuiXCharStream>> iter = this.namespaces.descendingIterator(); iter
 				.hasNext();) {
 			Map<QuiXCharStream, QuiXCharStream> map = iter.next();
+			// TODO prefix is String and map of QuiXCharStream
 			if (map.containsKey(prefix))
 				return map.get(prefix);
 		}

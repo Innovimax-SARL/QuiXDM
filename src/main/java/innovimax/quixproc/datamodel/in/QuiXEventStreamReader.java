@@ -90,7 +90,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 	@Override
 	public AQuiXEvent next() throws QuiXException {
 		//System.out.println(state);
-		AQuiXEvent event = null;
+		final AQuiXEvent event;
 		switch (state) {
 		case FINISH:
 			return null;

@@ -127,8 +127,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 		// NamespaceIterator.getInScopeNamespaceCodes(inode);
 
 		if (inscopeNS.length > 0) {
-			for (int pos = 0; pos < inscopeNS.length; pos++) {
-				NamespaceBinding ns = inscopeNS[pos];
+			for (NamespaceBinding ns : inscopeNS) {
 				String pfx = ns.getPrefix();
 				String uri = ns.getURI();
 				doc.append(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(pfx), QuiXCharStream.fromSequence(uri)));

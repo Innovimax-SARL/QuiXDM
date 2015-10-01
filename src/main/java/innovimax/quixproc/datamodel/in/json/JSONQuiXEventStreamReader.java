@@ -32,8 +32,6 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	protected AQuiXEvent load(InputStream current) throws QuiXException {
 		try {
 			this.iparser = this.ifactory.createParser(current);
-		} catch (JsonParseException e) {
-			throw new QuiXException(e);
 		} catch (IOException e) {
 			throw new QuiXException(e);
 		}		
@@ -87,8 +85,6 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 				}
 			throw new QuiXException("Unknown event " + token);
 		}
-		} catch (JsonParseException e) {
-			throw new QuiXException(e);
 		} catch (IOException e) {
 			throw new QuiXException(e);
 		}
