@@ -99,9 +99,9 @@ public class TestGenerator {
 	}
 
 	 @Test
-	 public void testAllJSON50M() throws QuiXException, IOException {
+	 public void testAllJSON10M() throws QuiXException, IOException {
 			for (Process process : Process.values()) {
-				testAll(FileExtension.JSON, process, 50, Unit.MBYTE);
+				testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
 			}
 	 assertTrue(true);
 	 }
