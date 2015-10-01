@@ -30,7 +30,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 		this.delegate = null;
 	}
 
-	private AQuiXEvent loadSource() throws QuiXException {
+	private AQuiXEvent loadSource() {
 		AStreamSource current = this.sources.next();
 		switch (current.type) {
 		case JSON:

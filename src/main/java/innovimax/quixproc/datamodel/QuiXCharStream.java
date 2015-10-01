@@ -74,9 +74,7 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public boolean contains(CharSequence sequence) throws ConcurrentModificationException {
-			if (a.contains(sequence))
-				return true;
-			return b.contains(sequence);
+			return a.contains(sequence) || b.contains(sequence);
 		}
 
 		@Override
@@ -94,9 +92,7 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public boolean isEmpty() {
-			if (!a.isEmpty())
-				return false;
-			return b.isEmpty();
+			return a.isEmpty() && b.isEmpty();
 		}
 
 		@Override

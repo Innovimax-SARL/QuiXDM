@@ -48,7 +48,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	private QuiXCharStream baseURI;
 	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
-	public QuiXStreamReader(Iterable<Source> sources) throws XMLStreamException {
+	public QuiXStreamReader(Iterable<Source> sources) {
 		this.ifactory = XMLInputFactory.newFactory();
 		this.position = 0;
 		this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
