@@ -58,7 +58,8 @@ public abstract class AGenerator {
 	}
 
 	private final FileExtension type;
-	protected final Random random = new Random();
+	protected final AReversibleRandom random;
+	private final long seed;
 
 	public enum Unit {
 		BYTE(1, "B"), KBYTE(1000, "KB"), MBYTE(1000000, "MB"), GBYTE(1000000000, "GB"), TBYTE(1000000000000L, "TB");
@@ -292,6 +293,12 @@ public abstract class AGenerator {
 
 	protected AGenerator(FileExtension type) {
 		this.type = type;
+		this.seed = System.nanoTime();
+		this.random = new AReversibleRandom.SimpleReversibleRandom(this.seed, 3, 5);
+	}
+	
+	protected void resetRandom() {
+		this.random.setSeed(this.seed);
 	}
 
 	public static String display(int c) {

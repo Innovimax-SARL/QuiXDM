@@ -29,6 +29,7 @@ import com.fasterxml.jackson.core.JsonToken;
 
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.generator.AGenerator.Variation;
 
 public abstract class AJSONGenerator extends ATreeGenerator {
 
@@ -148,12 +149,79 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return null;
 	}
 
-
-	public static abstract class HighNodeNameSizeGenerator extends ATreeGenerator.ANodeNameSizeGenerator {
+/*
+	public static class HighNodeNameSizeGenerator extends ATreeGenerator.ANodeNameSizeGenerator {
 
 		protected HighNodeNameSizeGenerator(FileExtension ext, SpecialType xmlType) {
 			super(ext, xmlType);
-			// TODO Auto-generated constructor stub
+		}
+		
+	}
+	*/
+	public static class HighTextSizeGenerator extends ATreeGenerator.AHighTextSizeGenerator {
+		protected HighTextSizeGenerator(FileExtension ext, SpecialType sType) {
+			super(ext, sType);
+		}
+
+		final byte[] start = "{".getBytes();
+		final byte[][] end = {
+				"}".getBytes(),
+				"\"}".getBytes()
+		};
+		int choose_end = 0;
+
+		@Override
+		protected byte[] getEnd() {
+			return this.end[choose_end];
+		}
+
+		@Override
+		protected byte[] getStart() {
+			return this.start;
+		}
+
+		final byte[][] patterns = { "\"\":\"".getBytes(),
+				"a".getBytes()};
+
+		@Override
+		protected byte[][] getPatterns() {
+			return this.patterns;
+		}
+
+		@Override
+		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+			int incr = 0;
+			switch (variation) {
+			case NO_VARIATION:
+				return bs[pos];
+			case RANDOM:
+				incr = this.random.nextInt(128);
+				//$FALL-THROUGH$
+			case SEQUENTIAL:
+				switch (pos) {
+				case 1:
+					bs[pos][0] = nextChar(bs[pos][0], incr);
+					break;
+				}
+				return bs[pos];
+			}
+			return null;
+		}
+
+		@Override
+		protected boolean notFinished(long current_size, int current_pattern, long total) {
+
+			return current_size < total;
+		}
+
+		@Override
+		protected int updatePattern(int current_pattern) {
+			return 0;
+		}
+
+		@Override
+		protected long updateSize(long current_size, int current_pattern) {
+			return current_size + 1;
 		}
 		
 	}
@@ -237,7 +305,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 					// no op
 					break;
 				case 2:
-					//bs[2][1] = nextDigit(bs[2][1], incr);
+					//bs[pos][1] = nextDigit(bs[pos][1], incr);
 					break;
 				}
 				return bs[pos];
@@ -296,7 +364,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-				//	bs[0][1] = nextChar(bs[0][1], incr);
+				//	bs[pos][1] = nextChar(bs[pos][1], incr);
 					break;
 				case 1:
 					// no op

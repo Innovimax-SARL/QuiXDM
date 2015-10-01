@@ -83,9 +83,9 @@ public class TestGenerator {
 
 
 	@Test
-	public void testAllXML10M() throws QuiXException, IOException {
+	public void testAllXML2M() throws QuiXException, IOException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.XML, process, 10, Unit.MBYTE);
+			testAll(FileExtension.XML, process, 2, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
@@ -99,18 +99,18 @@ public class TestGenerator {
 	}
 
 	 @Test
-	 public void testAllJSON10M() throws QuiXException, IOException {
+	 public void testAllJSON50M() throws QuiXException, IOException {
 			for (Process process : Process.values()) {
-				testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
+				testAll(FileExtension.JSON, process, 50, Unit.MBYTE);
 			}
 	 assertTrue(true);
 	 }
 
 	public static void main(String[] args) throws QuiXException, IOException {
 		for (Process process : EnumSet.of(/*Process.READ_BUFFER,*/ Process.READ_BYTE, Process.PARSE)) {
-			//testAll(FileExtension.XML, process, 5, Unit.BYTE);
-			//testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
-			testAll(FileExtension.XML, process, 100, Unit.KBYTE);
+			//testAll(FileExtension.XML, process, 2, Unit.MBYTE);
+			//testAll(FileExtension.JSON, process, 50, Unit.MBYTE);
+			testAll(FileExtension.XML, process, 2, Unit.MBYTE);
 		}
 	}
 }

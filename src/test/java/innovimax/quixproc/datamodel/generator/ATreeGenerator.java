@@ -77,10 +77,17 @@ public abstract class ATreeGenerator extends AGenerator {
 	}
 	public abstract static class ANodeNameSizeGenerator extends ATreeGenerator {
 
-		protected ANodeNameSizeGenerator(FileExtension ext, SpecialType xmlType) {
-			super(ext, Type.HIGH_NODE_NAME_SIZE); //, xmlType);
+		protected ANodeNameSizeGenerator(FileExtension ext, SpecialType sType) {
+			super(ext, Type.HIGH_NODE_NAME_SIZE); //, sType);
 		}
 
+	}
+	public abstract static class AHighTextSizeGenerator extends ATreeGenerator {
+
+		protected AHighTextSizeGenerator(FileExtension ext, SpecialType sType) {
+			super(ext, Type.HIGH_TEXT_SIZE); // sType
+		}
+		
 	}
 	public abstract static class AHighDensityGenerator extends ATreeGenerator {
 

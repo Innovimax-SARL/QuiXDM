@@ -193,7 +193,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	static byte nextStartName(byte b, int incr) {
 		// System.out.println("nextStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextStartName[(b + incr) & 0x7F];
+		byte r = b;
+		do {
+		  r = nextStartName[r & 0x7F];
+		} while (incr-- > 0);
 		// System.out.println("nextStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
@@ -211,16 +214,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	static byte prevStartName(byte b, int incr) {
 		// System.out.println("prevStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = prevStartName[(b + incr) & 0x7F];
+		byte r = b;
+		do {
+		  r = prevStartName[r & 0x7F];
+		} while (incr-- > 0);
 		// System.out.println("prevStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	public static class HighTextSize extends ATreeGenerator {
+	public static class HighTextSize extends AHighTextSizeGenerator {
 		protected HighTextSize() {
-			super(FileExtension.XML, ATreeGenerator.Type.HIGH_TEXT_SIZE);
-			// TODO Auto-generated constructor stub
+			super(FileExtension.XML, SpecialType.STANDARD);
 		}
 
 		final byte[] start = "<r>".getBytes();
@@ -255,7 +260,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-					bs[0][0] = nextChar(bs[0][0], incr);
+					bs[pos][0] = nextChar(bs[pos][0], incr);
 					break;
 				}
 				return bs[pos];
@@ -317,10 +322,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-					bs[0][0] = nextChar(bs[0][0], incr);
+					bs[pos][0] = nextChar(bs[pos][0], incr);
 					break;
 				case 1:
-					bs[1][1] = nextStartName(bs[1][1], incr);
+					bs[pos][1] = nextStartName(bs[pos][1], incr);
 					break;
 				}
 				return bs[pos];
@@ -365,7 +370,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		private boolean isReturn = false;
-
+		boolean directionForward = true;
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
 			int incr = 0;
@@ -374,20 +379,27 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				return bs[pos];
 			case RANDOM:
 				// how to have reversible random ?
-				incr = 0;
+				
+				incr = this.random.nextInt(128, directionForward);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-					bs[0][1] = nextStartName(bs[0][1], incr);
+					bs[pos][1] = nextStartName(bs[pos][1], incr);
+					//System.out.println("+"+incr);
 					this.isReturn = true;
 					break;
 				case 1:
 					if (this.isReturn) {
 						this.isReturn = false;
-						bs[1][2] = bs[0][1];
-					} else
-						bs[1][2] = prevStartName(bs[1][2], incr);
+						bs[pos][2] = bs[0/*take the previous*/][1];
+						//resetRandom();
+						this.random.prev();
+						directionForward = false;
+					} else {
+						//System.out.println("-"+incr);
+						bs[pos][2] = prevStartName(bs[pos][2], incr);
+					}
 					break;
 				}
 				return bs[pos];
@@ -429,7 +441,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		private boolean isReturn = false;
-
+		boolean directionForward = true;
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
 			int incr = 0, incr2 = 0;
@@ -437,23 +449,30 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-				// how to make reversible random
-				// incr = random.nextInt(128);
-				incr2 = this.random.nextInt(128);
+			    incr = this.random.nextInt(128, directionForward);
+				incr2 = this.random.nextInt(128, directionForward);
+				//System.out.println(incr + ","+incr2);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-					bs[0][1] = nextStartName(bs[0][1], incr);
-					bs[0][10] = nextAttributeValue(bs[0][10], incr2);
+					bs[pos][1] = nextStartName(bs[pos][1], incr);
+					//System.out.println("+"+incr);
+					bs[pos][10] = nextAttributeValue(bs[pos][10], incr2);
 					this.isReturn = true;
 					break;
 				case 1:
 					if (this.isReturn) {
 						this.isReturn = false;
-						bs[1][2] = bs[0][1];
-					} else
-						bs[1][2] = prevStartName(bs[1][2], incr);
+						bs[pos][2] = bs[0/*previous*/][1];
+//						resetRandom();
+						this.random.prev();
+						this.random.prev();						
+						directionForward = false;
+					} else {
+						//System.out.println("-"+incr2);
+						bs[pos][2] = prevStartName(bs[pos][2], incr2);
+					}
 					break;
 				}
 				return bs[pos];
@@ -509,7 +528,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 					incr = this.random.nextInt(128);
 					//$FALL-THROUGH$
 				case SEQUENTIAL:
-					bs[0][0] = nextName(bs[0][0], incr);
+					bs[pos][0] = nextName(bs[pos][0], incr);
 					return bs[pos];
 				}
 				return null;
@@ -521,7 +540,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 			public HighElementNameSizeOpenClose() {
 				super(FileExtension.XML, SpecialType.OPEN_CLOSE);
-				this.random.setSeed(0);
 			}
 
 			@Override
@@ -594,7 +612,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 						break;
 					case 1:
 						// NOP
-						this.random.setSeed(0);
+						resetRandom();
 						break;
 					case 2:
 						bs[2][0] = nextName(bs[2][0], incr);
