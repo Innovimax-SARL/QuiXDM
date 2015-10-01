@@ -152,7 +152,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalArgumentException
 	 *             if name is null
 	 */
-	public Object getProperty(java.lang.String name) throws java.lang.IllegalArgumentException;
+	Object getProperty(java.lang.String name) throws java.lang.IllegalArgumentException;
 
 	/**
 	 * Get next parsing event - a processor may return all contiguous character
@@ -193,7 +193,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if there is an error processing the underlying XML source
 	 */
-	public QuiXToken next() throws QuiXStreamException;
+	QuiXToken next() throws QuiXStreamException;
 
 	/**
 	 * Test if the current event is of the given type and if the namespace and
@@ -210,7 +210,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if the required values are not matched.
 	 */
-	public void require(int type, String namespaceURI, String localName) throws QuiXStreamException;
+	void require(int type, String namespaceURI, String localName) throws QuiXStreamException;
 
 	/**
 	 * Reads the content of a text-only element, an exception is thrown if this
@@ -253,7 +253,7 @@ public interface IQuiXStreamReader {
 	 *             if the current event is not a START_ELEMENT or if a non text
 	 *             element is encountered
 	 */
-	public QuiXCharStream getElementText() throws QuiXStreamException;
+	QuiXCharStream getElementText() throws QuiXStreamException;
 
 	/**
 	 * Skips any white space (isWhiteSpace() returns true), COMMENT, or
@@ -296,7 +296,7 @@ public interface IQuiXStreamReader {
 	 * @throws NoSuchElementException
 	 *             if this is called when hasNext() returns false
 	 */
-	public int nextTag() throws QuiXStreamException;
+	int nextTag() throws QuiXStreamException;
 
 	/**
 	 * Returns true if there are more parsing events and false if there are no
@@ -307,7 +307,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if there is a fatal error detecting the next state
 	 */
-	public boolean hasNext() throws QuiXStreamException;
+	boolean hasNext() throws QuiXStreamException;
 
 	/**
 	 * Frees any resources associated with this Reader. This method does not
@@ -316,7 +316,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if there are errors freeing associated resources
 	 */
-	public void close() throws QuiXStreamException;
+	void close() throws QuiXStreamException;
 
 	/**
 	 * Return the uri for the given prefix. The uri returned depends on the
@@ -338,28 +338,28 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalArgumentException
 	 *             if the prefix is null
 	 */
-	public QuiXCharStream getNamespaceURI(String prefix);
+	QuiXCharStream getNamespaceURI(String prefix);
 
 	/**
 	 * Returns true if the cursor points to a start tag (otherwise false)
 	 * 
 	 * @return true if the cursor points to a start tag, false otherwise
 	 */
-	public boolean isStartElement();
+	boolean isStartElement();
 
 	/**
 	 * Returns true if the cursor points to an end tag (otherwise false)
 	 * 
 	 * @return true if the cursor points to an end tag, false otherwise
 	 */
-	public boolean isEndElement();
+	boolean isEndElement();
 
 	/**
 	 * Returns true if the cursor points to a character data event
 	 * 
 	 * @return true if the cursor points to character data, false otherwise
 	 */
-	public boolean isCharacters();
+	boolean isCharacters();
 
 	/**
 	 * Returns true if the cursor points to a character data event that consists
@@ -367,7 +367,7 @@ public interface IQuiXStreamReader {
 	 * 
 	 * @return true if the cursor points to all whitespace, false otherwise
 	 */
-	public boolean isWhiteSpace();
+	boolean isWhiteSpace();
 
 	/**
 	 * Returns the normalized attribute value of the attribute with the
@@ -382,7 +382,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public String getAttributeValue(String namespaceURI, String localName);
+	String getAttributeValue(String namespaceURI, String localName);
 
 	/**
 	 * Returns the count of attributes on this START_ELEMENT, this method is
@@ -393,7 +393,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public int getAttributeCount();
+	int getAttributeCount();
 
 	/**
 	 * Returns the qname of the attribute at the provided index
@@ -404,7 +404,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public QName getAttributeName(int index);
+	QName getAttributeName(int index);
 
 	/**
 	 * Returns the namespace of the attribute at the provided index
@@ -415,7 +415,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public String getAttributeNamespace(int index);
+	String getAttributeNamespace(int index);
 
 	/**
 	 * Returns the localName of the attribute at the provided index
@@ -426,7 +426,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public String getAttributeLocalName(int index);
+	String getAttributeLocalName(int index);
 
 	/**
 	 * Returns the prefix of this attribute at the provided index
@@ -437,7 +437,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public String getAttributePrefix(int index);
+	String getAttributePrefix(int index);
 
 	/**
 	 * Returns the XML type of the attribute at the provided index
@@ -448,7 +448,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public String getAttributeType(int index);
+	String getAttributeType(int index);
 
 	/**
 	 * Returns the value of the attribute at the index
@@ -459,7 +459,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public String getAttributeValue(int index);
+	String getAttributeValue(int index);
 
 	/**
 	 * Returns a boolean which indicates if this attribute was created by
@@ -471,7 +471,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or ATTRIBUTE
 	 */
-	public boolean isAttributeSpecified(int index);
+	boolean isAttributeSpecified(int index);
 
 	/**
 	 * Returns the count of namespaces declared on this START_ELEMENT or
@@ -485,7 +485,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT, END_ELEMENT or NAMESPACE
 	 */
-	public int getNamespaceCount();
+	int getNamespaceCount();
 
 	/**
 	 * Returns the prefix for the namespace declared at the index. Returns null
@@ -497,7 +497,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT, END_ELEMENT or NAMESPACE
 	 */
-	public String getNamespacePrefix(int index);
+	String getNamespacePrefix(int index);
 
 	/**
 	 * Returns the uri for the namespace declared at the index.
@@ -508,7 +508,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT, END_ELEMENT or NAMESPACE
 	 */
-	public String getNamespaceURI(int index);
+	String getNamespaceURI(int index);
 
 	/**
 	 * Returns a read only namespace context for the current position. The
@@ -517,7 +517,7 @@ public interface IQuiXStreamReader {
 	 * 
 	 * @return return a namespace context
 	 */
-	public NamespaceContext getNamespaceContext();
+	NamespaceContext getNamespaceContext();
 
 	/**
 	 * Returns a reader that points to the current start element and all of its
@@ -542,7 +542,7 @@ public interface IQuiXStreamReader {
 	 * Returns an integer code that indicates the type of the event the cursor
 	 * is pointing to.
 	 */
-	public int getEventType();
+	int getEventType();
 
 	/**
 	 * Returns the current value of the parse event as a string, this returns
@@ -556,7 +556,7 @@ public interface IQuiXStreamReader {
 	 * @throws java.lang.IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
-	public String getText();
+	String getText();
 
 	/**
 	 * Returns an array which contains the characters from this event. This
@@ -570,7 +570,7 @@ public interface IQuiXStreamReader {
 	 * @throws java.lang.IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
-	public char[] getTextCharacters();
+	char[] getTextCharacters();
 
 	/**
 	 * Gets the the text associated with a CHARACTERS, SPACE or CDATA event.
@@ -622,7 +622,7 @@ public interface IQuiXStreamReader {
 	 * @throws NullPointerException
 	 *             is if target is null
 	 */
-	public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
+	int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
 			throws QuiXStreamException;
 
 	/**
@@ -651,7 +651,7 @@ public interface IQuiXStreamReader {
 	 * @throws java.lang.IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
-	public int getTextStart();
+	int getTextStart();
 
 	/**
 	 * Returns the length of the sequence of characters for this Text event
@@ -660,20 +660,20 @@ public interface IQuiXStreamReader {
 	 * @throws java.lang.IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
-	public int getTextLength();
+	int getTextLength();
 
 	/**
 	 * Return input encoding if known or null if unknown.
 	 * 
 	 * @return the encoding of this instance or null
 	 */
-	public String getEncoding();
+	String getEncoding();
 
 	/**
 	 * Return true if the current event has text, false otherwise The following
 	 * events have text: CHARACTERS,DTD ,ENTITY_REFERENCE, COMMENT, SPACE
 	 */
-	public boolean hasText();
+	boolean hasText();
 
 	/**
 	 * Return the current location of the processor. If the Location is unknown
@@ -681,7 +681,7 @@ public interface IQuiXStreamReader {
 	 * for the location and null for the publicId and systemId. The location
 	 * information is only valid until next() is called.
 	 */
-	public Location getLocation();
+	Location getLocation();
 
 	/**
 	 * Returns a QName for the current START_ELEMENT or END_ELEMENT event
@@ -690,7 +690,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this is not a START_ELEMENT or END_ELEMENT
 	 */
-	public QName getName();
+	QName getName();
 
 	/**
 	 * Returns the (local) name of the current event. For START_ELEMENT or
@@ -702,13 +702,13 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalStateException
 	 *             if this not a START_ELEMENT, END_ELEMENT or ENTITY_REFERENCE
 	 */
-	public String getLocalName();
+	String getLocalName();
 
 	/**
 	 * returns true if the current event has a name (is a START_ELEMENT or
 	 * END_ELEMENT) returns false otherwise
 	 */
-	public boolean hasName();
+	boolean hasName();
 
 	/**
 	 * If the current event is a START_ELEMENT or END_ELEMENT this method
@@ -718,7 +718,7 @@ public interface IQuiXStreamReader {
 	 * @return the URI bound to this elements prefix, the default namespace, or
 	 *         null
 	 */
-	public String getNamespaceURI();
+	String getNamespaceURI();
 
 	/**
 	 * Returns the prefix of the current event or null if the event does not
@@ -726,7 +726,7 @@ public interface IQuiXStreamReader {
 	 * 
 	 * @return the prefix or null
 	 */
-	public String getPrefix();
+	String getPrefix();
 
 	/**
 	 * Get the xml version declared on the xml declaration Returns null if none
@@ -734,21 +734,21 @@ public interface IQuiXStreamReader {
 	 * 
 	 * @return the XML version or null
 	 */
-	public String getVersion();
+	String getVersion();
 
 	/**
 	 * Get the standalone declaration from the xml declaration
 	 * 
 	 * @return true if this is standalone, or false otherwise
 	 */
-	public boolean isStandalone();
+	boolean isStandalone();
 
 	/**
 	 * Checks if standalone was set in the document
 	 * 
 	 * @return true if standalone was set in the document, or false otherwise
 	 */
-	public boolean standaloneSet();
+	boolean standaloneSet();
 
 	/**
 	 * Returns the character encoding declared on the xml declaration Returns
@@ -756,20 +756,20 @@ public interface IQuiXStreamReader {
 	 * 
 	 * @return the encoding declared in the document or null
 	 */
-	public String getCharacterEncodingScheme();
+	String getCharacterEncodingScheme();
 
 	/**
 	 * Get the target of a processing instruction
 	 * 
 	 * @return the target or null
 	 */
-	public String getPITarget();
+	String getPITarget();
 
 	/**
 	 * Get the data section of a processing instruction
 	 * 
 	 * @return the data or null
 	 */
-	public String getPIData();
+	String getPIData();
 
 }

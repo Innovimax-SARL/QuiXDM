@@ -33,7 +33,7 @@ public abstract class AGenerator {
 	}
 
 	public enum Variation {
-		NO_VARIATION, SEQUENTIAL, RANDOM;
+		NO_VARIATION, SEQUENTIAL, RANDOM
 
 	}
 

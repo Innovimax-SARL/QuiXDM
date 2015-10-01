@@ -35,20 +35,20 @@ public interface IQuiXQueue<T> extends ISimpleQuiXQueue<T> {
 	 * @author innovimax
 	 *
 	 */
-	public interface ProxyReader<T> {
+	interface ProxyReader<T> {
 		/**
 		 * The proxy can declare it's own reader
 		 * 
 		 * @return
 		 */
-		public IQuiXStream<T> registerReader();
+		IQuiXStream<T> registerReader();
 
 		/**
 		 * To close the proxy
 		 * 
 		 * @return
 		 */
-		public void closeReaderRegistration();
+		void closeReaderRegistration();
 	}
 
 	/**
@@ -56,7 +56,7 @@ public interface IQuiXQueue<T> extends ISimpleQuiXQueue<T> {
 	 * 
 	 * @return
 	 */
-	public IQuiXStream<T> registerReader();
+	IQuiXStream<T> registerReader();
 
 	/**
 	 * Register proxy reader is there for for-each loops where you never know
@@ -64,17 +64,17 @@ public interface IQuiXQueue<T> extends ISimpleQuiXQueue<T> {
 	 * interface should be able to garbage collect the data that is sure to not
 	 * be read again
 	 */
-	public ProxyReader<T> registerProxyReader();
+	ProxyReader<T> registerProxyReader();
 
 	/**
 	 * This method is called when no more call to registerReader or
 	 * registerProxyReader will be done
 	 */
-	public void closeReaderRegistration();
+	void closeReaderRegistration();
 
 	/**
 	 * Implementation of this interface keep a readercount
 	 */
-	public void setReaderCount(int count);
+	void setReaderCount(int count);
 
 }

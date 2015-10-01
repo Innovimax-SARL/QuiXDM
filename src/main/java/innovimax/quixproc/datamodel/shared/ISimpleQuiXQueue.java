@@ -26,11 +26,11 @@ public interface ISimpleQuiXQueue<T> {
 	 * 
 	 * @param event
 	 */
-	public abstract void append(T event);
+	void append(T event);
 
 	/**
 	 * close the queue
 	 */
-	public abstract void close();
+	void close();
 
 }

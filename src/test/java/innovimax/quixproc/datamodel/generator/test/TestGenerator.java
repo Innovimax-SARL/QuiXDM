@@ -83,7 +83,7 @@ public class TestGenerator {
 	}
 
 	public static void testAllJSON(Process process, int size, Unit unit) throws QuiXException, IOException {
-		for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_DENSITY,
+		for (ATreeGenerator.Type gtype : EnumSet.of(/*ATreeGenerator.Type.HIGH_NODE_DENSITY,*/
 				ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
 				for (Variation variation : Variation.values()) {
 					System.out.format("Test JSON START %d %s {%s, %s, %s}%n", size, unit, process, gtype,
@@ -159,9 +159,9 @@ public class TestGenerator {
 	 }
 
 	public static void main(String[] args) throws QuiXException, IOException {
-		for (Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE, Process.PARSE)) {
+		for (Process process : EnumSet.of(/*Process.READ_BUFFER, Process.READ_BYTE,*/ Process.PARSE)) {
 			//testAllXML(process, 5, Unit.BYTE);
-			testAllJSON(process, 50, Unit.MBYTE);
+			testAllJSON(process, 100, Unit.MBYTE);
 		}
 	}
 }

@@ -97,7 +97,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 
 	enum ExtraProcess {
 		NONE,
-	};
+	}
 
 	protected ValidQuiXTokenStream(IQuiXStream<IQuiXToken> stream, ExtraProcess process) {
 		super(stream);
