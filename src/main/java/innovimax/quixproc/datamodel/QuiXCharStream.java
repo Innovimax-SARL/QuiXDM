@@ -59,7 +59,7 @@ public abstract class QuiXCharStream {
 		return new CharSequenceQuiXCharStream(cs);
 	}
 
-	private static class QuiXCharStreamList extends QuiXCharStream {
+	private static final class QuiXCharStreamList extends QuiXCharStream {
 		final QuiXCharStream a, b;
 
 		private QuiXCharStreamList(QuiXCharStream a, QuiXCharStream b) {
@@ -107,7 +107,7 @@ public abstract class QuiXCharStream {
 
 	}
 
-	private static class CharSequenceQuiXCharStream extends QuiXCharStream {
+	private static final class CharSequenceQuiXCharStream extends QuiXCharStream {
 		private final CharSequence cs;
 
 		private CharSequenceQuiXCharStream(CharSequence cs) {
@@ -151,7 +151,7 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public QuiXCharStream append(CharSequence cs) {
-			return QuiXCharStream.fromSequence(this.cs.toString().concat(cs.toString()));
+			return QuiXCharStream.fromSequence(this.cs.toString() + cs.toString());
 		}
 
 	}

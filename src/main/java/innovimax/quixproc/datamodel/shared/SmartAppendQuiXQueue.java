@@ -28,7 +28,7 @@ import java.util.TreeSet;
 import innovimax.quixproc.datamodel.IQuiXStream;
 
 public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
-	private final static int DEBUG_LEVEL = 0; // 0 none, 1 simple, 2 detailled
+	private static final int DEBUG_LEVEL = 0; // 0 none, 1 simple, 2 detailled
 	private static int counter = 0;
 	private static Set<Integer> open = Collections.synchronizedSet(new TreeSet<Integer>());
 	private LinkedItem<T> head;
@@ -70,7 +70,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		// }
 		// }
 
-		public final static LinkedItem END = null;
+		public static final LinkedItem END = null;
 		private final T event;
 		// private final BooleanLatch latch;
 		private Object lock;
@@ -119,7 +119,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		}
 	}
 
-	private static class LocalReader<T> implements IQuiXStream<T> {
+	private static final class LocalReader<T> implements IQuiXStream<T> {
 		private LinkedItem<T> current;
 		// debug
 		private String name;
@@ -226,7 +226,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		return result;
 	}
 
-	private static class LocalProxyReader<T> implements ProxyReader<T> {
+	private static final class LocalProxyReader<T> implements ProxyReader<T> {
 		private LinkedItem<T> head;
 
 		private LocalProxyReader(LinkedItem<T> head) {

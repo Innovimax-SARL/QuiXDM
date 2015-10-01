@@ -421,6 +421,7 @@ public class QuiXQName implements Serializable {
 	 */
 	@Override
 	public String toString() {
+		// TODO convert XMLConstants to a local one
 		if (this.namespaceURI.equals(XMLConstants.NULL_NS_URI)) {
 			return this.localPart.toString();
 		}
@@ -494,7 +495,7 @@ public class QuiXQName implements Serializable {
 		}
 
 		// "" local part is valid to preserve compatible behavior with QName 1.0
-		if (qNameAsString.length() == 0) {
+		if (qNameAsString.isEmpty()) {
 			return new QuiXQName(QuiXCharStream.fromSequence(XMLConstants.NULL_NS_URI),
 					QuiXCharStream.fromSequence(qNameAsString),
 					QuiXCharStream.fromSequence(XMLConstants.DEFAULT_NS_PREFIX));

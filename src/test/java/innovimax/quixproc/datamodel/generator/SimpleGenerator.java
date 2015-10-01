@@ -22,7 +22,9 @@ package innovimax.quixproc.datamodel.generator;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SimpleGenerator {
+public final enum SimpleGenerator {
+	;
+
 	private static class SimpleStableInputStream extends InputStream {
 
 		@Override

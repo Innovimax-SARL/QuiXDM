@@ -35,8 +35,8 @@ import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 
 public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	private final IQuiXEventStreamReader qs;
-	private final static boolean DEBUG = false;
-	private final static int POSITION = 1;
+	private static final boolean DEBUG = false;
+	private static final int POSITION = 1;
 
 	public QuiXEventStream2XMLStreamReader(IQuiXEventStreamReader qs) {
 		if (DEBUG)

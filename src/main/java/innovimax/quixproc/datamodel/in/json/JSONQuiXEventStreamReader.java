@@ -42,7 +42,7 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	protected AQuiXEvent process(CallBack callback) throws QuiXException {
 		//System.out.println("process");
 		try {
-			if (callback.getState().equals(QuiXEventStreamReader.State.END_SOURCE)) {
+			if (callback.getState() == QuiXEventStreamReader.State.END_SOURCE) {
 				return callback.processEndSource();
 			}
 	while(true) {

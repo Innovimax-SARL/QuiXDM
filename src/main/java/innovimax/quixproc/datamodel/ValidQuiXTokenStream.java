@@ -120,7 +120,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 
 	private static class NodeStack {
 		byte[] data;
-		private final static int START_SIZE = 8;
+		private static final int START_SIZE = 8;
 		int size, pos;
 		NodeStack() {
 			this.data = new byte[START_SIZE];

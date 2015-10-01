@@ -19,10 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.filter;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.IQuiXToken;
@@ -30,7 +27,7 @@ import innovimax.quixproc.datamodel.QuiXCharStream;
 
 public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 
-	private final LinkedList<Map<QuiXCharStream, QuiXCharStream>> namespaces;
+	private final Deque<Map<QuiXCharStream, QuiXCharStream>> namespaces;
 
 	public NamespaceContextFilter(IQuiXStream<IQuiXToken> stream) {
 		super(stream);

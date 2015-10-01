@@ -38,7 +38,7 @@ import innovimax.quixproc.datamodel.event.AQuiXEvent;
  */
 public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
-	private final static boolean DEBUG = false;
+	private static final boolean DEBUG = false;
 	private final List<T> events;
 	private final ReentrantReadWriteLock rwl;
 	//
@@ -99,7 +99,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			System.out.println("CreateSimpleQEQ (closed) : " + rank);
 	}
 
-	private class LocalReader implements IQuiXStream<T> {
+	private final class LocalReader implements IQuiXStream<T> {
 		// private final Iterator<QuixEvent> iterator;
 		private int i = 0;
 		private boolean readerClosed = false;
@@ -247,8 +247,8 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		this.maxReader = readerCount;
 	}
 
-	final static int MAX_PRODUCE = 10000000;
-	final static int LOG_MODULO = MAX_PRODUCE / 10;
+	static final int MAX_PRODUCE = 10000000;
+	static final int LOG_MODULO = MAX_PRODUCE / 10;
 
 	private static class SimpleProducer implements Runnable {
 		private final IQuiXQueue<AQuiXEvent> qeq;

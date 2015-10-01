@@ -115,7 +115,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 	}
 
 	@Override
-	public AQuiXEvent processEndSource() throws QuiXException {
+	public AQuiXEvent processEndSource() {
 		AQuiXEvent event = null;
 		if (this.sources.hasNext()) {
 			// there is still sources

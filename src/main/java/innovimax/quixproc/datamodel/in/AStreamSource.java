@@ -39,7 +39,7 @@ public abstract class AStreamSource {
 		return new XMLStreamSource(source);
 	}
 
-	public static class XMLStreamSource extends AStreamSource {
+	public static final class XMLStreamSource extends AStreamSource {
 		public final Source source;
 
 		private XMLStreamSource(Source source) {

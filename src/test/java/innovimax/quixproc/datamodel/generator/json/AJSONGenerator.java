@@ -47,8 +47,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return results;
 	}
 
-	final static byte[] nextChar = initNextChar();
-	final static byte[] nextDigit = initNextDigit();
+	static final byte[] nextChar = initNextChar();
+	static final byte[] nextDigit = initNextDigit();
 
 	private static byte[] initNextDigit() {
 		byte[] results = new byte[10];

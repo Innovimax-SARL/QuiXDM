@@ -68,14 +68,14 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 			if (!buffer.isEmpty()) {
 				return buffer.poll();
 			}
-			if (!sreader.hasNext() && callback.getState().equals(QuiXEventStreamReader.State.START_SOURCE)) {
+			if (!sreader.hasNext() && callback.getState() == QuiXEventStreamReader.State.START_SOURCE) {
 				// special case if the buffer is empty but the document has not
 				// been closed
 				event = AQuiXEvent.getEndDocument(this.baseURI);
 				callback.setState(QuiXEventStreamReader.State.END_SOURCE);
 				return event;
 			}
-			if (callback.getState().equals(QuiXEventStreamReader.State.END_SOURCE)) {
+			if (callback.getState() == QuiXEventStreamReader.State.END_SOURCE) {
 				return callback.processEndSource();
 			}
 			while (true) {

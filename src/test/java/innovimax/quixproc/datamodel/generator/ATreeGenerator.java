@@ -36,7 +36,7 @@ public abstract class ATreeGenerator extends AGenerator {
 		this.treeType = Type.SPECIFIC;
 	}
 
-	public static abstract class AHighDensityGenerator extends ATreeGenerator {
+	public abstract static class AHighDensityGenerator extends ATreeGenerator {
 
 		public AHighDensityGenerator(FileExtension type) {
 			super(type, Type.HIGH_NODE_DENSITY);
@@ -59,7 +59,7 @@ public abstract class ATreeGenerator extends AGenerator {
 
 	}
 
-	public static abstract class AHighNodeDepthGenerator extends ATreeGenerator {
+	public abstract static class AHighNodeDepthGenerator extends ATreeGenerator {
 
 		protected AHighNodeDepthGenerator(FileExtension ext, ATreeGenerator.Type gtype) {
 			super(ext, gtype);

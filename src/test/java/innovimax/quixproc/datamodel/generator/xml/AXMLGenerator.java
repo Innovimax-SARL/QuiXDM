@@ -87,11 +87,11 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		this.specialType = xmlType;
 	}
 
-	final static byte[] nextChar = initNextChar(false);
-	final static byte[] nextAttributeValue = initNextChar(true);
-	final static byte[] nextStartName = initNextName(true);
-	final static byte[] nextName = initNextName(false);
-	final static byte[] prevStartName = initPrevStartName();
+	static final byte[] nextChar = initNextChar(false);
+	static final byte[] nextAttributeValue = initNextChar(true);
+	static final byte[] nextStartName = initNextName(true);
+	static final byte[] nextName = initNextName(false);
+	static final byte[] prevStartName = initPrevStartName();
 
 	private static int nextAllowedChar(int b, boolean attributeValue) {
 		if (b <= 0x20) {

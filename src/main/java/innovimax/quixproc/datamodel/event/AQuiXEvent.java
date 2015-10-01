@@ -33,10 +33,10 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	// TODO : store type information for PSVI
 
 	// to enable CACHING for specific kind of type
-	private final static boolean SEQUENCE_CACHING_ENABLED = false;
-	private final static boolean DOCUMENT_CACHING_ENABLED = false;
-	private final static boolean ELEMENT_CACHING_ENABLED = false;
-	private final static boolean NAME_CACHING_ENABLED = false;
+	private static final boolean SEQUENCE_CACHING_ENABLED = false;
+	private static final boolean DOCUMENT_CACHING_ENABLED = false;
+	private static final boolean ELEMENT_CACHING_ENABLED = false;
+	private static final boolean NAME_CACHING_ENABLED = false;
 
 	private static long createCount = 0;
 	private static long createCallCount = 0;
@@ -63,7 +63,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class StartSequence extends AQuiXEvent {
+	public static final class StartSequence extends AQuiXEvent {
 		private StartSequence() {
 			super(QuiXToken.START_SEQUENCE);
 		}
@@ -73,7 +73,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class EndSequence extends AQuiXEvent {
+	public static final class EndSequence extends AQuiXEvent {
 		private EndSequence() {
 			super(QuiXToken.END_SEQUENCE);
 		}
@@ -83,7 +83,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class StartDocument extends AXMLQuiXEvent {
+	public static final class StartDocument extends AXMLQuiXEvent {
 		private final QuiXCharStream uri;
 
 		private StartDocument(QuiXCharStream uri) {
@@ -102,7 +102,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class EndDocument extends AXMLQuiXEvent {
+	public static final class EndDocument extends AXMLQuiXEvent {
 		private final QuiXCharStream uri;
 
 		private EndDocument(QuiXCharStream uri) {
@@ -198,7 +198,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class Namespace extends AXMLQuiXEvent {
+	public static final class Namespace extends AXMLQuiXEvent {
 		private final QuiXCharStream prefix;
 		private final QuiXCharStream uri;
 
@@ -221,7 +221,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static abstract class NamedEvent extends AXMLQuiXEvent {
+	public abstract static class NamedEvent extends AXMLQuiXEvent {
 		private final QuiXQName qname;
 
 		private NamedEvent(QuiXQName qname, QuiXToken type) {
@@ -251,7 +251,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class StartElement extends NamedEvent {
+	public static final class StartElement extends NamedEvent {
 		private StartElement(QuiXQName qname) {
 			super(qname, QuiXToken.START_ELEMENT);
 			// System.out.println("START ELEMENT"+localName);
@@ -262,7 +262,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class EndElement extends NamedEvent {
+	public static final class EndElement extends NamedEvent {
 		private EndElement(QuiXQName qname) {
 			super(qname, QuiXToken.END_ELEMENT);
 			// System.out.println("END ELEMENT" + localName);
@@ -273,7 +273,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class Attribute extends NamedEvent {
+	public static final class Attribute extends NamedEvent {
 		private final QuiXCharStream value;
 
 		private Attribute(QuiXQName qname, QuiXCharStream value) {
@@ -293,7 +293,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	}
 
-	public static class Text extends AXMLQuiXEvent {
+	public static final class Text extends AXMLQuiXEvent {
 		private final QuiXCharStream data;
 
 		private Text(QuiXCharStream data) {
@@ -311,7 +311,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class PI extends AXMLQuiXEvent {
+	public static final class PI extends AXMLQuiXEvent {
 		private final QuiXCharStream target;
 		private final QuiXCharStream data;
 
@@ -334,7 +334,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class Comment extends AXMLQuiXEvent {
+	public static final class Comment extends AXMLQuiXEvent {
 		private final QuiXCharStream data;
 
 		private Comment(QuiXCharStream data) {
