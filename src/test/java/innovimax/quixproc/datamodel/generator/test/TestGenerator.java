@@ -83,9 +83,9 @@ public class TestGenerator {
 
 
 	@Test
-	public void testAllXML2M() throws QuiXException, IOException {
+	public void testAllXML1M() throws QuiXException, IOException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.XML, process, 2, Unit.MBYTE);
+			testAll(FileExtension.XML, process, 1, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
