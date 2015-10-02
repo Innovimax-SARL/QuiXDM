@@ -10,5 +10,9 @@ a<b/>
 which makes 5 bytes long and generates two nodes :
  * a text node with the string "a"
  * a element with the name "b"
- 
+So in the end
+```
+<r>(a<b/>)+</r>
+```
+is the densiest XML available
 ## Event Density
