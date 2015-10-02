@@ -29,8 +29,10 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
 
@@ -283,6 +285,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		protected long updateSize(long current_size, int current_pattern) {
 			return current_size + 1;
 		}
+
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 
 	public static class HighDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
@@ -330,6 +344,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				}
 				return bs[pos];
 			}
+			return null;
+		}
+
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -407,6 +433,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return null;
 		}
 
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 	public static class HighDepthNamespaceGenerator extends AHighNodeDepthGenerator {
@@ -480,6 +518,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return null;
 		}
 
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 		public static class HighElementNameSizeSingle extends ANodeNameSizeGenerator {
@@ -531,6 +581,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 					bs[pos][0] = nextName(bs[pos][0], incr);
 					return bs[pos];
 				}
+				return null;
+			}
+
+			@Override
+			public IQuiXEventStreamReader getQuiXEventStreamReader() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public IQuiXStreamReader getQuiXStreamReader() {
+				// TODO Auto-generated method stub
 				return null;
 			}
 
@@ -621,6 +683,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 					return bs[pos];
 
 				}
+				return null;
+			}
+
+			@Override
+			public IQuiXEventStreamReader getQuiXEventStreamReader() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public IQuiXStreamReader getQuiXStreamReader() {
+				// TODO Auto-generated method stub
 				return null;
 			}
 

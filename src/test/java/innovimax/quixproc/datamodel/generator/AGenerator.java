@@ -26,6 +26,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
+import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
+
 public abstract class AGenerator {
 
 	public enum FileExtension {
@@ -130,6 +133,9 @@ public abstract class AGenerator {
 	public InputStream getInputStream(long size, Unit unit, Variation variation) {
 		return new GeneratorInputStream(size, unit, variation);
 	}
+	
+	public abstract IQuiXEventStreamReader getQuiXEventStreamReader();
+	public abstract IQuiXStreamReader getQuiXStreamReader();
 
 	protected abstract byte[] applyVariation(Variation variation, byte[][] bs, int pos);
 
@@ -144,6 +150,8 @@ public abstract class AGenerator {
 	protected abstract byte[][] getPatterns();
 
 	protected abstract byte[] getStart();
+	
+	
 
 	private enum InputStreamState {
 		START, CURRENT, END

@@ -27,8 +27,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator.Variation;
 
 public abstract class AJSONGenerator extends ATreeGenerator {
@@ -223,6 +225,18 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		protected long updateSize(long current_size, int current_pattern) {
 			return current_size + 1;
 		}
+
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
 
@@ -313,6 +327,18 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return null;
 		}
 
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 	// high depth
@@ -372,6 +398,18 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				}
 				return bs[pos];
 			}
+			return null;
+		}
+
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
 			return null;
 		}
 
