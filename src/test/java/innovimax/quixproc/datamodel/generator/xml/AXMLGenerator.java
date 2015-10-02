@@ -32,6 +32,7 @@ import javax.xml.stream.XMLStreamReader;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.generator.annotations.Generator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
@@ -224,7 +225,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
-
+	
+	@Generator(ext=FileExtension.XML, type=Type.HIGH_TEXT_SIZE, stype=SpecialType.STANDARD)
 	public static class HighTextSize extends AHighTextSizeGenerator {
 		protected HighTextSize() {
 			super(FileExtension.XML, SpecialType.STANDARD);
@@ -406,7 +408,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case RANDOM:
 				// how to have reversible random ?
 				
-				incr = this.random.nextInt(128, directionForward);
+				incr = this.random.nextInt(128, this.directionForward);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
@@ -421,7 +423,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 						bs[pos][2] = bs[0/*take the previous*/][1];
 						//resetRandom();
 						this.random.prev();
-						directionForward = false;
+						this.directionForward = false;
 					} else {
 						//System.out.println("-"+incr);
 						bs[pos][2] = prevStartName(bs[pos][2], incr);
@@ -487,8 +489,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-			    incr = this.random.nextInt(128, directionForward);
-				incr2 = this.random.nextInt(128, directionForward);
+			    incr = this.random.nextInt(128, this.directionForward);
+				incr2 = this.random.nextInt(128, this.directionForward);
 				//System.out.println(incr + ","+incr2);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
@@ -506,7 +508,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 //						resetRandom();
 						this.random.prev();
 						this.random.prev();						
-						directionForward = false;
+						this.directionForward = false;
 					} else {
 						//System.out.println("-"+incr2);
 						bs[pos][2] = prevStartName(bs[pos][2], incr2);

@@ -34,6 +34,8 @@ public abstract class ATreeGenerator extends AGenerator {
 		NAMESPACE, OPEN_CLOSE;
 
 		public static EnumSet<SpecialType> allowedModifiers(FileExtension ext, Type gtype) {
+			// Do it by introspection on annaotation Generator
+			
 			switch (ext) {
 			case HTML:
 				break;
