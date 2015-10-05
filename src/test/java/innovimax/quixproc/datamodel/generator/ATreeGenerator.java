@@ -19,8 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.generator;
 
-import java.util.EnumSet;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Set;
 
+import innovimax.quixproc.datamodel.generator.annotations.GeneratorRuntimeExtractor;
 import innovimax.quixproc.datamodel.generator.json.AJSONGenerator;
 import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator;
 
@@ -32,70 +35,29 @@ public abstract class ATreeGenerator extends AGenerator {
 	public enum SpecialType {
 		STANDARD, // no specific
 		NAMESPACE, OPEN_CLOSE;
-
-		public static EnumSet<SpecialType> allowedModifiers(FileExtension ext, Type gtype) {
-			// Do it by introspection on annaotation Generator
-			
-			switch (ext) {
-			case HTML:
-				break;
-			case JSON:
-				switch(gtype) {
-				case HIGH_NODE_DENSITY:
-				case HIGH_NODE_DEPTH:
-					return EnumSet.of(STANDARD);
-				}
-				break;
-			case XML:
-				switch (gtype) {
-				case HIGH_NODE_DENSITY:
-					return EnumSet.of(STANDARD);
-				case HIGH_NODE_DEPTH:
-					return EnumSet.of(STANDARD, NAMESPACE);
-				case HIGH_NODE_NAME_SIZE:
-					return EnumSet.of(STANDARD, OPEN_CLOSE);
-				case HIGH_TEXT_SIZE:
-					return EnumSet.of(STANDARD);
-				case SPECIFIC:
-				}
-				break;
-			case YAML:
-				break;
-			}
-			return EnumSet.noneOf(SpecialType.class);
+		private static final EnumMap<AGenerator.FileExtension, EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>>> map
+		= new EnumMap<AGenerator.FileExtension, EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>>>(AGenerator.FileExtension.class);
+		static {
+			GeneratorRuntimeExtractor.process(map, AXMLGenerator.class);				
+			GeneratorRuntimeExtractor.process(map, AJSONGenerator.class);				
+		}
+		
+		public static Set<SpecialType> allowedModifiers(FileExtension ext, Type gtype) {
+			EnumMap<Type, EnumMap<SpecialType, Class<?>>> enumMap = map.get(ext);
+			if (enumMap == null) return Collections.EMPTY_SET;			
+			EnumMap<SpecialType, Class<?>> enumMap2 = enumMap.get(gtype);
+			if (enumMap2 == null) return Collections.EMPTY_SET;
+			return enumMap2.keySet();
 		}
 	}
 
-	private final Type treeType;
-
-	protected ATreeGenerator(FileExtension type, Type treeType) {
-		super(type);
-		this.treeType = treeType;
-	}
-
-	protected ATreeGenerator(FileExtension type) {
-		super(type);
-		this.treeType = Type.SPECIFIC;
-	}
 	public abstract static class ANodeNameSizeGenerator extends ATreeGenerator {
-
-		protected ANodeNameSizeGenerator(FileExtension ext, SpecialType sType) {
-			super(ext, Type.HIGH_NODE_NAME_SIZE); //, sType);
-		}
 
 	}
 	public abstract static class AHighTextSizeGenerator extends ATreeGenerator {
-
-		protected AHighTextSizeGenerator(FileExtension ext, SpecialType sType) {
-			super(ext, Type.HIGH_TEXT_SIZE); // sType
-		}
 		
 	}
 	public abstract static class AHighDensityGenerator extends ATreeGenerator {
-
-		public AHighDensityGenerator(FileExtension type) {
-			super(type, Type.HIGH_NODE_DENSITY);
-		}
 
 		@Override
 		protected int updatePattern(int current_pattern) {
@@ -115,10 +77,6 @@ public abstract class ATreeGenerator extends AGenerator {
 	}
 
 	public abstract static class AHighNodeDepthGenerator extends ATreeGenerator {
-
-		protected AHighNodeDepthGenerator(FileExtension ext, ATreeGenerator.Type gtype) {
-			super(ext, gtype);
-		}
 
 		private int next_pattern = 0;
 
@@ -171,21 +129,8 @@ public abstract class ATreeGenerator extends AGenerator {
 
 	}
 
-	public static AGenerator instance(FileExtension ext, Type gtype, SpecialType stype) {
-		switch(ext) {
-		case HTML:
-			break;
-		case JSON:
-			return AJSONGenerator.instance(gtype, stype);
-		case XML:
-			return AXMLGenerator.instance(gtype, stype);
-		case YAML:
-			break;
-		default:
-			break;
-		
-		}
-		return null;
+	public static AGenerator instance(FileExtension ext, Type gtype, SpecialType stype) throws InstantiationException, IllegalAccessException {
+		return (AGenerator ) SpecialType.map.get(ext).get(gtype).get(stype).newInstance();
 	}
 
 }

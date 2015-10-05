@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Random;
 
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
@@ -60,7 +59,6 @@ public abstract class AGenerator {
 													 */,
 	}
 
-	private final FileExtension type;
 	protected final AReversibleRandom random;
 	private final long seed;
 
@@ -150,7 +148,6 @@ public abstract class AGenerator {
 	protected abstract byte[][] getPatterns();
 
 	protected abstract byte[] getStart();
-	
 	
 
 	private enum InputStreamState {
@@ -299,8 +296,7 @@ public abstract class AGenerator {
 		return sb.toString();
 	}
 
-	protected AGenerator(FileExtension type) {
-		this.type = type;
+	protected AGenerator() {
 		this.seed = System.nanoTime();
 		this.random = new AReversibleRandom.SimpleReversibleRandom(this.seed, 3, 5);
 	}

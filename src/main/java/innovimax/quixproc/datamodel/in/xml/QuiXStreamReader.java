@@ -502,7 +502,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 								"/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
 						new javax.xml.transform.stream.StreamSource(
 								"/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml") });
-		QuiXStreamReader qesr = new QuiXStreamReader(sources);
+		IQuiXStreamReader qesr = new QuiXStreamReader(sources);
 		while (qesr.hasNext()) {
 			System.out.println(qesr.next());
 		}

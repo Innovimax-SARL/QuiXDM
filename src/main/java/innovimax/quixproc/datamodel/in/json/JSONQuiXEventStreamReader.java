@@ -18,10 +18,12 @@ import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
 public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	private final JsonFactory ifactory;
 	private JsonParser iparser;
+
 	public JSONQuiXEventStreamReader(JSONStreamSource current) {
-		 this.ifactory = new JsonFactory();
-		 this.ifactory.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
+		this.ifactory = new JsonFactory();
+		this.ifactory.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
 	}
+
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
 		return load(((AStreamSource.JSONStreamSource) current).asInputStream());
@@ -32,24 +34,23 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 			this.iparser = this.ifactory.createParser(current);
 		} catch (IOException e) {
 			throw new QuiXException(e);
-		}		
+		}
 		return AQuiXEvent.getStartJSON();
 	}
 
 	@Override
 	protected AQuiXEvent process(CallBack callback) throws QuiXException {
-		//System.out.println("process");
+		// System.out.println("process");
 		try {
 			if (callback.getState() == QuiXEventStreamReader.State.END_SOURCE) {
 				return callback.processEndSource();
 			}
-	while(true) {
+			while (true) {
 				JsonToken token = this.iparser.nextToken();
 				if (token == null) {
 					callback.setState(QuiXEventStreamReader.State.END_SOURCE);
 					return AQuiXEvent.getEndJSON();
 				}
-					
 				switch (token) {
 				case END_ARRAY:
 					return AQuiXEvent.getEndArray();
@@ -72,21 +73,21 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 				case VALUE_NUMBER_FLOAT:
 					return AQuiXEvent.getValueNumber(0.0);
 				case VALUE_NUMBER_INT:
-					return AQuiXEvent.getValueNumber(0.0);					
+					return AQuiXEvent.getValueNumber(0.0);
 				case VALUE_STRING:
 					return AQuiXEvent.getValueString(QuiXCharStream.EMPTY);
 				case VALUE_TRUE:
 					return AQuiXEvent.getValueTrue();
 				default:
 					break;
-				
+
 				}
-			throw new QuiXException("Unknown event " + token);
-		}
+				throw new QuiXException("Unknown event " + token);
+			}
 		} catch (IOException e) {
 			throw new QuiXException(e);
 		}
-		
+
 	}
 
 	@Override

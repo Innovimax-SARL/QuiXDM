@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
+ */
 package innovimax.quixproc.datamodel.generator.json;
 
 import java.io.IOException;
@@ -30,14 +30,10 @@ import com.fasterxml.jackson.core.JsonToken;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.generator.annotations.Generator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
-import innovimax.quixproc.datamodel.generator.AGenerator.Variation;
 
 public abstract class AJSONGenerator extends ATreeGenerator {
-
-	protected AJSONGenerator(ATreeGenerator.Type treeType) {
-		super(FileExtension.JSON, treeType);
-	}
 
 	private static byte[] initNextChar() {
 		byte[] results = new byte[128];
@@ -133,37 +129,19 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	public static AGenerator instance(ATreeGenerator.Type type, SpecialType stype) {
-		switch (type) {
-		case HIGH_NODE_DENSITY:
-			return new AJSONGenerator.HighDensityGenerator();
-		case HIGH_NODE_DEPTH:
-			return new AJSONGenerator.HighDepthGenerator();
-		case HIGH_NODE_NAME_SIZE:
-			// return new
-			// AXMLGenerator.AHighElementNameSize.HighElementNameSizeSingle();
-		case HIGH_TEXT_SIZE:
-		case SPECIFIC:
-			break;
-		default:
-			break;
-		}
-		return null;
-	}
 
-/*
+	/*
+	@Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_NAME_SIZE, stype=SpecialType.STANDARD)
 	public static class HighNodeNameSizeGenerator extends ATreeGenerator.ANodeNameSizeGenerator {
 
 		protected HighNodeNameSizeGenerator(FileExtension ext, SpecialType xmlType) {
 			super(ext, xmlType);
 		}
-		
+
 	}
-	*/
+	 */
+	//@Generator(ext=FileExtension.JSON, type=Type.HIGH_TEXT_SIZE, stype=SpecialType.STANDARD)
 	public static class HighTextSizeGenerator extends ATreeGenerator.AHighTextSizeGenerator {
-		protected HighTextSizeGenerator(FileExtension ext, SpecialType sType) {
-			super(ext, sType);
-		}
 
 		final byte[] start = "{".getBytes();
 		final byte[][] end = {
@@ -174,7 +152,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getEnd() {
-			return this.end[choose_end];
+			return this.end[this.choose_end];
 		}
 
 		@Override
@@ -237,12 +215,13 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			// TODO Auto-generated method stub
 			return null;
 		}
-		
+
 	}
 
-	
+
+	@Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_DENSITY, stype=SpecialType.STANDARD)
 	public static class HighDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
-	
+
 		final byte[] start = "{".getBytes();
 		final byte[][] end = {
 				"}".getBytes(),
@@ -252,7 +231,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		int choose_end = 0;
 		@Override
 		protected byte[] getEnd() {
-			return this.end[choose_end];
+			return this.end[this.choose_end];
 		}
 
 		@Override
@@ -269,18 +248,15 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		// more or less 7 bytes per key value looks like the densest
 
 		private final byte[][] patterns = { // empty object is allowed
-		//		"\"A\":1".getBytes(), // first used only once
-		//		",\"A\":1".getBytes() 
+				//		"\"A\":1".getBytes(), // first used only once
+				//		",\"A\":1".getBytes() 
 				"\"\":[".getBytes(), // first used only once
 				"{}".getBytes(), 
 				",{}".getBytes() 				
 		};
 
-//		private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
+		//		private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
 
-		public HighDensityGenerator() {
-			super(FileExtension.JSON);
-		}
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -304,8 +280,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			int incr = 0;
 			// IMPORTANT : the uniqueness is mandatory
 			// it doesn't depends on applyRandom hence
-//			if (pos == 1)
-//				this.baA.nextUnique();
+			//			if (pos == 1)
+			//				this.baA.nextUnique();
 			switch (variation) {
 			case NO_VARIATION:
 				return bs[pos];
@@ -348,6 +324,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	// start "{"
 	// end "}"
 	// '"":{' and '}'
+	@Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_DEPTH, stype=SpecialType.STANDARD)
 	public static class HighDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "{".getBytes();
 		final byte[] end = "}".getBytes();
@@ -364,9 +341,6 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		final byte[][] patterns = { "\"\":{".getBytes(), "}".getBytes() };
 
-		public HighDepthGenerator() {
-			super(AGenerator.FileExtension.JSON, ATreeGenerator.Type.HIGH_NODE_DEPTH);
-		}
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -390,7 +364,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-				//	bs[pos][1] = nextChar(bs[pos][1], incr);
+					//	bs[pos][1] = nextChar(bs[pos][1], incr);
 					break;
 				case 1:
 					// no op
@@ -415,7 +389,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	}
 
-	public static void main(String[] args) throws JsonParseException, IOException {
+	public static void main(String[] args) throws JsonParseException, IOException, InstantiationException, IllegalAccessException {
 
 		/*
 		 * final byte[][] patterns = { // empty object is allowed
@@ -431,7 +405,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		f.disable(JsonParser.Feature.ALLOW_COMMENTS);
 		f.disable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
 		// AGenerator generator = instance(ATreeGenerator.Type.HIGH_DENSITY);
-		AGenerator generator = instance(ATreeGenerator.Type.HIGH_NODE_DEPTH, SpecialType.STANDARD);
+		AGenerator generator = instance(FileExtension.JSON, ATreeGenerator.Type.HIGH_NODE_DEPTH, SpecialType.STANDARD);
 
 		InputStream is = generator.getInputStream(50, Unit.MBYTE, Variation.NO_VARIATION);
 		if (false) {
@@ -440,7 +414,6 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				System.out.println(display((byte) (c & 0xFF)));
 			}
 		} else {
-
 			JsonParser p = f.createParser(is);
 			p.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
 
@@ -448,6 +421,5 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				//
 			}
 		}
-
 	}
 }

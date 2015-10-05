@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
+ */
 package innovimax.quixproc.datamodel.generator.xml;
 
 import java.io.File;
@@ -36,35 +36,6 @@ import innovimax.quixproc.datamodel.generator.annotations.Generator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
-
-	public static AGenerator instance(Type type, SpecialType special) {
-		switch (type) {
-		case HIGH_NODE_DENSITY:
-			return new HighDensityGenerator();
-		case HIGH_NODE_DEPTH:
-			switch (special) {
-			case NAMESPACE:
-				return new HighDepthNamespaceGenerator();
-			}
-			return new HighNodeDepthGenerator();
-		case HIGH_NODE_NAME_SIZE:
-			switch (special) {
-			case OPEN_CLOSE:
-				return new HighElementNameSizeOpenClose();
-			}
-			return new HighElementNameSizeSingle();
-		case HIGH_TEXT_SIZE:
-			return new HighTextSize();
-		}
-		return null;
-	}
-
-	final SpecialType specialType;
-
-	protected AXMLGenerator(Type treeType, SpecialType xmlType) {
-		super(FileExtension.XML, treeType);
-		this.specialType = xmlType;
-	}
 
 	static final byte[] nextChar = initNextChar(false);
 	static final byte[] nextAttributeValue = initNextChar(true);
@@ -198,7 +169,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = b;
 		do {
-		  r = nextStartName[r & 0x7F];
+			r = nextStartName[r & 0x7F];
 		} while (incr-- > 0);
 		// System.out.println("nextStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
@@ -219,18 +190,15 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = b;
 		do {
-		  r = prevStartName[r & 0x7F];
+			r = prevStartName[r & 0x7F];
 		} while (incr-- > 0);
 		// System.out.println("prevStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
-	
+
 	@Generator(ext=FileExtension.XML, type=Type.HIGH_TEXT_SIZE, stype=SpecialType.STANDARD)
 	public static class HighTextSize extends AHighTextSizeGenerator {
-		protected HighTextSize() {
-			super(FileExtension.XML, SpecialType.STANDARD);
-		}
 
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -301,7 +269,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-	public static class HighDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
+	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_DENSITY, stype=SpecialType.STANDARD)
+	public static class HighNodeDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
 
@@ -316,10 +285,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		final byte[][] patterns = { "a".getBytes(), "<b/>".getBytes() };
-
-		public HighDensityGenerator() {
-			super(FileExtension.XML);
-		}
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -362,7 +327,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 	}
-
+	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_DEPTH, stype=SpecialType.STANDARD)
 	public static class HighNodeDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -378,11 +343,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		final byte[][] patterns = { "<a>".getBytes(), "</a>".getBytes() };
-
-		public HighNodeDepthGenerator() {
-			super(AGenerator.FileExtension.XML, ATreeGenerator.Type.HIGH_NODE_DEPTH);
-
-		}
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -407,7 +367,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				return bs[pos];
 			case RANDOM:
 				// how to have reversible random ?
-				
+
 				incr = this.random.nextInt(128, this.directionForward);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
@@ -449,6 +409,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
+	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_DEPTH, stype=SpecialType.NAMESPACE)
 	public static class HighDepthNamespaceGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -465,10 +426,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		final byte[][] patterns = { "<a xmlns=\"a\">".getBytes(), "</a>".getBytes() };
 
-		public HighDepthNamespaceGenerator() {
-			// super(AXMLGenerator.Type.HIGH_DEPTH_NAMESPACE);
-			super(AGenerator.FileExtension.XML, Type.HIGH_NODE_DENSITY);
-		}
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -489,7 +446,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-			    incr = this.random.nextInt(128, this.directionForward);
+				incr = this.random.nextInt(128, this.directionForward);
 				incr2 = this.random.nextInt(128, this.directionForward);
 				//System.out.println(incr + ","+incr2);
 				//$FALL-THROUGH$
@@ -505,7 +462,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 					if (this.isReturn) {
 						this.isReturn = false;
 						bs[pos][2] = bs[0/*previous*/][1];
-//						resetRandom();
+						//						resetRandom();
 						this.random.prev();
 						this.random.prev();						
 						this.directionForward = false;
@@ -534,178 +491,172 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-		public static class HighElementNameSizeSingle extends ANodeNameSizeGenerator {
-			@Override
-			protected byte[] getEnd() {
-				return "/>".getBytes();
-			}
-
-			@Override
-			protected byte[][] getPatterns() {
-				byte[][] result = { "a".getBytes() };
-				return result;
-			}
-
-			@Override
-			protected byte[] getStart() {
-				return "<_".getBytes();
-			}
-
-			@Override
-			protected boolean notFinished(long current_size, int current_pattern, long total) {
-				return current_size < total;
-			}
-
-			@Override
-			protected int updatePattern(int current_pattern) {
-				return 0;
-			}
-
-			@Override
-			protected long updateSize(long current_size, int current_pattern) {
-				return current_size + 1;
-			}
-
-			public HighElementNameSizeSingle() {
-				super(FileExtension.XML, SpecialType.STANDARD);
-			}
-
-			@Override
-			public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
-				int incr = 0;
-				switch (variation) {
-				case NO_VARIATION:
-					return bs[pos];
-				case RANDOM:
-					incr = this.random.nextInt(128);
-					//$FALL-THROUGH$
-				case SEQUENTIAL:
-					bs[pos][0] = nextName(bs[pos][0], incr);
-					return bs[pos];
-				}
-				return null;
-			}
-
-			@Override
-			public IQuiXEventStreamReader getQuiXEventStreamReader() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public IQuiXStreamReader getQuiXStreamReader() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
+	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_NAME_SIZE, stype=SpecialType.STANDARD)
+	public static class HighElementNameSizeSingle extends ANodeNameSizeGenerator {
+		@Override
+		protected byte[] getEnd() {
+			return "/>".getBytes();
 		}
 
-		public static class HighElementNameSizeOpenClose extends ANodeNameSizeGenerator {
-
-			public HighElementNameSizeOpenClose() {
-				super(FileExtension.XML, SpecialType.OPEN_CLOSE);
-			}
-
-			@Override
-			protected byte[] getEnd() {
-				return ">".getBytes();
-			}
-
-			private final byte[][] patterns = { "a".getBytes(), "></_".getBytes(), "a".getBytes() };
-
-			@Override
-			protected byte[][] getPatterns() {
-				return this.patterns;
-			}
-
-			@Override
-			protected byte[] getStart() {
-				return "<_".getBytes();
-			}
-
-			private long loop = 0;
-
-			@Override
-			protected boolean notFinished(long current_size, int current_pattern, long total) {
-				// System.out.println(current_size + ", "+current_pattern+",
-				// "+total);
-				if (current_size + this.patterns[1].length < total) {
-					this.loop++;
-					return true;
-				}
-				// current_size >= total
-				if (current_pattern <= 0) {
-					// switch pattern
-					this.next_pattern = 1;
-					return true;
-				}
-				if (current_pattern == 1) {
-					// switch pattern
-					this.next_pattern = 2;
-
-				}
-				// next_pattern will be 2
-				return this.loop-- > 0;
-			}
-
-			int next_pattern = 0;
-
-			@Override
-			protected int updatePattern(int current_pattern) {
-				return this.next_pattern;
-			}
-
-			@Override
-			protected long updateSize(long current_size, int current_pattern) {
-				return current_size + (current_pattern == 0 ? 2 : 0);
-			}
-
-			@Override
-			public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
-				int incr = 0;
-				switch (variation) {
-				case NO_VARIATION:
-					return bs[pos];
-				case RANDOM:
-					incr = this.random.nextInt(128);
-					//$FALL-THROUGH$
-				case SEQUENTIAL:
-					switch (pos) {
-					case 0:
-						bs[0][0] = nextName(bs[0][0], incr);
-						break;
-					case 1:
-						// NOP
-						resetRandom();
-						break;
-					case 2:
-						bs[2][0] = nextName(bs[2][0], incr);
-						break;
-					}
-					return bs[pos];
-
-				}
-				return null;
-			}
-
-			@Override
-			public IQuiXEventStreamReader getQuiXEventStreamReader() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
-			@Override
-			public IQuiXStreamReader getQuiXStreamReader() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-
+		@Override
+		protected byte[][] getPatterns() {
+			byte[][] result = { "a".getBytes() };
+			return result;
 		}
+
+		@Override
+		protected byte[] getStart() {
+			return "<_".getBytes();
+		}
+
+		@Override
+		protected boolean notFinished(long current_size, int current_pattern, long total) {
+			return current_size < total;
+		}
+
+		@Override
+		protected int updatePattern(int current_pattern) {
+			return 0;
+		}
+
+		@Override
+		protected long updateSize(long current_size, int current_pattern) {
+			return current_size + 1;
+		}
+
+		@Override
+		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+			int incr = 0;
+			switch (variation) {
+			case NO_VARIATION:
+				return bs[pos];
+			case RANDOM:
+				incr = this.random.nextInt(128);
+				//$FALL-THROUGH$
+			case SEQUENTIAL:
+				bs[pos][0] = nextName(bs[pos][0], incr);
+				return bs[pos];
+			}
+			return null;
+		}
+
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
 	
+	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_NAME_SIZE, stype=SpecialType.OPEN_CLOSE)
+	public static class HighElementNameSizeOpenClose extends ANodeNameSizeGenerator {
+
+		@Override
+		protected byte[] getEnd() {
+			return ">".getBytes();
+		}
+
+		private final byte[][] patterns = { "a".getBytes(), "></_".getBytes(), "a".getBytes() };
+
+		@Override
+		protected byte[][] getPatterns() {
+			return this.patterns;
+		}
+
+		@Override
+		protected byte[] getStart() {
+			return "<_".getBytes();
+		}
+
+		private long loop = 0;
+
+		@Override
+		protected boolean notFinished(long current_size, int current_pattern, long total) {
+			// System.out.println(current_size + ", "+current_pattern+",
+			// "+total);
+			if (current_size + this.patterns[1].length < total) {
+				this.loop++;
+				return true;
+			}
+			// current_size >= total
+			if (current_pattern <= 0) {
+				// switch pattern
+				this.next_pattern = 1;
+				return true;
+			}
+			if (current_pattern == 1) {
+				// switch pattern
+				this.next_pattern = 2;
+
+			}
+			// next_pattern will be 2
+			return this.loop-- > 0;
+		}
+
+		int next_pattern = 0;
+
+		@Override
+		protected int updatePattern(int current_pattern) {
+			return this.next_pattern;
+		}
+
+		@Override
+		protected long updateSize(long current_size, int current_pattern) {
+			return current_size + (current_pattern == 0 ? 2 : 0);
+		}
+
+		@Override
+		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+			int incr = 0;
+			switch (variation) {
+			case NO_VARIATION:
+				return bs[pos];
+			case RANDOM:
+				incr = this.random.nextInt(128);
+				//$FALL-THROUGH$
+			case SEQUENTIAL:
+				switch (pos) {
+				case 0:
+					bs[0][0] = nextName(bs[0][0], incr);
+					break;
+				case 1:
+					// NOP
+					resetRandom();
+					break;
+				case 2:
+					bs[2][0] = nextName(bs[2][0], incr);
+					break;
+				}
+				return bs[pos];
+
+			}
+			return null;
+		}
+
+		@Override
+		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IQuiXStreamReader getQuiXStreamReader() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+
 
 	private static void call(ATreeGenerator.Type gtype, SpecialType special, int size, Unit unit)
-			throws IOException, XMLStreamException {
-		AGenerator generator = instance(gtype, special);
+			throws IOException, XMLStreamException, InstantiationException, IllegalAccessException {
+		AGenerator generator = instance(FileExtension.XML, gtype, special);
 		call(generator, gtype.name(), size, unit);
 	}
 
@@ -745,7 +696,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		System.out.println("Time : " + (System.currentTimeMillis() - start));
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, IOException, XMLStreamException {
+	public static void main(String[] args) throws FileNotFoundException, IOException, XMLStreamException, InstantiationException, IllegalAccessException {
 		System.out.println("nextChar\t: " + display(nextChar));
 		System.out.println("nextAttributeValue\t: " + display(nextAttributeValue));
 		System.out.println("nextStartName\t: " + display(nextStartName));
@@ -760,7 +711,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
 					ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
 					ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
-				for (SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype))
+				for (SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype)) {
 					for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
 						int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
 						for (int i : values) {
@@ -769,6 +720,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 							call(gtype, stype, i, unit);
 						}
 					}
+				}
 			}
 		}
 	}

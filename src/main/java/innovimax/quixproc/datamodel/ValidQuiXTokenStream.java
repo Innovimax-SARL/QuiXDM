@@ -393,11 +393,11 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				"Invalid state " + token + ". Closing a node " + node + " while last open is a " + last);
 	}
 
-	private void accept(QuiXToken token, QuiXToken expected) {
+	private static void accept(QuiXToken token, QuiXToken expected) {
 		accept(token, EnumSet.of(expected));
 	}
 
-	private void accept(QuiXToken token, EnumSet<QuiXToken> expecteds) {
+	private static void accept(QuiXToken token, EnumSet<QuiXToken> expecteds) {
 		if (expecteds.contains(token))
 			return;
 		//

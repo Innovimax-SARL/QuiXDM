@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
 
+import innovimax.quixproc.datamodel.IQuiXStream;
 import org.junit.Test;
 
 import innovimax.quixproc.datamodel.QuiXException;
@@ -23,7 +24,7 @@ public class TestGenerator {
 		READ_BYTE, READ_BUFFER, PARSE
 	}
 
-	public static void testAll(FileExtension ext, Process process, int size, Unit unit) throws QuiXException, IOException {
+	public static void testAll(FileExtension ext, Process process, int size, Unit unit) throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (ATreeGenerator.Type gtype : ATreeGenerator.Type.values()) {
 			for (ATreeGenerator.SpecialType stype : ATreeGenerator.SpecialType.allowedModifiers(ext, gtype)) {
 				for (Variation variation : Variation.values()) {
@@ -40,7 +41,7 @@ public class TestGenerator {
 						while ((c = is.read()) != -1) {
 							// do nothing
 							totalsize++;
-						    // System.out.println(AGenerator.display(c));
+							// System.out.println(AGenerator.display(c));
 						}
 						break;
 					case READ_BUFFER:
@@ -53,13 +54,13 @@ public class TestGenerator {
 						break;
 					case PARSE:
 						QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.instance(ext, is));
-						ValidQuiXTokenStream vqxs = new ValidQuiXTokenStream(xqesr);
+						IQuiXStream vqxs = new ValidQuiXTokenStream(xqesr);
 						while (vqxs.hasNext()) {
 							//System.out.println(
-									vqxs.next()
+							vqxs.next()
 							//		)
 							;
-							
+
 							event++;
 						}
 						totalsize = size * unit.value();
@@ -83,7 +84,7 @@ public class TestGenerator {
 
 
 	@Test
-	public void testAllXML1M() throws QuiXException, IOException {
+	public void testAllXML1M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
 			testAll(FileExtension.XML, process, 1, Unit.MBYTE);
 		}
@@ -91,26 +92,26 @@ public class TestGenerator {
 	}
 
 	@Test
-	public void testAllXML1GNotParse() throws QuiXException, IOException {
+	public void testAllXML1GNotParse() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE)) {
 			testAll(FileExtension.XML, process, 1, Unit.GBYTE);
 		}
 		assertTrue(true);
 	}
 
-	 @Test
-	 public void testAllJSON10M() throws QuiXException, IOException {
-			for (Process process : Process.values()) {
-				testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
-			}
-	 assertTrue(true);
-	 }
+	@Test
+	public void testAllJSON10M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+		for (Process process : Process.values()) {
+			testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
+		}
+		assertTrue(true);
+	}
 
-	public static void main(String[] args) throws QuiXException, IOException {
+	public static void main(String[] args) throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : EnumSet.of(/*Process.READ_BUFFER,*/ Process.READ_BYTE, Process.PARSE)) {
 			//testAll(FileExtension.XML, process, 2, Unit.MBYTE);
-			//testAll(FileExtension.JSON, process, 50, Unit.MBYTE);
-			testAll(FileExtension.XML, process, 2, Unit.MBYTE);
+			testAll(FileExtension.JSON, process, 50, Unit.MBYTE);
+			//testAll(FileExtension.XML, process, 2, Unit.MBYTE);
 		}
 	}
 }
