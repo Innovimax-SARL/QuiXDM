@@ -31,6 +31,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.event.AQuiXEvent.Attribute;
+import innovimax.quixproc.datamodel.event.AQuiXEvent.Namespace;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 
 public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
@@ -68,8 +70,8 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 
 	private AQuiXEvent current = null;
 	private AQuiXEvent future = null;
-	private final List<AQuiXEvent.Namespace> namespaces = new ArrayList<AQuiXEvent.Namespace>();
-	private final List<AQuiXEvent.Attribute> attributes = new ArrayList<AQuiXEvent.Attribute>();
+	private final List<Namespace> namespaces = new ArrayList<Namespace>();
+	private final List<Attribute> attributes = new ArrayList<Attribute>();
 
 	@Override
 	public int next() throws XMLStreamException {
@@ -225,7 +227,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public String getAttributeValue(String namespaceURI, String localName) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		for (AQuiXEvent.Attribute attribute : attributes) {
+		for (Attribute attribute : attributes) {
 			// TODO compare between String and QuiXCharStream
 			if (localName.equals(attribute.getLocalName()) && namespaceURI.equals(attribute.getURI()))
 				return attribute.getValue().toString();

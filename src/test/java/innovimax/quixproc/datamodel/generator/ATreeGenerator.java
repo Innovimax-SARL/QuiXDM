@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Set;
 
+import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
 import innovimax.quixproc.datamodel.generator.annotations.GeneratorRuntimeExtractor;
 import innovimax.quixproc.datamodel.generator.json.AJSONGenerator;
 import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator;
@@ -35,8 +36,8 @@ public abstract class ATreeGenerator extends AGenerator {
 	public enum SpecialType {
 		STANDARD, // no specific
 		NAMESPACE, OPEN_CLOSE;
-		private static final EnumMap<AGenerator.FileExtension, EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>>> map
-		= new EnumMap<AGenerator.FileExtension, EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>>>(AGenerator.FileExtension.class);
+		private static final EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>> map
+		= new EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>(FileExtension.class);
 		static {
 			GeneratorRuntimeExtractor.process(map, AXMLGenerator.class);				
 			GeneratorRuntimeExtractor.process(map, AJSONGenerator.class);				
@@ -44,9 +45,9 @@ public abstract class ATreeGenerator extends AGenerator {
 		
 		public static Set<SpecialType> allowedModifiers(FileExtension ext, Type gtype) {
 			EnumMap<Type, EnumMap<SpecialType, Class<?>>> enumMap = map.get(ext);
-			if (enumMap == null) return Collections.EMPTY_SET;			
+			if (enumMap == null) return Collections.emptySet();
 			EnumMap<SpecialType, Class<?>> enumMap2 = enumMap.get(gtype);
-			if (enumMap2 == null) return Collections.EMPTY_SET;
+			if (enumMap2 == null) return Collections.emptySet();
 			return enumMap2.keySet();
 		}
 	}

@@ -5,7 +5,7 @@ import java.math.BigInteger;
 public abstract class AReversibleRandom {
 	long seed;
 
-	public AReversibleRandom(long seed) {
+	protected AReversibleRandom(long seed) {
 		this.seed = seed;
 	}
 	

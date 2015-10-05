@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 
 /**
  * <p>
- * <code>QuiXQName</code> represents a <strong>qualified name</strong> as
+ * {@code QuiXQName} represents a <strong>qualified name</strong> as
  * defined in the XML specifications:
  * <a href="http://www.w3.org/TR/xmlschema-2/#QName">XML Schema Part2: Datatypes
  * specification</a>,
@@ -36,17 +36,17 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * <p>
- * The value of a <code>QuiXQName</code> contains a <strong>Namespace
+ * The value of a {@code QuiXQName} contains a <strong>Namespace
  * URI</strong>, <strong>local part</strong> and <strong>prefix</strong>.
  * </p>
  * 
  * <p>
- * <code>QuiXQName</code> is QuiXCharStream friendly implementation of
- * <code>QName</code>
+ * {@code QuiXQName} is QuiXCharStream friendly implementation of
+ * {@code QName}
  * </p>
  *
  * <p>
- * The prefix is included in <code>QName</code> to retain lexical information
+ * The prefix is included in {@code QName} to retain lexical information
  * <strong><em>when present</em></strong> in an
  * {@link javax.xml.transform.Source XML input source}. The prefix is <strong>
  * <em>NOT</em></strong> used in {@link #equals(Object) QName.equals(Object)} or
@@ -64,7 +64,7 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * <p>
- * <code>QuiXQName</code> is immutable.
+ * {@code QuiXQName} is immutable.
  * </p>
  *
  * @author innovimax
@@ -80,33 +80,33 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * Namespace URI of this <code>QName</code>.
+	 * Namespace URI of this {@code QName}.
 	 * </p>
 	 */
 	private final QuiXCharStream namespaceURI;
 
 	/**
 	 * <p>
-	 * local part of this <code>QName</code>.
+	 * local part of this {@code QName}.
 	 * </p>
 	 */
 	private final QuiXCharStream localPart;
 
 	/**
 	 * <p>
-	 * prefix of this <code>QName</code>.
+	 * prefix of this {@code QName}.
 	 * </p>
 	 */
 	private final QuiXCharStream prefix;
 
 	/**
 	 * <p>
-	 * <code>QuiXQName</code> constructor specifying the Namespace URI and local
+	 * {@code QuiXQName} constructor specifying the Namespace URI and local
 	 * part.
 	 * </p>
 	 *
 	 * <p>
-	 * If the Namespace URI is <code>null</code>, it is set to
+	 * If the Namespace URI is {@code null}, it is set to
 	 * {@link javax.xml.XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI}. This
 	 * value represents no explicitly defined Namespace as defined by the
 	 * <a href="http://www.w3.org/TR/REC-xml-names/#ns-qualnames">Namespaces in
@@ -117,8 +117,8 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * <p>
-	 * If the local part is <code>null</code> an
-	 * <code>IllegalArgumentException</code> is thrown. A local part of "" is
+	 * If the local part is {@code null} an
+	 * {@code IllegalArgumentException} is thrown. A local part of "" is
 	 * allowed to preserve compatible behavior with QName 1.0.
 	 * </p>
 	 *
@@ -138,12 +138,12 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * @param namespaceURI
-	 *            Namespace URI of the <code>QName</code>
+	 *            Namespace URI of the {@code QName}
 	 * @param localPart
-	 *            local part of the <code>QName</code>
+	 *            local part of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>localPart</code> is <code>null</code>
+	 *             When <code>localPart</code> is {@code null}
 	 *
 	 * @see #QName(String namespaceURI, String localPart, String prefix)
 	 *      QName(String namespaceURI, String localPart, String prefix)
@@ -154,12 +154,12 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * <code>QuiXQName</code> constructor specifying the Namespace URI, local
+	 * {@code QuiXQName} constructor specifying the Namespace URI, local
 	 * part and prefix.
 	 * </p>
 	 *
 	 * <p>
-	 * If the Namespace URI is <code>null</code>, it is set to
+	 * If the Namespace URI is {@code null}, it is set to
 	 * {@link javax.xml.XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI}. This
 	 * value represents no explicitly defined Namespace as defined by the
 	 * <a href="http://www.w3.org/TR/REC-xml-names/#ns-qualnames">Namespaces in
@@ -170,14 +170,14 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * <p>
-	 * If the local part is <code>null</code> an
-	 * <code>IllegalArgumentException</code> is thrown. A local part of "" is
+	 * If the local part is {@code null} an
+	 * {@code IllegalArgumentException} is thrown. A local part of "" is
 	 * allowed to preserve compatible behavior with QName 1.0.
 	 * </p>
 	 *
 	 * <p>
-	 * If the prefix is <code>null</code>, an
-	 * <code>IllegalArgumentException</code> is thrown. Use
+	 * If the prefix is {@code null}, an
+	 * {@code IllegalArgumentException} is thrown. Use
 	 * {@link javax.xml.XMLConstants#DEFAULT_NS_PREFIX
 	 * XMLConstants.DEFAULT_NS_PREFIX} to explicitly indicate that no prefix is
 	 * present or the prefix is not relevant.
@@ -193,15 +193,15 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * @param namespaceURI
-	 *            Namespace URI of the <code>QName</code>
+	 *            Namespace URI of the {@code QName}
 	 * @param localPart
-	 *            local part of the <code>QName</code>
+	 *            local part of the {@code QName}
 	 * @param prefix
-	 *            prefix of the <code>QName</code>
+	 *            prefix of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>localPart</code> or <code>prefix</code> is
-	 *             <code>null</code>
+	 *             When <code>localPart</code> or {@code prefix} is
+	 *             {@code null}
 	 */
 	public QuiXQName(QuiXCharStream namespaceURI, QuiXCharStream localPart, QuiXCharStream prefix) {
 
@@ -229,12 +229,12 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * <code>QuiXQName</code> constructor specifying the local part.
+	 * {@code QuiXQName} constructor specifying the local part.
 	 * </p>
 	 *
 	 * <p>
-	 * If the local part is <code>null</code> an
-	 * <code>IllegalArgumentException</code> is thrown. A local part of "" is
+	 * If the local part is {@code null} an
+	 * {@code IllegalArgumentException} is thrown. A local part of "" is
 	 * allowed to preserve compatible behavior with QName 1.0.
 	 * </p>
 	 *
@@ -248,7 +248,7 @@ public class QuiXQName implements Serializable {
 	 * <p>
 	 * <em>In an XML context, all Element and Attribute names exist
 	 * in the context of a Namespace.  Making this explicit during the
-	 * construction of a <code>QName</code> helps prevent hard to diagnosis XML
+	 * construction of a {@code QName} helps prevent hard to diagnosis XML
 	 * validity errors. The constructors
 	 * {@link #QName(String namespaceURI, String localPart) QName(String
 	 * namespaceURI, String localPart)} and
@@ -264,10 +264,10 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * @param localPart
-	 *            local part of the <code>QName</code>
+	 *            local part of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>localPart</code> is <code>null</code>
+	 *             When <code>localPart</code> is {@code null}
 	 *
 	 * @see #QName(String namespaceURI, String localPart) QName(String
 	 *      namespaceURI, String localPart)
@@ -281,10 +281,10 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * Get the Namespace URI of this <code>QName</code>.
+	 * Get the Namespace URI of this {@code QName}.
 	 * </p>
 	 *
-	 * @return Namespace URI of this <code>QName</code>
+	 * @return Namespace URI of this {@code QName}
 	 */
 	public QuiXCharStream getNamespaceURI() {
 		return this.namespaceURI;
@@ -292,10 +292,10 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * Get the local part of this <code>QName</code>.
+	 * Get the local part of this {@code QName}.
 	 * </p>
 	 *
-	 * @return local part of this <code>QName</code>
+	 * @return local part of this {@code QName}
 	 */
 	public QuiXCharStream getLocalPart() {
 		return this.localPart;
@@ -303,18 +303,18 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * Get the prefix of this <code>QName</code>.
+	 * Get the prefix of this {@code QName}.
 	 * </p>
 	 *
 	 * <p>
-	 * The prefix assigned to a <code>QName</code> might <strong>
+	 * The prefix assigned to a {@code QName} might <strong>
 	 * <em>NOT</em></strong> be valid in a different context. For example, a
-	 * <code>QName</code> may be assigned a prefix in the context of parsing a
+	 * {@code QName} may be assigned a prefix in the context of parsing a
 	 * document but that prefix may be invalid in the context of a different
 	 * document.
 	 * </p>
 	 *
-	 * @return prefix of this <code>QName</code>
+	 * @return prefix of this {@code QName}
 	 */
 	public QuiXCharStream getPrefix() {
 		return this.prefix;
@@ -322,19 +322,19 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * Test this <code>QName</code> for equality with another
-	 * <code>Object</code>.
+	 * Test this {@code QName} for equality with another
+	 * {@code Object}.
 	 * </p>
 	 *
 	 * <p>
-	 * If the <code>Object</code> to be tested is not a <code>QName</code> or is
-	 * <code>null</code>, then this method returns <code>false</code>.
+	 * If the <code>Object</code> to be tested is not a {@code QName} or is
+	 * <code>null</code>, then this method returns {@code false}.
 	 * </p>
 	 *
 	 * <p>
-	 * Two <code>QName</code>s are considered equal if and only if both the
+	 * Two {@code QName}s are considered equal if and only if both the
 	 * Namespace URI and local part are equal. This method uses
-	 * <code>String.equals()</code> to check equality of the Namespace URI and
+	 * {@code String.equals()} to check equality of the Namespace URI and
 	 * local part. The prefix is <strong><em>NOT</em></strong> used to determine
 	 * equality.
 	 * </p>
@@ -345,10 +345,10 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * @param objectToTest
-	 *            the <code>Object</code> to test for equality with this
-	 *            <code>QName</code>
-	 * @return <code>true</code> if the given <code>Object</code> is equal to
-	 *         this <code>QName</code> else <code>false</code>
+	 *            the {@code Object} to test for equality with this
+	 *            {@code QName}
+	 * @return <code>true</code> if the given {@code Object} is equal to
+	 *         this <code>QName</code> else {@code false}
 	 */
 	@Override
 	public final boolean equals(Object objectToTest) {
@@ -367,12 +367,12 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * Generate the hash code for this <code>QName</code>.
+	 * Generate the hash code for this {@code QName}.
 	 * </p>
 	 *
 	 * <p>
 	 * The hash code is calculated using both the Namespace URI and the local
-	 * part of the <code>QName</code>. The prefix is <strong>
+	 * part of the {@code QName}. The prefix is <strong>
 	 * <em>NOT</em></strong> used to calculate the hash code.
 	 * </p>
 	 *
@@ -381,7 +381,7 @@ public class QuiXQName implements Serializable {
 	 * {@link java.lang.Object#hashCode() Object.hashCode()}.
 	 * </p>
 	 *
-	 * @return hash code for this <code>QName</code> <code>Object</code>
+	 * @return hash code for this <code>QName</code> {@code Object}
 	 */
 	@Override
 	public final int hashCode() {
@@ -390,26 +390,26 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * <code>String</code> representation of this <code>QName</code>.
+	 * <code>String</code> representation of this {@code QName}.
 	 * </p>
 	 *
 	 * <p>
-	 * The commonly accepted way of representing a <code>QName</code> as a
-	 * <code>String</code> was
+	 * The commonly accepted way of representing a {@code QName} as a
+	 * {@code String} was
 	 * <a href="http://jclark.com/xml/xmlns.htm">defined</a> by James Clark.
 	 * Although this is not a <em>standard</em> specification, it is in common
 	 * use, e.g.
 	 * {@link javax.xml.transform.Transformer#setParameter(String name, Object value)}
-	 * . This implementation represents a <code>QName</code> as: "{" + Namespace
+	 * . This implementation represents a {@code QName} as: "{" + Namespace
 	 * URI + "}" + local part. If the Namespace URI
-	 * <code>.equals(XMLConstants.NULL_NS_URI)</code>, only the local part is
+	 * {@code .equals(XMLConstants.NULL_NS_URI)}, only the local part is
 	 * returned. An appropriate use of this method is for debugging or logging
 	 * for human consumption.
 	 * </p>
 	 *
 	 * <p>
 	 * Note the prefix value is <strong><em>NOT</em></strong> returned as part
-	 * of the <code>String</code> representation.
+	 * of the {@code String} representation.
 	 * </p>
 	 *
 	 * <p>
@@ -417,7 +417,7 @@ public class QuiXQName implements Serializable {
 	 * {@link java.lang.Object#toString() Object.toString()}.
 	 * </p>
 	 *
-	 * @return <code>String</code> representation of this <code>QName</code>
+	 * @return <code>String</code> representation of this {@code QName}
 	 */
 	@Override
 	public String toString() {
@@ -430,44 +430,44 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * <code>QName</code> derived from parsing the formatted <code>String</code>
+	 * <code>QName</code> derived from parsing the formatted {@code String}
 	 * .
 	 * </p>
 	 *
 	 * <p>
-	 * If the <code>String</code> is <code>null</code> or does not conform to
+	 * If the <code>String</code> is {@code null} or does not conform to
 	 * {@link #toString() QName.toString()} formatting, an
-	 * <code>IllegalArgumentException</code> is thrown.
+	 * {@code IllegalArgumentException} is thrown.
 	 * </p>
 	 *
 	 * <p>
-	 * <em>The <code>String</code> <strong>MUST</strong> be in the form returned
+	 * <em>The {@code String} <strong>MUST</strong> be in the form returned
 	 * by {@link #toString() QName.toString()}.</em>
 	 * </p>
 	 *
 	 * <p>
-	 * The commonly accepted way of representing a <code>QName</code> as a
-	 * <code>String</code> was
+	 * The commonly accepted way of representing a {@code QName} as a
+	 * {@code String} was
 	 * <a href="http://jclark.com/xml/xmlns.htm">defined</a> by James Clark.
 	 * Although this is not a <em>standard</em> specification, it is in common
 	 * use, e.g.
 	 * {@link javax.xml.transform.Transformer#setParameter(String name, Object value)}
-	 * . This implementation parses a <code>String</code> formatted as: "{" +
+	 * . This implementation parses a {@code String} formatted as: "{" +
 	 * Namespace URI + "}" + local part. If the Namespace URI
-	 * <code>.equals(XMLConstants.NULL_NS_URI)</code>, only the local part
+	 * {@code .equals(XMLConstants.NULL_NS_URI)}, only the local part
 	 * should be provided.
 	 * </p>
 	 *
 	 * <p>
 	 * The prefix value <strong><em>CANNOT</em></strong> be represented in the
-	 * <code>String</code> and will be set to
+	 * {@code String} and will be set to
 	 * {@link javax.xml.XMLConstants#DEFAULT_NS_PREFIX
 	 * XMLConstants.DEFAULT_NS_PREFIX}.
 	 * </p>
 	 *
 	 * <p>
 	 * This method does not do full validation of the resulting
-	 * <code>QName</code>.
+	 * {@code QName}.
 	 * <p>
 	 * The Namespace URI is not validated as a
 	 * <a href="http://www.ietf.org/rfc/rfc2396.txt">URI reference</a>. The
@@ -478,13 +478,13 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * @param qNameAsString
-	 *            <code>String</code> representation of the <code>QName</code>
+	 *            <code>String</code> representation of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>qNameAsString</code> is <code>null</code> or
+	 *             When <code>qNameAsString</code> is {@code null} or
 	 *             malformed
 	 *
-	 * @return <code>QName</code> corresponding to the given <code>String</code>
+	 * @return <code>QName</code> corresponding to the given {@code String}
 	 * @see #toString() QName.toString()
 	 */
 	public static QuiXQName valueOf(String qNameAsString) {

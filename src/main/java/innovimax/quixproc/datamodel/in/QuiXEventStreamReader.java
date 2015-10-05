@@ -9,13 +9,17 @@ import javax.xml.stream.XMLStreamException;
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader.CallBack;
+import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
+import innovimax.quixproc.datamodel.in.AStreamSource.Type;
+import innovimax.quixproc.datamodel.in.AStreamSource.XMLStreamSource;
 import innovimax.quixproc.datamodel.in.json.JSONQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.xml.XMLQuiXEventStreamReader;
 
-public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEventStreamReader.CallBack {
+public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
 	protected final Iterator<AStreamSource> sources;
-	private final EnumMap<AStreamSource.Type, AQuiXEventStreamReader> delegates;
+	private final EnumMap<Type, AQuiXEventStreamReader> delegates;
 	private AQuiXEventStreamReader delegate;
 
 	public QuiXEventStreamReader(javax.xml.transform.Source... sources) {
@@ -26,7 +30,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 	}
 	public QuiXEventStreamReader(Iterable<AStreamSource> sources) {
 		this.sources = sources.iterator();
-		this.delegates = new EnumMap<AStreamSource.Type, AQuiXEventStreamReader>(AStreamSource.Type.class);
+		this.delegates = new EnumMap<Type, AQuiXEventStreamReader>(Type.class);
 		this.delegate = null;
 	}
 
@@ -35,7 +39,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 		switch (current.type) {
 		case JSON:
 			if (!delegates.containsKey(current.type)) {
-				this.delegate = new JSONQuiXEventStreamReader((AStreamSource.JSONStreamSource) current);
+				this.delegate = new JSONQuiXEventStreamReader((JSONStreamSource) current);
 			} else {
 				this.delegate = this.delegates.get(current.type);
 				this.delegate.reinitialize(current);
@@ -43,7 +47,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, AQuiXEvent
 			break;
 		case XML:
 			if (!delegates.containsKey(current.type)) {
-				this.delegate = new XMLQuiXEventStreamReader((AStreamSource.XMLStreamSource) current);
+				this.delegate = new XMLQuiXEventStreamReader((XMLStreamSource) current);
 			} else {
 				this.delegate = this.delegates.get(current.type);
 				this.delegate.reinitialize(current);

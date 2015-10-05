@@ -694,6 +694,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return (this.type == QuiXToken.NAMESPACE);
 	}
 
+	@Override
 	public AQuiXEvent getEvent() {
 		return this;
 	}

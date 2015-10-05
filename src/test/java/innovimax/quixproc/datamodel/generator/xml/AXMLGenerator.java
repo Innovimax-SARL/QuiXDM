@@ -32,6 +32,8 @@ import javax.xml.stream.XMLStreamReader;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.AHighDensityGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
 import innovimax.quixproc.datamodel.generator.annotations.Generator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
@@ -270,7 +272,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	}
 
 	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_DENSITY, stype=SpecialType.STANDARD)
-	public static class HighNodeDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
+	public static class HighNodeDensityGenerator extends AHighDensityGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
 
@@ -654,7 +656,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	}
 
 
-	private static void call(ATreeGenerator.Type gtype, SpecialType special, int size, Unit unit)
+	private static void call(Type gtype, SpecialType special, int size, Unit unit)
 			throws IOException, XMLStreamException, InstantiationException, IllegalAccessException {
 		AGenerator generator = instance(FileExtension.XML, gtype, special);
 		call(generator, gtype.name(), size, unit);
@@ -705,12 +707,12 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		if (ONE_INSTANCE) {
 			// call(ATreeGenerator.Type.HIGH_NODE_DENSITY, null, 150,
 			// Unit.MBYTE);
-			call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
+			call(Type.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
 			// call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
-			for (ATreeGenerator.Type gtype : EnumSet.of(ATreeGenerator.Type.HIGH_NODE_NAME_SIZE,
-					ATreeGenerator.Type.HIGH_NODE_NAME_SIZE, ATreeGenerator.Type.HIGH_NODE_DENSITY,
-					ATreeGenerator.Type.HIGH_NODE_DEPTH)) {
+			for (Type gtype : EnumSet.of(Type.HIGH_NODE_NAME_SIZE,
+					Type.HIGH_NODE_NAME_SIZE, Type.HIGH_NODE_DENSITY,
+					Type.HIGH_NODE_DEPTH)) {
 				for (SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype)) {
 					for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
 						int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };

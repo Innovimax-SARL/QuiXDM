@@ -35,11 +35,12 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 	private static int counter = 1;
 	private final int rank = counter++;
 
-	public AXdmNode2QuiXEventStreamConverter(ISimpleQuiXQueue<AQuiXEvent> doc, XdmNode node) {
+	protected AXdmNode2QuiXEventStreamConverter(ISimpleQuiXQueue<AQuiXEvent> doc, XdmNode node) {
 		this.doc = doc;
 		this.node = node;
 	}
 
+	@Override
 	public void run() {
 		// System.out.println("EventConverter.run("+rank+")");
 		try {

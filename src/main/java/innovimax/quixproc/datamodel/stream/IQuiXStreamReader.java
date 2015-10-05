@@ -585,7 +585,7 @@ public interface IQuiXStreamReader {
 	 * more text. Otherwise, subsequent calls need to be made until all text has
 	 * been retrieved. For example:
 	 *
-	 * <code>
+	 * {@code
 	 * int length = 1024;
 	 * char[] myBuffer = new char[ length ];
 	 *
@@ -596,7 +596,7 @@ public interface IQuiXStreamReader {
 	 *   if (nCopied < length)
 	 *       break;
 	 * }
-	 * </code> QuixStreamException may be thrown if there are any XML errors in
+	 * } QuixStreamException may be thrown if there are any XML errors in
 	 * the underlying source. The "targetStart" argument must be greater than or
 	 * equal to 0 and less than the length of "target", Length must be greater
 	 * than 0 and "targetStart + length" must be less than or equal to length of

@@ -76,7 +76,7 @@ public abstract class AStreamSource {
 		AStreamSource[] asources = new AStreamSource[sources.length];
 		int i = 0;
 		for (javax.xml.transform.Source source : sources) {
-			asources[i] = AStreamSource.instance(source);
+			asources[i] = instance(source);
 			i++;
 		}
 		return Arrays.asList(asources);
@@ -89,7 +89,7 @@ public abstract class AStreamSource {
 		case JSON:
 			return JSONStreamSource.instance(is);
 		case XML:
-			return AStreamSource.instance(new StreamSource(is));
+			return instance(new StreamSource(is));
 		case YAML:
 			break;
 		default:

@@ -38,7 +38,7 @@ import java.util.ConcurrentModificationException;
  */
 public abstract class QuiXCharStream {
 
-	public static final QuiXCharStream EMPTY = QuiXCharStream.fromSequence("");
+	public static final QuiXCharStream EMPTY = fromSequence("");
 
 	@Override
 	public abstract String toString() throws ConcurrentModificationException;

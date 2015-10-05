@@ -40,6 +40,7 @@ public class QuiXMatchedEvent implements IQuiXEvent {
 
 	/* set/get properties */
 
+	@Override
 	public AQuiXEvent getEvent() {
 		return event;
 	}

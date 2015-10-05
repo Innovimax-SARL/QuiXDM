@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.EnumSet;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
 import org.junit.Test;
 
 import innovimax.quixproc.datamodel.QuiXException;
@@ -25,8 +27,8 @@ public class TestGenerator {
 	}
 
 	public static void testAll(FileExtension ext, Process process, int size, Unit unit) throws QuiXException, IOException, InstantiationException, IllegalAccessException {
-		for (ATreeGenerator.Type gtype : ATreeGenerator.Type.values()) {
-			for (ATreeGenerator.SpecialType stype : ATreeGenerator.SpecialType.allowedModifiers(ext, gtype)) {
+		for (Type gtype : Type.values()) {
+			for (SpecialType stype : SpecialType.allowedModifiers(ext, gtype)) {
 				for (Variation variation : Variation.values()) {
 					System.out.format("Test %s START %d %s {%s, %s, %s, %s}%n", ext, size, unit, process, gtype, stype,
 							variation);

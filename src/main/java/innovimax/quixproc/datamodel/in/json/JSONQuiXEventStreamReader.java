@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonToken;
 
 import innovimax.quixproc.datamodel.QuiXCharStream;
@@ -14,6 +15,7 @@ import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
+import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
 public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	private final JsonFactory ifactory;
@@ -21,12 +23,12 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 
 	public JSONQuiXEventStreamReader(JSONStreamSource current) {
 		this.ifactory = new JsonFactory();
-		this.ifactory.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
+		this.ifactory.enable(Feature.STRICT_DUPLICATE_DETECTION);
 	}
 
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
-		return load(((AStreamSource.JSONStreamSource) current).asInputStream());
+		return load(((JSONStreamSource) current).asInputStream());
 	}
 
 	protected AQuiXEvent load(InputStream current) throws QuiXException {
@@ -42,13 +44,13 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	protected AQuiXEvent process(CallBack callback) throws QuiXException {
 		// System.out.println("process");
 		try {
-			if (callback.getState() == QuiXEventStreamReader.State.END_SOURCE) {
+			if (callback.getState() == State.END_SOURCE) {
 				return callback.processEndSource();
 			}
 			while (true) {
 				JsonToken token = this.iparser.nextToken();
 				if (token == null) {
-					callback.setState(QuiXEventStreamReader.State.END_SOURCE);
+					callback.setState(State.END_SOURCE);
 					return AQuiXEvent.getEndJSON();
 				}
 				switch (token) {

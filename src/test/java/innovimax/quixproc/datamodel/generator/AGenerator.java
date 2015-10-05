@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.generator.AReversibleRandom.SimpleReversibleRandom;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class AGenerator {
@@ -298,7 +299,7 @@ public abstract class AGenerator {
 
 	protected AGenerator() {
 		this.seed = System.nanoTime();
-		this.random = new AReversibleRandom.SimpleReversibleRandom(this.seed, 3, 5);
+		this.random = new SimpleReversibleRandom(this.seed, 3, 5);
 	}
 	
 	protected void resetRandom() {

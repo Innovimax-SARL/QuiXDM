@@ -26,7 +26,7 @@ import innovimax.quixproc.datamodel.QuiXException;
 public abstract class AQuiXEventStreamFilter implements IQuiXStream<IQuiXToken> {
 	private final IQuiXStream<IQuiXToken> stream;
 
-	public AQuiXEventStreamFilter(IQuiXStream<IQuiXToken> stream) {
+	protected AQuiXEventStreamFilter(IQuiXStream<IQuiXToken> stream) {
 		this.stream = stream;
 	}
 

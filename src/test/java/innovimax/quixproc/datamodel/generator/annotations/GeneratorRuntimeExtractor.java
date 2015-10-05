@@ -3,31 +3,34 @@ package innovimax.quixproc.datamodel.generator.annotations;
 import java.util.EnumMap;
 
 import innovimax.quixproc.datamodel.generator.AGenerator;
+import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
 import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator;
 
 public class GeneratorRuntimeExtractor {
-  public static EnumMap<AGenerator.FileExtension, EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>>> process(EnumMap<AGenerator.FileExtension, EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>>> map, Class<?> c) {
+  public static EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>> process(EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>> map, Class<?> c) {
 	  for(Class<?> cc : c.getClasses()) {
 
 	  for(Generator generator : cc.getAnnotationsByType(Generator.class)) {
 //		  System.out.println("foo");
 		  // file extension
-		  final EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>> type;
+		  final EnumMap<Type, EnumMap<SpecialType, Class<?>>> type;
 		  if (map.containsKey(generator.ext())) {
 			  type = map.get(generator.ext());
 		  } else {
 //			  System.out.println("foo1");
-			  type = new EnumMap<ATreeGenerator.Type, EnumMap<ATreeGenerator.SpecialType, Class<?>>>(ATreeGenerator.Type.class);
+			  type = new EnumMap<Type, EnumMap<SpecialType, Class<?>>>(Type.class);
 			  map.put(generator.ext(), type);
 		  }
 		  // type
-		  final EnumMap<ATreeGenerator.SpecialType, Class<?>> stype;
+		  final EnumMap<SpecialType, Class<?>> stype;
 		  if (type.containsKey(generator.type())) {
 			  stype = type.get(generator.type());
 		  } else {
 //			  System.out.println("foo2");
-			  stype = new EnumMap<ATreeGenerator.SpecialType, Class<?>>(ATreeGenerator.SpecialType.class);
+			  stype = new EnumMap<SpecialType, Class<?>>(SpecialType.class);
 			  type.put(generator.type(), stype);
 		  }
 		  if (stype.containsKey(generator.stype())) {

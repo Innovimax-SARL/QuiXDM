@@ -25,11 +25,15 @@ import java.io.InputStream;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonToken;
 
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.AHighDensityGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.AHighTextSizeGenerator;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
 import innovimax.quixproc.datamodel.generator.annotations.Generator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
@@ -141,7 +145,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	}
 	 */
 	//@Generator(ext=FileExtension.JSON, type=Type.HIGH_TEXT_SIZE, stype=SpecialType.STANDARD)
-	public static class HighTextSizeGenerator extends ATreeGenerator.AHighTextSizeGenerator {
+	public static class HighTextSizeGenerator extends AHighTextSizeGenerator {
 
 		final byte[] start = "{".getBytes();
 		final byte[][] end = {
@@ -220,7 +224,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 
 	@Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_DENSITY, stype=SpecialType.STANDARD)
-	public static class HighDensityGenerator extends ATreeGenerator.AHighDensityGenerator {
+	public static class HighDensityGenerator extends AHighDensityGenerator {
 
 		final byte[] start = "{".getBytes();
 		final byte[][] end = {
@@ -402,10 +406,10 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		 * System.out.println(display(patterns[1]));
 		 */
 		JsonFactory f = new JsonFactory();
-		f.disable(JsonParser.Feature.ALLOW_COMMENTS);
-		f.disable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
+		f.disable(Feature.ALLOW_COMMENTS);
+		f.disable(Feature.ALLOW_SINGLE_QUOTES);
 		// AGenerator generator = instance(ATreeGenerator.Type.HIGH_DENSITY);
-		AGenerator generator = instance(FileExtension.JSON, ATreeGenerator.Type.HIGH_NODE_DEPTH, SpecialType.STANDARD);
+		AGenerator generator = instance(FileExtension.JSON, Type.HIGH_NODE_DEPTH, SpecialType.STANDARD);
 
 		InputStream is = generator.getInputStream(50, Unit.MBYTE, Variation.NO_VARIATION);
 		if (false) {
@@ -415,7 +419,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			}
 		} else {
 			JsonParser p = f.createParser(is);
-			p.enable(JsonParser.Feature.STRICT_DUPLICATE_DETECTION);
+			p.enable(Feature.STRICT_DUPLICATE_DETECTION);
 
 			while (p.nextToken() != JsonToken.END_OBJECT) {
 				//

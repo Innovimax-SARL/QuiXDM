@@ -21,13 +21,14 @@ package innovimax.quixproc.datamodel.in;
 
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
+import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
 public abstract class AQuiXEventStreamReader {
 
 	public interface CallBack {
-		QuiXEventStreamReader.State getState();
+		State getState();
 
-		void setState(QuiXEventStreamReader.State state);
+		void setState(State state);
 
 		AQuiXEvent processEndSource() throws QuiXException;
 	}
