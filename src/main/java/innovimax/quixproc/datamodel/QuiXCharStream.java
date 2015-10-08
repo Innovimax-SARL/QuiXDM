@@ -21,6 +21,8 @@ package innovimax.quixproc.datamodel;
 
 import java.util.ConcurrentModificationException;
 
+import javax.xml.XMLConstants;
+
 /**
  * A truly Streamable CharSequence
  * 
@@ -39,6 +41,8 @@ import java.util.ConcurrentModificationException;
 public abstract class QuiXCharStream {
 
 	public static final QuiXCharStream EMPTY = fromSequence("");
+	public static final QuiXCharStream NULL_NS_URI = fromSequence(XMLConstants.NULL_NS_URI);
+	public static final QuiXCharStream DEFAULT_NS_PREFIX = fromSequence(XMLConstants.DEFAULT_NS_PREFIX);
 
 	@Override
 	public abstract String toString() throws ConcurrentModificationException;

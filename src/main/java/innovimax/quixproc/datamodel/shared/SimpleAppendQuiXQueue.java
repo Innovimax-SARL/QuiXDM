@@ -39,11 +39,11 @@ import innovimax.quixproc.datamodel.event.AQuiXEvent;
 public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
 	private static final boolean DEBUG = false;
-	private final List<T> events;
-	private final ReentrantReadWriteLock rwl;
+	final List<T> events;
+	final ReentrantReadWriteLock rwl;
 	//
-	private int readerCount = 0;
-	private boolean closed = false;
+	int readerCount = 0;
+	boolean closed = false;
 	private boolean startWorking = false;
 	//
 	private static int counter = 0;
@@ -104,7 +104,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		private int i = 0;
 		private boolean readerClosed = false;
 
-		private LocalReader() {
+		LocalReader() {
 			// this.iterator = events.iterator();
 		}
 

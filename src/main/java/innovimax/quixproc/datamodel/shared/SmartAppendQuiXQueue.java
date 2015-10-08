@@ -124,7 +124,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		// debug
 		private String name;
 
-		private LocalReader(LinkedItem<T> li) {
+		LocalReader(LinkedItem<T> li) {
 			this.current = li;
 		}
 
@@ -134,14 +134,14 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
 		@Override
 		public boolean hasNext() {
-			if (current == null) {
+			if (this.current == null) {
 				System.out.println("hasNext => current == null in LocalReader");
 				return false;
 			}
 			boolean result = this.current.getNext() != LinkedItem.END;
 			if (DEBUG_LEVEL > 1)
 				if (!result)
-					System.out.println("Reader(" + name + ") hasnext=false");
+					System.out.println("Reader(" + this.name + ") hasnext=false");
 			return result;
 		}
 
@@ -150,7 +150,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			this.current = this.current.getNext();
 			T event = this.current.get();
 			if (DEBUG_LEVEL > 1)
-				System.out.println("" + counter + "/" + name + "<-" + event);
+				System.out.println("" + counter + "/" + this.name + "<-" + event);
 			return event;
 		}
 
@@ -158,7 +158,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		public void close() {
 			this.current = LinkedItem.END;
 			if (DEBUG_LEVEL > 0)
-				System.out.println("Reader(" + name + ") closed");
+				System.out.println("Reader(" + this.name + ") closed");
 		}
 	}
 
@@ -197,23 +197,23 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			open.remove(this.rank);
 		if (DEBUG_LEVEL > 0)
 			System.out.println("SmartAppendQueue Close : " + this.rank + "; SmartAppend still open : " + open.size()
-					+ "; Reader(" + currentReader + "/" + readerCount + ")");
+					+ "; Reader(" + this.currentReader + "/" + this.readerCount + ")");
 	}
 
 	@Override
 	public IQuiXStream<T> registerReader() {
-		final LinkedItem<T> local_head = head;
+		final LinkedItem<T> local_head = this.head;
 		if (DEBUG_LEVEL > 0)
-			System.out.println("head " + head);
+			System.out.println("head " + this.head);
 		LocalReader<T> l = new LocalReader<T>(local_head);
 		IQuiXStream<T> result = l;
 		if (DEBUG_LEVEL > 0)
-			l.setName("" + this.rank + "/" + currentReader + "/" + readerCount);
-		currentReader++;
-		if (readerCount > currentReader) {
+			l.setName("" + this.rank + "/" + this.currentReader + "/" + this.readerCount);
+		this.currentReader++;
+		if (this.readerCount > this.currentReader) {
 			// do nothing there is still reader to register
 			// closeReaderRegistration();
-		} else if (readerCount == currentReader) {
+		} else if (this.readerCount == this.currentReader) {
 			// we reach the maximum so clear head
 			closeReaderRegistration();
 		} else {
@@ -221,7 +221,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			// readerCount < currentReader
 			throw new RuntimeException(
 					// System.out.println(
-					"readerCount < currentReader : " + readerCount + "," + currentReader);
+					"readerCount < currentReader : " + this.readerCount + "," + this.currentReader);
 		}
 		return result;
 	}
@@ -229,13 +229,13 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	private static final class LocalProxyReader<T> implements ProxyReader<T> {
 		private LinkedItem<T> head;
 
-		private LocalProxyReader(LinkedItem<T> head) {
+		LocalProxyReader(LinkedItem<T> head) {
 			this.head = head;
 		}
 
 		@Override
 		public IQuiXStream<T> registerReader() {
-			return new LocalReader<T>(head);
+			return new LocalReader<T>(this.head);
 		}
 
 		@Override
@@ -247,7 +247,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	@Override
 	public ProxyReader<T> registerProxyReader() {
 		// TODO Auto-generated method stub
-		return new LocalProxyReader<T>(head);
+		return new LocalProxyReader<T>(this.head);
 	}
 
 	@Override

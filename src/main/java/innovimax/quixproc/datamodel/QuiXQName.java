@@ -147,7 +147,7 @@ public class QuiXQName implements Serializable {
 	 *      QName(String namespaceURI, String localPart, String prefix)
 	 */
 	public QuiXQName(final QuiXCharStream namespaceURI, final QuiXCharStream localPart) {
-		this(namespaceURI, localPart, QuiXCharStream.fromSequence(XMLConstants.DEFAULT_NS_PREFIX));
+		this(namespaceURI, localPart, QuiXCharStream.DEFAULT_NS_PREFIX);
 	}
 
 	/**
@@ -204,7 +204,7 @@ public class QuiXQName implements Serializable {
 		// map null Namespace URI to default
 		// to preserve compatibility with QName 1.0
 		if (namespaceURI == null) {
-			this.namespaceURI = QuiXCharStream.fromSequence(XMLConstants.NULL_NS_URI);
+			this.namespaceURI = QuiXCharStream.NULL_NS_URI;
 		} else {
 			this.namespaceURI = namespaceURI;
 		}
@@ -271,8 +271,8 @@ public class QuiXQName implements Serializable {
 	 *      QName(String namespaceURI, String localPart, String prefix)
 	 */
 	public QuiXQName(QuiXCharStream localPart) {
-		this(QuiXCharStream.fromSequence(XMLConstants.NULL_NS_URI), localPart,
-				QuiXCharStream.fromSequence(XMLConstants.DEFAULT_NS_PREFIX));
+		this(QuiXCharStream.NULL_NS_URI, localPart,
+				QuiXCharStream.DEFAULT_NS_PREFIX);
 	}
 
 	/**
@@ -415,7 +415,7 @@ public class QuiXQName implements Serializable {
 	@Override
 	public String toString() {
 		// TODO convert XMLConstants to a local one
-		if (this.namespaceURI.equals(XMLConstants.NULL_NS_URI)) {
+		if (this.namespaceURI.equals(QuiXCharStream.NULL_NS_URI)) {
 			return this.localPart.toString();
 		}
 		return "{" + this.namespaceURI + "}" + this.localPart;
@@ -485,16 +485,16 @@ public class QuiXQName implements Serializable {
 
 		// "" local part is valid to preserve compatible behavior with QName 1.0
 		if (qNameAsString.isEmpty()) {
-			return new QuiXQName(QuiXCharStream.fromSequence(XMLConstants.NULL_NS_URI),
+			return new QuiXQName(QuiXCharStream.NULL_NS_URI,
 					QuiXCharStream.fromSequence(qNameAsString),
-					QuiXCharStream.fromSequence(XMLConstants.DEFAULT_NS_PREFIX));
+					QuiXCharStream.DEFAULT_NS_PREFIX);
 		}
 
 		// local part only?
 		if (qNameAsString.charAt(0) != '{') {
-			return new QuiXQName(QuiXCharStream.fromSequence(XMLConstants.NULL_NS_URI),
+			return new QuiXQName(QuiXCharStream.NULL_NS_URI,
 					QuiXCharStream.fromSequence(qNameAsString),
-					QuiXCharStream.fromSequence(XMLConstants.DEFAULT_NS_PREFIX));
+					QuiXCharStream.DEFAULT_NS_PREFIX);
 		}
 
 		// Namespace URI improperly specified?
@@ -512,7 +512,7 @@ public class QuiXQName implements Serializable {
 		}
 		return new QuiXQName(QuiXCharStream.fromSequence(qNameAsString.substring(1, endOfNamespaceURI)),
 				QuiXCharStream.fromSequence(qNameAsString.substring(endOfNamespaceURI + 1)),
-				QuiXCharStream.fromSequence(XMLConstants.DEFAULT_NS_PREFIX));
+				QuiXCharStream.DEFAULT_NS_PREFIX);
 	}
 
 	public QName asQName() {
