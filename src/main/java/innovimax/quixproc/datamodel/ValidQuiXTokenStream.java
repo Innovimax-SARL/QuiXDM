@@ -177,6 +177,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			case END_SEQUENCE:
 				this.state = State.END;
 				break;
+			default:
 			}
 			break;			
 		case END:
@@ -193,10 +194,11 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				// stay in this state
 				break;
 			case START_ELEMENT:
-				state = State.IN_ELEMENT;
+				this.state = State.IN_ELEMENT;
 				this.stack.push(Node.ELEMENT);
 				// update
 				break;
+			default:
 			}
 			break;
 		case IN_DOCUMENT_AFTER_ROOT:
@@ -210,9 +212,9 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				// unpile
 				acceptStackAndSetState(token, Node.DOCUMENT);
 				break;
+			default:
 			}
 			break;
-
 		case IN_ELEMENT:
 			// element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, TEXT?,
 			// ((element|PROCESSING-INSTRUCTION|COMMENT)+, TEXT)*,
@@ -240,6 +242,8 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			case END_ELEMENT:
 				// unpile
 				acceptStackAndSetState(token, Node.ELEMENT);
+				break;
+			default:
 			}
 			break;
 		case IN_CONTENT:
@@ -260,6 +264,8 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			case END_ELEMENT:
 				// unpile
 				acceptStackAndSetState(token, Node.ELEMENT);
+				break;
+			default:
 			}
 			break;
 		case IN_CONTENT_TEXT:
@@ -277,6 +283,8 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			case END_ELEMENT:
 				// unpile
 				acceptStackAndSetState(token, Node.ELEMENT);
+				break;
+			default:	
 			}
 			break;
 		case IN_OBJECT:
@@ -288,6 +296,8 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				break;
 			case END_OBJECT:
 				acceptStackAndSetState(token, Node.OBJECT);
+				break;
+			default:	
 			}
 			break;
 		case IN_OBJECT_VALUE:
@@ -311,6 +321,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				this.state = State.IN_ARRAY;
 				this.stack.push(Node.ARRAY);
 				break;
+			default:	
 			}
 			break;
 		case IN_ARRAY:
@@ -338,6 +349,8 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			case END_ARRAY:
 				// unpile
 				acceptStackAndSetState(token, Node.ARRAY);
+				break;
+			default:	
 			}
 			break;
 		case IN_JSON:
@@ -350,7 +363,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			accept(token, EnumSet.of(QuiXToken.END_JSON));
 			acceptStackAndSetState(token, Node.JSON);
 			break;
-			
+		default:			
 		}
 		return token;
 	}
@@ -384,6 +397,8 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 					break;
 				case ARRAY:
 					this.state = State.IN_ARRAY;
+					break;
+				default:	
 				}
 			}
 			return;

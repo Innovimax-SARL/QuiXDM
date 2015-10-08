@@ -47,7 +47,7 @@ public class QuiXEventStream2XdmNodeConverter {
 	public XdmNode exec() throws QuiXConvertException {
 		// System.out.println("DOMConverter.exec("+rank+")");
 		try {
-			XMLStreamReader xer = new QuiXEventStream2XMLStreamReader(reader);
+			XMLStreamReader xer = new QuiXEventStream2XMLStreamReader(this.reader);
 			try {
 				StaxBridge sb = new StaxBridge();
 				sb.setXMLStreamReader(xer);
@@ -56,9 +56,9 @@ public class QuiXEventStream2XdmNodeConverter {
 			} catch (SaxonApiException e) {
 				e.printStackTrace();
 			} finally {
-				reader.close();
+				this.reader.close();
 			}
-			return node;
+			return this.node;
 		} catch (Exception e) {
 			throw new QuiXConvertException(e);
 		}

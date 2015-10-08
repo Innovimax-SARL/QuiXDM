@@ -59,10 +59,10 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		if (future != null)
+		if (this.future != null)
 			return true;
 		try {
-			return qs.hasNext();
+			return this.qs.hasNext();
 		} catch (QuiXException e) {
 			throw new XMLStreamException(e);
 		}
@@ -79,15 +79,15 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			if (DEBUG)
 				System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 			if (DEBUG)
-				System.out.println("QuixStreamReader.next : (" + future + "," + current + ")");
-			while (future != null || qs.hasNext()) {
-				if (future != null) {
-					current = future;
-					future = null;
+				System.out.println("QuixStreamReader.next : (" + this.future + "," + this.current + ")");
+			while (this.future != null || this.qs.hasNext()) {
+				if (this.future != null) {
+					this.current = this.future;
+					this.future = null;
 				} else {
-					current = qs.next();
+					this.current = this.qs.next();
 				}
-				switch (current.getType()) {
+				switch (this.current.getType()) {
 				case START_SEQUENCE:
 					// DO NOTHING : should be already processed by caller
 					break;
@@ -100,17 +100,17 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 					return XMLStreamConstants.END_DOCUMENT;
 				case START_ELEMENT:
 					// get the attributes if any
-					attributes.clear();
-					namespaces.clear();
+					this.attributes.clear();
+					this.namespaces.clear();
 					while (true) {
-						boolean test = qs.hasNext();
+						boolean test = this.qs.hasNext();
 						if (!test)
 							throw new QuiXException("Impossible");
-						future = qs.next();
-						if (future.isAttribute()) {
-							attributes.add(future.asAttribute());
-						} else if (future.isNamespace()) {
-							namespaces.add(future.asNamespace());
+						this.future = this.qs.next();
+						if (this.future.isAttribute()) {
+							this.attributes.add(this.future.asAttribute());
+						} else if (this.future.isNamespace()) {
+							this.namespaces.add(this.future.asNamespace());
 						} else {
 							break;
 						}
@@ -128,6 +128,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 					return XMLStreamConstants.PROCESSING_INSTRUCTION;
 				case TEXT:
 					return XMLStreamConstants.CHARACTERS;
+				default:	
 				}
 			}
 		} catch (QuiXException e) {
@@ -199,21 +200,21 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public boolean isStartElement() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		return current.isStartElement();
+		return this.current.isStartElement();
 	}
 
 	@Override
 	public boolean isEndElement() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		return current.isEndElement();
+		return this.current.isEndElement();
 	}
 
 	@Override
 	public boolean isCharacters() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		return current.isText();
+		return this.current.isText();
 	}
 
 	@Override
@@ -227,7 +228,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public String getAttributeValue(String namespaceURI, String localName) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		for (Attribute attribute : attributes) {
+		for (Attribute attribute : this.attributes) {
 			// TODO compare between String and QuiXCharStream
 			if (localName.equals(attribute.getLocalName()) && namespaceURI.equals(attribute.getURI()))
 				return attribute.getValue().toString();
@@ -325,9 +326,9 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public int getEventType() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		if (current == null)
+		if (this.current == null)
 			return XMLStreamConstants.START_DOCUMENT;
-		switch (current.getType()) {
+		switch (this.current.getType()) {
 		case START_DOCUMENT:
 			return XMLStreamConstants.START_DOCUMENT;
 		case END_DOCUMENT:
@@ -348,6 +349,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			break;
 		case END_SEQUENCE: // Not Possible
 			break;
+		default:	
 		}
 		return 0;
 	}
@@ -365,11 +367,12 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 		// or the String value of the internal subset of the DTD.
 		// If an ENTITY_REFERENCE has been resolved, any character data will be
 		// reported as CHARACTERS events.
-		switch (current.getType()) {
+		switch (this.current.getType()) {
 		case TEXT:
-			return current.asText().getData().toString();
+			return this.current.asText().getData().toString();
 		case COMMENT:
-			return current.asComment().getData().toString();
+			return this.current.asComment().getData().toString();
+		default:
 		}
 		return null;
 	}
@@ -423,7 +426,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 		// CHARACTERS,DTD
 		// ,ENTITY_REFERENCE, COMMENT, SPACE
 		// TODO Auto-generated method stub
-		return current.isText() || current.isComment();
+		return this.current.isText() || this.current.isComment();
 	}
 
 	@Override
@@ -470,10 +473,11 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public QName getName() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		switch (current.getType()) {
+		switch (this.current.getType()) {
 		case START_ELEMENT:
 		case END_ELEMENT:
-			return current.asNamedEvent().getQName().asQName();
+			return this.current.asNamedEvent().getQName().asQName();
+		default:
 		}
 		return null;
 	}
@@ -482,10 +486,11 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public String getLocalName() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		switch (current.getType()) {
+		switch (this.current.getType()) {
 		case START_ELEMENT:
 		case END_ELEMENT:
-			return current.asNamedEvent().getLocalName().toString();
+			return this.current.asNamedEvent().getLocalName().toString();
+		default:
 		}
 		return null;
 	}
@@ -494,17 +499,18 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public boolean hasName() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		return current.isStartElement() || current.isEndElement();
+		return this.current.isStartElement() || this.current.isEndElement();
 	}
 
 	@Override
 	public String getNamespaceURI() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		switch (current.getType()) {
+		switch (this.current.getType()) {
 		case START_ELEMENT:
 		case END_ELEMENT:
-			return current.asNamedEvent().getURI().toString();
+			return this.current.asNamedEvent().getURI().toString();
+		default:
 		}
 		return null;
 	}
@@ -513,10 +519,11 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public String getPrefix() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		switch (current.getType()) {
+		switch (this.current.getType()) {
 		case START_ELEMENT:
 		case END_ELEMENT:
-			return current.asNamedEvent().getPrefix().toString();
+			return this.current.asNamedEvent().getPrefix().toString();
+		default:
 		}
 		return null;
 	}
@@ -557,14 +564,14 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public String getPITarget() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		return current.asPI().getTarget().toString();
+		return this.current.asPI().getTarget().toString();
 	}
 
 	@Override
 	public String getPIData() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		return current.asPI().getData().toString();
+		return this.current.asPI().getData().toString();
 	}
 
 }

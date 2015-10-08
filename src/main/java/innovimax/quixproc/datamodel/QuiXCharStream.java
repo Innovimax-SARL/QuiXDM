@@ -62,19 +62,19 @@ public abstract class QuiXCharStream {
 	private static final class QuiXCharStreamList extends QuiXCharStream {
 		final QuiXCharStream a, b;
 
-		private QuiXCharStreamList(QuiXCharStream a, QuiXCharStream b) {
+		QuiXCharStreamList(QuiXCharStream a, QuiXCharStream b) {
 			this.a = a;
 			this.b = b;
 		}
 
 		@Override
 		public String toString() throws ConcurrentModificationException {
-			return a.toString() + b.toString();
+			return this.a.toString() + this.b.toString();
 		}
 
 		@Override
 		public boolean contains(CharSequence sequence) throws ConcurrentModificationException {
-			return a.contains(sequence) || b.contains(sequence);
+			return this.a.contains(sequence) || this.b.contains(sequence);
 		}
 
 		@Override
@@ -92,7 +92,7 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public boolean isEmpty() {
-			return a.isEmpty() && b.isEmpty();
+			return this.a.isEmpty() && this.b.isEmpty();
 		}
 
 		@Override
@@ -110,7 +110,7 @@ public abstract class QuiXCharStream {
 	private static final class CharSequenceQuiXCharStream extends QuiXCharStream {
 		private final CharSequence cs;
 
-		private CharSequenceQuiXCharStream(CharSequence cs) {
+		CharSequenceQuiXCharStream(CharSequence cs) {
 			this.cs = cs;
 		}
 
@@ -121,7 +121,7 @@ public abstract class QuiXCharStream {
 
 		@Override
 		public boolean contains(CharSequence sequence) {
-			return cs.toString().contains(sequence);
+			return this.cs.toString().contains(sequence);
 		}
 
 		@Override
@@ -145,13 +145,13 @@ public abstract class QuiXCharStream {
 		}
 
 		@Override
-		public QuiXCharStream append(QuiXCharStream cs) {
-			return new QuiXCharStreamList(this, cs);
+		public QuiXCharStream append(QuiXCharStream c) {
+			return new QuiXCharStreamList(this, c);
 		}
 
 		@Override
-		public QuiXCharStream append(CharSequence cs) {
-			return QuiXCharStream.fromSequence(this.cs.toString() + cs.toString());
+		public QuiXCharStream append(CharSequence c) {
+			return QuiXCharStream.fromSequence(this.cs.toString() + c.toString());
 		}
 
 	}

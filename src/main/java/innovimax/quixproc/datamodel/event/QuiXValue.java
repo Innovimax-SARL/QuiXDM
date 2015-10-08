@@ -27,7 +27,7 @@ public class QuiXValue {
 	}
 
 	public String getString() {
-		return value;
+		return this.value;
 	}
 
 }

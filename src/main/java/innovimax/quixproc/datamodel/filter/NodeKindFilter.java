@@ -42,23 +42,23 @@ public class NodeKindFilter extends AQuiXEventStreamFilter {
 		// this process terminate
 		switch (item.getType()) {
 		case ATTRIBUTE:
-			if (enumset.contains(Kind.ATTRIBUTE))
+			if (this.enumset.contains(Kind.ATTRIBUTE))
 				return null;
 			break;
 		case TEXT:
-			if (enumset.contains(Kind.TEXT))
+			if (this.enumset.contains(Kind.TEXT))
 				return null;
 			break;
 		case COMMENT:
-			if (enumset.contains(Kind.COMMENT))
+			if (this.enumset.contains(Kind.COMMENT))
 				return null;
 			break;
 		case NAMESPACE:
-			if (enumset.contains(Kind.NAMESPACE))
+			if (this.enumset.contains(Kind.NAMESPACE))
 				return null;
 			break;
 		case PROCESSING_INSTRUCTION:
-			if (enumset.contains(Kind.PI))
+			if (this.enumset.contains(Kind.PI))
 				return null;
 			break;
 		default:

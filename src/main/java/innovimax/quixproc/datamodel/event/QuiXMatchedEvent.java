@@ -42,7 +42,7 @@ public class QuiXMatchedEvent implements IQuiXEvent {
 
 	@Override
 	public AQuiXEvent getEvent() {
-		return event;
+		return this.event;
 	}
 
 	public QuiXMatchedEvent setMatched(boolean matched) {
@@ -51,7 +51,7 @@ public class QuiXMatchedEvent implements IQuiXEvent {
 	}
 
 	public boolean isMatched() {
-		return matched;
+		return this.matched;
 	}
 
 	@Override

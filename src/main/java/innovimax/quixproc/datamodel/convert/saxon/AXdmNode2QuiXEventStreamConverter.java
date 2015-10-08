@@ -46,9 +46,9 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 		try {
 			startProcess();
 			process();
-			doc.close();
+			this.doc.close();
 			endProcess();
-			running = false;
+			this.running = false;
 		} catch (RuntimeException e) {
 			throw e;
 		} catch (Exception e) {
@@ -57,7 +57,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 	}
 
 	public boolean isRunning() {
-		return running;
+		return this.running;
 	}
 
 	/**
@@ -65,13 +65,13 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 	 */
 
 	private void process() {
-		doc.append(AQuiXEvent.getStartSequence());
-		String uri = "" + node.getDocumentURI();
+		this.doc.append(AQuiXEvent.getStartSequence());
+		String uri = "" + this.node.getDocumentURI();
 		// System.out.println("---------->Document URI"+uri);
-		doc.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence(uri)));
-		processnode(node);
-		doc.append(AQuiXEvent.getEndDocument(QuiXCharStream.fromSequence(uri)));
-		doc.append(AQuiXEvent.getEndSequence());
+		this.doc.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence(uri)));
+		processnode(this.node);
+		this.doc.append(AQuiXEvent.getEndDocument(QuiXCharStream.fromSequence(uri)));
+		this.doc.append(AQuiXEvent.getEndSequence());
 	}
 
 	private void processnode(XdmNode localnode) {
@@ -84,7 +84,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 			}
 			break;
 		case ELEMENT:
-			doc.append(AQuiXEvent.getStartElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+			this.doc.append(AQuiXEvent.getStartElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
 					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
 					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
 			namespaceProcess(localnode);
@@ -96,29 +96,30 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 				XdmNode item = (XdmNode) iter.next();
 				processnode(item);
 			}
-			doc.append(AQuiXEvent.getEndElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+			this.doc.append(AQuiXEvent.getEndElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
 					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
 					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
 			break;
 		case ATTRIBUTE:
-			doc.append(AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+			this.doc.append(AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
 					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
 					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix()),
 					QuiXCharStream.fromSequence(localnode.getStringValue())));
 			break;
 		case TEXT:
-			doc.append(AQuiXEvent.getText(QuiXCharStream.fromSequence(localnode.getStringValue())));
+			this.doc.append(AQuiXEvent.getText(QuiXCharStream.fromSequence(localnode.getStringValue())));
 			break;
 		case COMMENT:
-			doc.append(AQuiXEvent.getComment(QuiXCharStream.fromSequence(localnode.getStringValue())));
+			this.doc.append(AQuiXEvent.getComment(QuiXCharStream.fromSequence(localnode.getStringValue())));
 			break;
 		case PROCESSING_INSTRUCTION:
-			doc.append(AQuiXEvent.getPI(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+			this.doc.append(AQuiXEvent.getPI(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
 					QuiXCharStream.fromSequence(localnode.getStringValue())));
 			break;
 		case NAMESPACE:
 			// no op
 			break;
+		default:	
 		}
 	}
 
@@ -131,7 +132,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 			for (NamespaceBinding ns : inscopeNS) {
 				String pfx = ns.getPrefix();
 				String uri = ns.getURI();
-				doc.append(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(pfx), QuiXCharStream.fromSequence(uri)));
+				this.doc.append(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(pfx), QuiXCharStream.fromSequence(uri)));
 			}
 		}
 

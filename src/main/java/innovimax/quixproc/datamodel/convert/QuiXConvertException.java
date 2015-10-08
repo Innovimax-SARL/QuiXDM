@@ -19,7 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.convert;
 
-public class QuiXConvertException extends RuntimeException {
+import innovimax.quixproc.datamodel.QuiXException;
+
+public class QuiXConvertException extends QuiXException {
 
 	public QuiXConvertException() {
 		this(null, null);
