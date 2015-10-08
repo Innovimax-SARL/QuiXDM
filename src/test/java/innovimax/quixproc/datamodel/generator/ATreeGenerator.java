@@ -35,8 +35,8 @@ public abstract class ATreeGenerator extends AGenerator {
 	public enum SpecialType {
 		STANDARD, // no specific
 		NAMESPACE, OPEN_CLOSE;
-		private static final EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>> map = new EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>(
-				FileExtension.class);
+		private static final EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>
+				map = new EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>(FileExtension.class);
 
 		static {
 			GeneratorRuntimeExtractor.process(map, AXMLGenerator.class);

@@ -64,11 +64,11 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 
 	@Override
 	public AQuiXEvent process(CallBack callback) throws QuiXException {
-		AQuiXEvent event = null;
 		try {
 			if (!this.buffer.isEmpty()) {
 				return this.buffer.poll();
 			}
+			AQuiXEvent event = null;
 			if (!this.sreader.hasNext() && callback.getState() == State.START_SOURCE) {
 				// special case if the buffer is empty but the document has not
 				// been closed

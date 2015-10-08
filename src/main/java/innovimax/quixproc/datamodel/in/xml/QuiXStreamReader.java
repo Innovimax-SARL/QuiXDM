@@ -77,10 +77,10 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	@Override
 	public QuiXToken next() throws QuiXStreamException {
 		try {
-			QuiXToken event;
 			if (this.state == State.FINISH) {
 				return null;
 			}
+			QuiXToken event;
 			if (this.state == State.INIT) {
 				event = QuiXToken.START_SEQUENCE;
 				this.state = State.START_SEQUENCE;
@@ -224,10 +224,10 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	 */
 	private QuiXToken updateText(QuiXToken event) {
 		if (this.charBuffer.length() != 0) {
-			QuiXToken text = QuiXToken.TEXT;
 			// AQuiXEvent.getText(charBuffer.toString());
 			this.charBuffer.setLength(0);
 			// this.buffer.add(event);
+			QuiXToken text = QuiXToken.TEXT;
 			return text;
 		}
 		return event;

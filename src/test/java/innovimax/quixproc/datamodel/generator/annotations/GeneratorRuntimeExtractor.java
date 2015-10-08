@@ -7,7 +7,7 @@ import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
 
 public class GeneratorRuntimeExtractor {
-	public static EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>> process(
+	public static void process(
 			EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>> map, Class<?> c) {
 		for (Class<?> cc : c.getClasses()) {
 			for (Generator generator : cc.getAnnotationsByType(Generator.class)) {
@@ -35,7 +35,6 @@ public class GeneratorRuntimeExtractor {
 			}
 		}
 		System.out.println(map);
-		return map;
 	}
 
 	public static void main(String[] args) {

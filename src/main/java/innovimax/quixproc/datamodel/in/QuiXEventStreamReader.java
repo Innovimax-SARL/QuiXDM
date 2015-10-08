@@ -38,19 +38,19 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 		AStreamSource current = this.sources.next();
 		switch (current.type) {
 		case JSON:
-			if (!this.delegates.containsKey(current.type)) {
-				this.delegate = new JSONQuiXEventStreamReader((JSONStreamSource) current);
-			} else {
+			if (this.delegates.containsKey(current.type)) {
 				this.delegate = this.delegates.get(current.type);
 				this.delegate.reinitialize(current);
+			} else {
+				this.delegate = new JSONQuiXEventStreamReader((JSONStreamSource) current);
 			}
 			break;
 		case XML:
-			if (!this.delegates.containsKey(current.type)) {
-				this.delegate = new XMLQuiXEventStreamReader((XMLStreamSource) current);
-			} else {
+			if (this.delegates.containsKey(current.type)) {
 				this.delegate = this.delegates.get(current.type);
 				this.delegate.reinitialize(current);
+			} else {
+				this.delegate = new XMLQuiXEventStreamReader((XMLStreamSource) current);
 			}
 			break;
 		default:
@@ -122,12 +122,11 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
 	@Override
 	public AQuiXEvent processEndSource() throws QuiXException {
-		AQuiXEvent event = null;
 		if (this.sources.hasNext()) {
 			// there is still sources
 			return loadSource();
 		}
-		event = AQuiXEvent.getEndSequence();
+		AQuiXEvent event = AQuiXEvent.getEndSequence();
 		this.state = State.FINISH;
 		return event;
 	}

@@ -246,7 +246,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 
 		public QuiXCharStream getFullName() {
-			return (!this.qname.getPrefix().isEmpty() ? this.qname.getPrefix().append(":") : QuiXCharStream.EMPTY)
+			return (this.qname.getPrefix().isEmpty() ? QuiXCharStream.EMPTY : this.qname.getPrefix().append(":"))
 					.append(this.qname.getLocalPart());
 		}
 
@@ -429,11 +429,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static AQuiXEvent getStartSequence() {
 		createCallCount++;
 		StartSequence result;
-		if (SEQUENCE_CACHING_ENABLED) {
-			result = newStartSequence;
-		} else {
-			result = new StartSequence();
-		}
+		result = SEQUENCE_CACHING_ENABLED ? newStartSequence : new StartSequence();
 		return result;
 	}
 
@@ -442,11 +438,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static AQuiXEvent getEndSequence() {
 		createCallCount++;
 		EndSequence result;
-		if (SEQUENCE_CACHING_ENABLED) {
-			result = newEndSequence;
-		} else {
-			result = new EndSequence();
-		}
+		result = SEQUENCE_CACHING_ENABLED ? newEndSequence : new EndSequence();
 		return result;
 	}
 

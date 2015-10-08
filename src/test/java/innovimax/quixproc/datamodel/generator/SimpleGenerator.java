@@ -58,22 +58,20 @@ public final class SimpleGenerator {
 	}
 
 	public static void main(String[] args) throws IOException {
-		{
-			// InputStream is = new FileInputStream(new
-			// File("/Users/innovimax/tmp/quixdm/high_density-1GB.xml"));
-			InputStream is = new SimpleBufferInputStream();
-			long start = System.currentTimeMillis();
-			long i = 0;
-			int c;
-			while ((c = is.read()) != -1) {
-				i++;
-				if (i % 100000 == 0) {
-					long now = System.currentTimeMillis();
-					System.out.println("" + i * 1000 / (now - start));
-				}
-			}
+		// InputStream is = new FileInputStream(new
+		// File("/Users/innovimax/tmp/quixdm/high_density-1GB.xml"));
+		InputStream is = new SimpleBufferInputStream();
+		long start = System.currentTimeMillis();
+		long i = 0;
+		int c;
+		while ((c = is.read()) != -1) {
+            i++;
+            if (i % 100000 == 0) {
+                long now = System.currentTimeMillis();
+                System.out.println("" + i * 1000 / (now - start));
+            }
+        }
 
-		}
 	}
 
 }

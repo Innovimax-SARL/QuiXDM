@@ -106,10 +106,10 @@ public abstract class AGenerator {
 		final byte[][] patterns = getPatterns();
 		// ensure that at minimum the size is start+end
 		long current_size = start.length + getEnd().length;
-		int current_pattern = -1;
 		// write the start pattern
 		bos.write(start);
 		// System.out.println(display(start));
+		int current_pattern = -1;
 		while (notFinished(current_size, current_pattern, total)) {
 			// move to next pattern
 			current_pattern = updatePattern(current_pattern);
@@ -194,7 +194,6 @@ public abstract class AGenerator {
 			}
 			if (this.buffer == null)
 				return -1;
-			int total = 0;
 			if (this.offset + 1 == this.buffer.length) {
 				// System.out.println("offset : "+this.offset);
 				// System.out.println("length : "+len);
@@ -204,6 +203,7 @@ public abstract class AGenerator {
 				if (this.buffer == null)
 					return -1;
 			}
+			int total = 0;
 			do {
 				// System.out.println("offset : "+this.offset);
 				// System.out.println("length : "+len);

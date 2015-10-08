@@ -139,7 +139,7 @@ import innovimax.quixproc.datamodel.QuiXToken;
  *
  * @version 0.1
  * @author Copyright (c) 2015 by Innovimax. All Rights Reserved.
- * @see innovimax.quixproc.datamodel.QuiXToken
+ * @see QuiXToken
  * @see javax.xml.stream.XMLStreamReader
  */
 public interface IQuiXStreamReader {
@@ -152,7 +152,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalArgumentException
 	 *             if name is null
 	 */
-	Object getProperty(java.lang.String name) throws java.lang.IllegalArgumentException;
+	Object getProperty(String name) throws IllegalArgumentException;
 
 	/**
 	 * Get next parsing event - a processor may return all contiguous character
@@ -553,7 +553,7 @@ public interface IQuiXStreamReader {
 	 * any character data will be reported as CHARACTERS events.
 	 * 
 	 * @return the current text or null
-	 * @throws java.lang.IllegalStateException
+	 * @throws IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
 	String getText();
@@ -567,7 +567,7 @@ public interface IQuiXStreamReader {
 	 * interface.
 	 * 
 	 * @return the current text or an empty array
-	 * @throws java.lang.IllegalStateException
+	 * @throws IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
 	char[] getTextCharacters();
@@ -643,7 +643,7 @@ public interface IQuiXStreamReader {
 	 * Returns the offset into the text character array where the first
 	 * character (of this text event) is stored.
 	 * 
-	 * @throws java.lang.IllegalStateException
+	 * @throws IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
 	int getTextStart();
@@ -652,7 +652,7 @@ public interface IQuiXStreamReader {
 	 * Returns the length of the sequence of characters for this Text event
 	 * within the text character array.
 	 * 
-	 * @throws java.lang.IllegalStateException
+	 * @throws IllegalStateException
 	 *             if this state is not a valid text state.
 	 */
 	int getTextLength();
