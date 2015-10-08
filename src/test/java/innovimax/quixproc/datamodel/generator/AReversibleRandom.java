@@ -31,7 +31,7 @@ public abstract class AReversibleRandom {
 
 		@Override
 		public int next() {
-			long v = a * this.seed + b;
+			long v = this.a * this.seed + this.b;
 			this.seed++;
 			return (int) (v & 0x7FFF);
 		}
@@ -39,7 +39,7 @@ public abstract class AReversibleRandom {
 		@Override
 		public int prev() {
 			this.seed--;
-			long v = a * this.seed + b;
+			long v = this.a * this.seed + this.b;
 			return (int) (v & 0x7FFF);
 		}
 	}
@@ -113,14 +113,14 @@ class BReversibleRandom {
 	// ReversibleLCG(unsigned int seed) : x(seed){}
 	BReversibleRandom(long seed) {
 		this.x = seed;
-		this.ainverse = extendedEuclidX(BigInteger.valueOf(A), BigInteger.valueOf(M)).longValue();
+		this.ainverse = extendedEuclidX(BigInteger.valueOf(this.A), BigInteger.valueOf(this.M)).longValue();
 	}
 
 	// unsigned int next() {
 	public int next() {
 		// nextx = (a * x + c) % m;
-		x = (A * x + C) & (M - 1);
-		return (int) (x >> D);
+		this.x = (this.A * this.x + this.C) & (this.M - 1);
+		return (int) (this.x >> this.D);
 	}
 
 	// unsigned int prev() {
@@ -128,13 +128,13 @@ class BReversibleRandom {
 
 		// const uint64_t ainverse = extendedEuclidX(A, M);
 		// prevx = (ainverse * (x - c)) mod m
-		x = ainverse * (x - C) & (M - 1);
-		return (int) (x >> D);
+		this.x = this.ainverse * (this.x - this.C) & (this.M - 1);
+		return (int) (this.x >> this.D);
 	}
 
 	// unsigned int max() const {
 	int max() {
-		return (int) ((M - 1) >> D);
+		return (int) ((this.M - 1) >> this.D);
 	}
 
 	// constexpr implementation of euclids algorithm
@@ -187,14 +187,14 @@ class BReversibleRandom {
 		// ReversibleLCG(unsigned int seed) : x(seed){}
 		ReversibleRandomBI(long seed) {
 			this.x = BigInteger.valueOf(seed);
-			this.ainverse = extendedEuclidX(A, M);
+			this.ainverse = extendedEuclidX(this.A, this.M);
 		}
 
 		// unsigned int next() {
 		public int next() {
 			// nextx = (a * x + c) % m;
-			x = A.multiply(x).add(C).mod(M.subtract(BigInteger.ONE));
-			return x.shiftRight(D).intValue();
+			this.x = this.A.multiply(this.x).add(this.C).mod(this.M.subtract(BigInteger.ONE));
+			return this.x.shiftRight(this.D).intValue();
 		}
 
 		// unsigned int prev() {
@@ -202,13 +202,13 @@ class BReversibleRandom {
 
 			// const uint64_t ainverse = extendedEuclidX(A, M);
 			// prevx = (ainverse * (x - c)) mod m
-			x = ainverse.multiply(x.subtract(C)).mod(M.subtract(BigInteger.ONE));
-			return x.shiftRight(D).intValue();
+			this.x = this.ainverse.multiply(this.x.subtract(this.C)).mod(this.M.subtract(BigInteger.ONE));
+			return this.x.shiftRight(this.D).intValue();
 		}
 
 		// unsigned int max() const {
 		int max() {
-			return M.subtract(BigInteger.ONE).shiftRight(D).intValue();
+			return this.M.subtract(BigInteger.ONE).shiftRight(this.D).intValue();
 		}
 
 		// constexpr implementation of euclids algorithm

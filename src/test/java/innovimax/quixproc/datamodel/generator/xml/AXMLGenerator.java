@@ -234,8 +234,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case 0:
 					bs[pos][0] = nextChar(bs[pos][0], incr);
 					break;
+				default:	
 				}
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}
@@ -308,8 +310,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case 1:
 					bs[pos][1] = nextStartName(bs[pos][1], incr);
 					break;
+				default:	
 				}
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}
@@ -391,8 +395,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 						bs[pos][2] = prevStartName(bs[pos][2], incr);
 					}
 					break;
+				default:	
 				}
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}
@@ -473,8 +479,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 						bs[pos][2] = prevStartName(bs[pos][2], incr2);
 					}
 					break;
+				default:	
 				}
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}
@@ -538,6 +546,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case SEQUENTIAL:
 				bs[pos][0] = nextName(bs[pos][0], incr);
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}
@@ -634,9 +643,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case 2:
 					bs[2][0] = nextName(bs[2][0], incr);
 					break;
+				default:	
 				}
 				return bs[pos];
-
+			default:
 			}
 			return null;
 		}
@@ -686,8 +696,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 					xsr.next();
 				}
 				break;
+			default:
 			}
-
 		} else {
 			File f = new File(
 					"/Users/innovimax/tmp/quixdm/" + gtypename.toLowerCase() + "-" + size + unit.display() + ".xml");

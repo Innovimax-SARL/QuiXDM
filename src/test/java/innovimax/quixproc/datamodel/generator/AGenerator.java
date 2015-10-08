@@ -257,6 +257,8 @@ public abstract class AGenerator {
 				return;
 			case END:
 				this.buffer = null;
+				break;
+			default:	
 			}
 		}
 

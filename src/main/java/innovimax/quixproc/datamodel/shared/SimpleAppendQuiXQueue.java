@@ -51,12 +51,12 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	private int maxReader;
 
 	public SimpleAppendQuiXQueue() {
-		events = new ArrayList<T>();
-		rwl = new ReentrantReadWriteLock(true);
+		this.events = new ArrayList<T>();
+		this.rwl = new ReentrantReadWriteLock(true);
 		counter++;
-		rank = counter;
+		this.rank = counter;
 		if (DEBUG)
-			System.out.println("CreateSimpleQEQ : " + rank);
+			System.out.println("CreateSimpleQEQ : " + this.rank);
 		// Thread.dumpStack();
 	}
 
@@ -69,14 +69,14 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	 */
 	@Override
 	public void append(T event) {
-		startWorking = true;
-		rwl.writeLock().lock();
+		this.startWorking = true;
+		this.rwl.writeLock().lock();
 		try {
-			if (closed)
+			if (this.closed)
 				throw new RuntimeException("Cannot append to a closed stream");
-			events.add(event);
+			this.events.add(event);
 		} finally {
-			rwl.writeLock().unlock();
+			this.rwl.writeLock().unlock();
 		}
 	}
 
@@ -87,16 +87,16 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	 */
 	@Override
 	public void close() {
-		rwl.writeLock().lock();
+		this.rwl.writeLock().lock();
 		try {
-			if (closed)
+			if (this.closed)
 				throw new RuntimeException("Already closed");
-			closed = true;
+			this.closed = true;
 		} finally {
-			rwl.writeLock().unlock();
+			this.rwl.writeLock().unlock();
 		}
 		if (DEBUG)
-			System.out.println("CreateSimpleQEQ (closed) : " + rank);
+			System.out.println("CreateSimpleQEQ (closed) : " + this.rank);
 	}
 
 	private final class LocalReader implements IQuiXStream<T> {
@@ -110,75 +110,75 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
 		@Override
 		public boolean hasNext() {
-			if (readerClosed)
+			if (this.readerClosed)
 				throw new RuntimeException("Reader already closed");
-			rwl.readLock().lock();
+			SimpleAppendQuiXQueue.this.rwl.readLock().lock();
 			try {
-				if (i < events.size())
+				if (this.i < SimpleAppendQuiXQueue.this.events.size())
 					return true;
 				// if (iterator.hasNext()) return true;
 				// si c'est faux ca d�pends de close
-				while (i >= events.size()/* !iterator.hasNext() */) {
-					if (closed)
+				while (this.i >= SimpleAppendQuiXQueue.this.events.size()/* !iterator.hasNext() */) {
+					if (SimpleAppendQuiXQueue.this.closed)
 						return false;
-					rwl.readLock().unlock();
+					SimpleAppendQuiXQueue.this.rwl.readLock().unlock();
 					// System.out.println("hasNextBeforeYield");
 					Thread.yield();
 					// System.out.println("hasNextAfterYield");
-					rwl.readLock().lock();
+					SimpleAppendQuiXQueue.this.rwl.readLock().lock();
 				}
 				// il n'y a pas de concurrence sur la lecture, chacun lit � son
 				// rythme
 				// donc si il y a un element il l'est toujours
 				return true;
 			} finally {
-				rwl.readLock().unlock();
+				SimpleAppendQuiXQueue.this.rwl.readLock().unlock();
 			}
 		}
 
 		@Override
 		public T next() {
-			if (readerClosed)
+			if (this.readerClosed)
 				throw new RuntimeException("Reader already closed");
-			rwl.readLock().lock();
+			SimpleAppendQuiXQueue.this.rwl.readLock().lock();
 			try {
-				if (i < events.size()) {
-					return events.get(i++);
+				if (this.i < SimpleAppendQuiXQueue.this.events.size()) {
+					return SimpleAppendQuiXQueue.this.events.get(this.i++);
 				}
 				// if (iterator.hasNext()) return iterator.next();
 				// si c'est faux ca d�pends de close
-				while (i >= events.size()/* !iterator.hasNext() */) {
-					if (closed)
+				while (this.i >= SimpleAppendQuiXQueue.this.events.size()/* !iterator.hasNext() */) {
+					if (SimpleAppendQuiXQueue.this.closed)
 						return null;
-					rwl.readLock().unlock();
+					SimpleAppendQuiXQueue.this.rwl.readLock().unlock();
 					// System.out.println("nextBeforeYield");
 					Thread.yield();
 					// System.out.println("nextAfterYield");
-					rwl.readLock().lock();
+					SimpleAppendQuiXQueue.this.rwl.readLock().lock();
 				}
 				// il n'y a pas de concurrence sur la lecture, chacun lit � son
 				// rythme
 				// donc si il y a un element il l'est toujours
-				return events.get(i++);
+				return SimpleAppendQuiXQueue.this.events.get(this.i++);
 				// return iterator.next();
 			} finally {
-				rwl.readLock().unlock();
+				SimpleAppendQuiXQueue.this.rwl.readLock().unlock();
 			}
 		}
 
 		@Override
 		public void close() {
 			if (DEBUG)
-				System.out.println("CreateSimpleQEQ (close reader " + readerCount + ") : " + rank);
-			if (!readerClosed) {
-				readerClosed = true;
-				readerCount--;
+				System.out.println("CreateSimpleQEQ (close reader " + SimpleAppendQuiXQueue.this.readerCount + ") : " + SimpleAppendQuiXQueue.this.rank);
+			if (!this.readerClosed) {
+				this.readerClosed = true;
+				SimpleAppendQuiXQueue.this.readerCount--;
 				if (DEBUG)
-					System.out.println("CreateSimpleQEQ (really close reader " + readerCount + ") : " + rank);
-				if (readerCount == 0) {
-					events.clear();
+					System.out.println("CreateSimpleQEQ (really close reader " + SimpleAppendQuiXQueue.this.readerCount + ") : " + SimpleAppendQuiXQueue.this.rank);
+				if (SimpleAppendQuiXQueue.this.readerCount == 0) {
+					SimpleAppendQuiXQueue.this.events.clear();
 					if (DEBUG)
-						System.out.println("CreateSimpleQEQ (CLEAR) : " + rank);
+						System.out.println("CreateSimpleQEQ (CLEAR) : " + SimpleAppendQuiXQueue.this.rank);
 				}
 			}
 		}
@@ -196,8 +196,8 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		// if (startWorking) throw new RuntimeException("Cannot register reader
 		// after the queue already been fed");
 		if (DEBUG)
-			System.out.println("CreateSimpleQEQ (open reader " + readerCount + ") : " + rank);
-		readerCount++;
+			System.out.println("CreateSimpleQEQ (open reader " + this.readerCount + ") : " + this.rank);
+		this.readerCount++;
 		return new LocalReader();
 	}
 
@@ -227,7 +227,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	 */
 	@Override
 	public void setReaderCount(int count) {
-		readerCount = count;
+		this.readerCount = count;
 	}
 
 	// public synchronized void clear() {
@@ -244,7 +244,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
 	@Override
 	public void closeReaderRegistration() {
-		this.maxReader = readerCount;
+		this.maxReader = this.readerCount;
 	}
 
 	static final int MAX_PRODUCE = 10000000;
@@ -263,7 +263,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			int i = MAX_PRODUCE;
 			while (i-- > 0) {
 				// try {
-				qeq.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence("" + i)));
+				this.qeq.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence("" + i)));
 
 				if (i % LOG_MODULO == 0)
 					System.out.println("Produce " + i);
@@ -273,7 +273,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 				// e.printStackTrace();
 				// }
 			}
-			qeq.close();
+			this.qeq.close();
 		}
 	}
 
@@ -290,17 +290,17 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		public void run() {
 			try {
 				int i = 0;
-				while (qs.hasNext()) {
-					qs.next();
+				while (this.qs.hasNext()) {
+					this.qs.next();
 					i++;
 					if (i % LOG_MODULO == 0)
-						System.out.println("Consume " + rank);
+						System.out.println("Consume " + this.rank);
 				}
 			} catch (QuiXException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			qs.close();
+			this.qs.close();
 		}
 	}
 

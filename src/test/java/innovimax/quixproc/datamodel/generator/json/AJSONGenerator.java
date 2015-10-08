@@ -179,8 +179,10 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				case 1:
 					bs[pos][0] = nextChar(bs[pos][0], incr);
 					break;
+				default:	
 				}
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}
@@ -268,7 +270,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
-			int incr = 0;
+			//int incr = 0;
 			// IMPORTANT : the uniqueness is mandatory
 			// it doesn't depends on applyRandom hence
 			// if (pos == 1)
@@ -288,8 +290,10 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				case 2:
 					// bs[pos][1] = nextDigit(bs[pos][1], incr);
 					break;
+				default:	
 				}
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}
@@ -344,7 +348,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
-			int incr = 0;
+			//int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
 				return bs[pos];
@@ -359,8 +363,10 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				case 1:
 					// no op
 					break;
+				default:
 				}
 				return bs[pos];
+			default:	
 			}
 			return null;
 		}

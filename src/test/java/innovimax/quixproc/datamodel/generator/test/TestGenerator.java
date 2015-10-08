@@ -9,6 +9,7 @@ import java.util.EnumSet;
 import org.junit.Test;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
+import innovimax.quixproc.datamodel.IQuiXToken;
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.ValidQuiXTokenStream;
 import innovimax.quixproc.datamodel.generator.AGenerator;
@@ -57,7 +58,7 @@ public class TestGenerator {
 						break;
 					case PARSE:
 						QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.instance(ext, is));
-						IQuiXStream vqxs = new ValidQuiXTokenStream(xqesr);
+						IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
 						while (vqxs.hasNext()) {
 							// System.out.println(
 							vqxs.next()
@@ -68,6 +69,7 @@ public class TestGenerator {
 						}
 						totalsize = size * unit.value();
 						break;
+					default:	
 					}
 					long time = System.currentTimeMillis() - start;
 					if (time == 0)
