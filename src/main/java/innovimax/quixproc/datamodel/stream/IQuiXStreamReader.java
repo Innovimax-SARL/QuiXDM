@@ -234,8 +234,8 @@ public interface IQuiXStreamReader {
 	 * 	if (eventType == XMLStreamConstants.CHARACTERS || eventType == XMLStreamConstants.CDATA
 	 * 			|| eventType == XMLStreamConstants.SPACE || eventType == XMLStreamConstants.ENTITY_REFERENCE) {
 	 * 		buf.append(getText());
-	 * 	} else
-	 * 		if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION || eventType == XMLStreamConstants.COMMENT) {
+	 * 	} else if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
+	 * 			|| eventType == XMLStreamConstants.COMMENT) {
 	 * 		// skipping
 	 * 	} else if (eventType == XMLStreamConstants.END_DOCUMENT) {
 	 * 		throw new QuixStreamException("unexpected end of document when reading element text content", this);
@@ -589,18 +589,14 @@ public interface IQuiXStreamReader {
 	 * int length = 1024;
 	 * char[] myBuffer = new char[ length ];
 	 *
-	 * for ( int sourceStart = 0 ; ; sourceStart += length )
-	 * {
-	 *    int nCopied = stream.getTextCharacters( sourceStart, myBuffer, 0, length );
+	 * for ( int sourceStart = 0 ; ; sourceStart += length ) { int nCopied =
+	 * stream.getTextCharacters( sourceStart, myBuffer, 0, length );
 	 *
-	 *   if (nCopied < length)
-	 *       break;
-	 * }
-	 * } QuixStreamException may be thrown if there are any XML errors in
-	 * the underlying source. The "targetStart" argument must be greater than or
-	 * equal to 0 and less than the length of "target", Length must be greater
-	 * than 0 and "targetStart + length" must be less than or equal to length of
-	 * "target".
+	 * if (nCopied < length) break; } } QuixStreamException may be thrown if
+	 * there are any XML errors in the underlying source. The "targetStart"
+	 * argument must be greater than or equal to 0 and less than the length of
+	 * "target", Length must be greater than 0 and "targetStart + length" must
+	 * be less than or equal to length of "target".
 	 *
 	 * @param sourceStart
 	 *            the index of the first character in the source array to copy
@@ -622,8 +618,7 @@ public interface IQuiXStreamReader {
 	 * @throws NullPointerException
 	 *             is if target is null
 	 */
-	int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
-			throws QuiXStreamException;
+	int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws QuiXStreamException;
 
 	/**
 	 * Gets the text associated with a CHARACTERS, SPACE or CDATA event. Allows

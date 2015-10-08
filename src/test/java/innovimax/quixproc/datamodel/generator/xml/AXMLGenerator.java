@@ -32,8 +32,6 @@ import javax.xml.stream.XMLStreamReader;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.AHighDensityGenerator;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
 import innovimax.quixproc.datamodel.generator.annotations.Generator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
@@ -199,7 +197,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	@Generator(ext=FileExtension.XML, type=Type.HIGH_TEXT_SIZE, stype=SpecialType.STANDARD)
+	@Generator(ext = FileExtension.XML, type = Type.HIGH_TEXT_SIZE, stype = SpecialType.STANDARD)
 	public static class HighTextSize extends AHighTextSizeGenerator {
 
 		final byte[] start = "<r>".getBytes();
@@ -271,7 +269,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_DENSITY, stype=SpecialType.STANDARD)
+	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class HighNodeDensityGenerator extends AHighDensityGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -329,7 +327,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 	}
-	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_DEPTH, stype=SpecialType.STANDARD)
+
+	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
 	public static class HighNodeDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -361,6 +360,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		private boolean isReturn = false;
 		boolean directionForward = true;
+
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
 			int incr = 0;
@@ -376,18 +376,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				switch (pos) {
 				case 0:
 					bs[pos][1] = nextStartName(bs[pos][1], incr);
-					//System.out.println("+"+incr);
+					// System.out.println("+"+incr);
 					this.isReturn = true;
 					break;
 				case 1:
 					if (this.isReturn) {
 						this.isReturn = false;
-						bs[pos][2] = bs[0/*take the previous*/][1];
-						//resetRandom();
+						bs[pos][2] = bs[0/* take the previous */][1];
+						// resetRandom();
 						this.random.prev();
 						this.directionForward = false;
 					} else {
-						//System.out.println("-"+incr);
+						// System.out.println("-"+incr);
 						bs[pos][2] = prevStartName(bs[pos][2], incr);
 					}
 					break;
@@ -411,7 +411,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_DEPTH, stype=SpecialType.NAMESPACE)
+	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.NAMESPACE)
 	public static class HighDepthNamespaceGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -428,7 +428,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		final byte[][] patterns = { "<a xmlns=\"a\">".getBytes(), "</a>".getBytes() };
 
-
 		@Override
 		protected byte[][] getPatterns() {
 			return this.patterns;
@@ -441,6 +440,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		private boolean isReturn = false;
 		boolean directionForward = true;
+
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
 			int incr = 0, incr2 = 0;
@@ -450,26 +450,26 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case RANDOM:
 				incr = this.random.nextInt(128, this.directionForward);
 				incr2 = this.random.nextInt(128, this.directionForward);
-				//System.out.println(incr + ","+incr2);
+				// System.out.println(incr + ","+incr2);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
 					bs[pos][1] = nextStartName(bs[pos][1], incr);
-					//System.out.println("+"+incr);
+					// System.out.println("+"+incr);
 					bs[pos][10] = nextAttributeValue(bs[pos][10], incr2);
 					this.isReturn = true;
 					break;
 				case 1:
 					if (this.isReturn) {
 						this.isReturn = false;
-						bs[pos][2] = bs[0/*previous*/][1];
-						//						resetRandom();
+						bs[pos][2] = bs[0/* previous */][1];
+						// resetRandom();
 						this.random.prev();
-						this.random.prev();						
+						this.random.prev();
 						this.directionForward = false;
 					} else {
-						//System.out.println("-"+incr2);
+						// System.out.println("-"+incr2);
 						bs[pos][2] = prevStartName(bs[pos][2], incr2);
 					}
 					break;
@@ -493,7 +493,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_NAME_SIZE, stype=SpecialType.STANDARD)
+	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_NAME_SIZE, stype = SpecialType.STANDARD)
 	public static class HighElementNameSizeSingle extends ANodeNameSizeGenerator {
 		@Override
 		protected byte[] getEnd() {
@@ -555,8 +555,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 	}
-	
-	@Generator(ext=FileExtension.XML, type=Type.HIGH_NODE_NAME_SIZE, stype=SpecialType.OPEN_CLOSE)
+
+	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_NAME_SIZE, stype = SpecialType.OPEN_CLOSE)
 	public static class HighElementNameSizeOpenClose extends ANodeNameSizeGenerator {
 
 		@Override
@@ -655,7 +655,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-
 	private static void call(Type gtype, SpecialType special, int size, Unit unit)
 			throws IOException, XMLStreamException, InstantiationException, IllegalAccessException {
 		AGenerator generator = instance(FileExtension.XML, gtype, special);
@@ -698,7 +697,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		System.out.println("Time : " + (System.currentTimeMillis() - start));
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, IOException, XMLStreamException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args) throws FileNotFoundException, IOException, XMLStreamException,
+			InstantiationException, IllegalAccessException {
 		System.out.println("nextChar\t: " + display(nextChar));
 		System.out.println("nextAttributeValue\t: " + display(nextAttributeValue));
 		System.out.println("nextStartName\t: " + display(nextStartName));
@@ -710,8 +710,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			call(Type.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
 			// call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
-			for (Type gtype : EnumSet.of(Type.HIGH_NODE_NAME_SIZE,
-					Type.HIGH_NODE_NAME_SIZE, Type.HIGH_NODE_DENSITY,
+			for (Type gtype : EnumSet.of(Type.HIGH_NODE_NAME_SIZE, Type.HIGH_NODE_NAME_SIZE, Type.HIGH_NODE_DENSITY,
 					Type.HIGH_NODE_DEPTH)) {
 				for (SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype)) {
 					for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {

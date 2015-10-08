@@ -45,7 +45,7 @@ public abstract class AStreamSource {
 	public static final class XMLStreamSource extends AStreamSource {
 		public final Source source;
 
-		private XMLStreamSource(Source source) {
+		XMLStreamSource(Source source) {
 			super(Type.XML);
 			this.source = source;
 		}
@@ -57,6 +57,7 @@ public abstract class AStreamSource {
 
 	public static class JSONStreamSource extends AStreamSource {
 		private final InputStream is;
+
 		protected JSONStreamSource(InputStream is) {
 			super(Type.JSON);
 			this.is = is;
@@ -83,7 +84,7 @@ public abstract class AStreamSource {
 	}
 
 	public static AStreamSource instance(FileExtension ext, InputStream is) {
-		switch(ext) {
+		switch (ext) {
 		case HTML:
 			break;
 		case JSON:
@@ -94,7 +95,7 @@ public abstract class AStreamSource {
 			break;
 		default:
 			break;
-		
+
 		}
 		return null;
 	}

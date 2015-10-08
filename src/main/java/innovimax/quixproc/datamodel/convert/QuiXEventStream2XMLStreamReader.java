@@ -128,7 +128,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 					return XMLStreamConstants.PROCESSING_INSTRUCTION;
 				case TEXT:
 					return XMLStreamConstants.CHARACTERS;
-				default:	
+				default:
 				}
 			}
 		} catch (QuiXException e) {
@@ -158,8 +158,8 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			if (eventType == XMLStreamConstants.CHARACTERS || eventType == XMLStreamConstants.CDATA
 					|| eventType == XMLStreamConstants.SPACE || eventType == XMLStreamConstants.ENTITY_REFERENCE) {
 				content.append(getText());
-			} else
-				if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION || eventType == XMLStreamConstants.COMMENT) {
+			} else if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
+					|| eventType == XMLStreamConstants.COMMENT) {
 				// skipping
 			} else if (eventType == XMLStreamConstants.END_DOCUMENT) {
 				throw new XMLStreamException("unexpected end of document when reading element text content",
@@ -349,7 +349,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			break;
 		case END_SEQUENCE: // Not Possible
 			break;
-		default:	
+		default:
 		}
 		return 0;
 	}

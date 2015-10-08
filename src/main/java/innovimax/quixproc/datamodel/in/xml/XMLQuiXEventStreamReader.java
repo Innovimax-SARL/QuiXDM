@@ -32,10 +32,8 @@ import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
-import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader.CallBack;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.XMLStreamSource;
-import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
 public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
@@ -95,15 +93,16 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 							QuiXCharStream.fromSequence(this.sreader.getPrefix()));
 					event = updateText(event);
 					for (int i = 0; i < this.sreader.getNamespaceCount(); i++) {
-						this.buffer.add(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(this.sreader.getNamespacePrefix(i)),
-								QuiXCharStream.fromSequence(this.sreader.getNamespaceURI(i))));
+						this.buffer.add(
+								AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(this.sreader.getNamespacePrefix(i)),
+										QuiXCharStream.fromSequence(this.sreader.getNamespaceURI(i))));
 					}
 					for (int i = 0; i < this.sreader.getAttributeCount(); i++) {
-						this.buffer.add(
-								AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
+						this.buffer.add(AQuiXEvent.getAttribute(
+								QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
 					}
 					return event;
 				case XMLStreamConstants.END_DOCUMENT:
@@ -122,11 +121,11 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 				case XMLStreamConstants.ATTRIBUTE:
 					// System.out.println("ATTRIBUTE");
 					for (int i = 0; i < this.sreader.getAttributeCount(); i++) {
-						this.buffer.add(
-								AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
+						this.buffer.add(AQuiXEvent.getAttribute(
+								QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
 					}
 					return this.buffer.poll();
 				case XMLStreamConstants.CDATA:
@@ -136,7 +135,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 					break;
 				case XMLStreamConstants.CHARACTERS:
 					// System.out.println("CHARACTERS");
-					 this.charBuffer = this.charBuffer.append(this.sreader.getText());
+					this.charBuffer = this.charBuffer.append(this.sreader.getText());
 					// do loop
 					break;
 				case XMLStreamConstants.SPACE:

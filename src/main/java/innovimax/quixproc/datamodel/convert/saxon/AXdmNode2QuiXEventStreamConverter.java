@@ -84,9 +84,10 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 			}
 			break;
 		case ELEMENT:
-			this.doc.append(AQuiXEvent.getStartElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
-					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
-					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
+			this.doc.append(
+					AQuiXEvent.getStartElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+							QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
+							QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
 			namespaceProcess(localnode);
 			for (XdmSequenceIterator iter = localnode.axisIterator(Axis.ATTRIBUTE); iter.hasNext();) {
 				XdmNode item = (XdmNode) iter.next();
@@ -96,9 +97,10 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 				XdmNode item = (XdmNode) iter.next();
 				processnode(item);
 			}
-			this.doc.append(AQuiXEvent.getEndElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
-					QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
-					QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
+			this.doc.append(
+					AQuiXEvent.getEndElement(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
+							QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
+							QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
 			break;
 		case ATTRIBUTE:
 			this.doc.append(AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(localnode.getNodeName().getLocalName()),
@@ -119,7 +121,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 		case NAMESPACE:
 			// no op
 			break;
-		default:	
+		default:
 		}
 	}
 
@@ -132,7 +134,8 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 			for (NamespaceBinding ns : inscopeNS) {
 				String pfx = ns.getPrefix();
 				String uri = ns.getURI();
-				this.doc.append(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(pfx), QuiXCharStream.fromSequence(uri)));
+				this.doc.append(
+						AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(pfx), QuiXCharStream.fromSequence(uri)));
 			}
 		}
 

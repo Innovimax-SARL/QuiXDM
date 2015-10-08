@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
 
-import javax.xml.stream.XMLStreamException;
-
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
@@ -25,9 +23,11 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 	public QuiXEventStreamReader(javax.xml.transform.Source... sources) {
 		this(AStreamSource.instances(sources));
 	}
+
 	public QuiXEventStreamReader(AStreamSource ass) {
 		this(Collections.singleton(ass));
 	}
+
 	public QuiXEventStreamReader(Iterable<AStreamSource> sources) {
 		this.sources = sources.iterator();
 		this.delegates = new EnumMap<Type, AQuiXEventStreamReader>(Type.class);
@@ -38,7 +38,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 		AStreamSource current = this.sources.next();
 		switch (current.type) {
 		case JSON:
-			if (!delegates.containsKey(current.type)) {
+			if (!this.delegates.containsKey(current.type)) {
 				this.delegate = new JSONQuiXEventStreamReader((JSONStreamSource) current);
 			} else {
 				this.delegate = this.delegates.get(current.type);
@@ -46,7 +46,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 			}
 			break;
 		case XML:
-			if (!delegates.containsKey(current.type)) {
+			if (!this.delegates.containsKey(current.type)) {
 				this.delegate = new XMLQuiXEventStreamReader((XMLStreamSource) current);
 			} else {
 				this.delegate = this.delegates.get(current.type);
@@ -93,9 +93,9 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
 	@Override
 	public AQuiXEvent next() throws QuiXException {
-		//System.out.println(state);
+		// System.out.println(state);
 		final AQuiXEvent event;
-		switch (state) {
+		switch (this.state) {
 		case FINISH:
 			return null;
 		case INIT:
@@ -114,6 +114,8 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 		case END_SOURCE:
 		case START_SOURCE:
 			// dealt with inside process() via callback
+			break;
+		default:
 		}
 		return this.delegate.process(this);
 	}
@@ -137,7 +139,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 		}
 	}
 
-	public static void main(String[] args) throws XMLStreamException, QuiXException {
+	public static void main(String[] args) throws QuiXException {
 
 		QuiXEventStreamReader qesr = new QuiXEventStreamReader(
 				new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),

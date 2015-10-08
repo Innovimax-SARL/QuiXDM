@@ -13,7 +13,6 @@ import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
-import innovimax.quixproc.datamodel.in.QuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 

@@ -109,21 +109,21 @@ public abstract class AGenerator {
 		int current_pattern = -1;
 		// write the start pattern
 		bos.write(start);
-//		System.out.println(display(start));
+		// System.out.println(display(start));
 		while (notFinished(current_size, current_pattern, total)) {
 			// move to next pattern
 			current_pattern = updatePattern(current_pattern);
 			// System.out.println(current_size);
 			// write the alternate pattern
 			byte[] toWrite = applyVariation(variation, patterns, current_pattern);
-//			System.out.println(display(toWrite));
+			// System.out.println(display(toWrite));
 			bos.write(toWrite);
 			// update the size
 			current_size = updateSize(current_size, current_pattern);
 		}
 		// write the end pattern
 		bos.write(getEnd());
-//		System.out.println(display(getEnd()));
+		// System.out.println(display(getEnd()));
 		bos.flush();
 		bos.close();
 		fos.close();
@@ -132,8 +132,9 @@ public abstract class AGenerator {
 	public InputStream getInputStream(long size, Unit unit, Variation variation) {
 		return new GeneratorInputStream(size, unit, variation);
 	}
-	
+
 	public abstract IQuiXEventStreamReader getQuiXEventStreamReader();
+
 	public abstract IQuiXStreamReader getQuiXStreamReader();
 
 	protected abstract byte[] applyVariation(Variation variation, byte[][] bs, int pos);
@@ -149,7 +150,6 @@ public abstract class AGenerator {
 	protected abstract byte[][] getPatterns();
 
 	protected abstract byte[] getStart();
-	
 
 	private enum InputStreamState {
 		START, CURRENT, END
@@ -159,7 +159,7 @@ public abstract class AGenerator {
 
 		final byte[] start = getStart();
 		final byte[][] patterns = getPatterns();
-		//final byte[] end = getEnd();
+		// final byte[] end = getEnd();
 		// ensure that at minimum the size is start+end
 		long current_size = this.start.length + getEnd().length;
 		int current_pattern = -1;
@@ -301,13 +301,13 @@ public abstract class AGenerator {
 		this.seed = System.nanoTime();
 		this.random = new SimpleReversibleRandom(this.seed, 3, 5);
 	}
-	
+
 	protected void resetRandom() {
 		this.random.setSeed(this.seed);
 	}
 
 	public static String display(int c) {
-		return display((byte )(c & 0XFF));
+		return display((byte) (c & 0XFF));
 	}
 
 }

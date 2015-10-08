@@ -124,16 +124,19 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 			return this.type + " " + this.uri;
 		}
 	}
+
 	public static class StartJSON extends AJSONQuiXEvent {
 		public StartJSON() {
 			super(QuiXToken.START_JSON);
 		}
 	}
+
 	public static class EndJSON extends AJSONQuiXEvent {
 		public EndJSON() {
 			super(QuiXToken.END_JSON);
 		}
 	}
+
 	public static class StartObject extends AJSONQuiXEvent {
 		public StartObject() {
 			super(QuiXToken.START_OBJECT);
@@ -157,12 +160,13 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 			super(QuiXToken.END_ARRAY);
 		}
 	}
+
 	public static class AJSONValue extends AJSONQuiXEvent {
 		AJSONValue(QuiXToken token) {
 			super(token);
 		}
 	}
-	
+
 	public static class ValueNull extends AJSONValue {
 		public ValueNull() {
 			super(QuiXToken.VALUE_NULL);
@@ -183,6 +187,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	public static class ValueNumber extends AJSONValue {
 		final double value;
+
 		public ValueNumber(double value) {
 			super(QuiXToken.VALUE_NUMBER);
 			this.value = value;
@@ -191,11 +196,13 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	public static class ValueString extends AJSONValue {
 		final QuiXCharStream value;
+
 		public ValueString(QuiXCharStream value) {
 			super(QuiXToken.VALUE_STRING);
 			this.value = value;
 		}
 	}
+
 	public static class KeyName extends AJSONQuiXEvent {
 		KeyName() {
 			super(QuiXToken.KEY_NAME);
@@ -562,7 +569,8 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return getEndElement(localName, namespace, prefix);
 	}
 
-	public static AXMLQuiXEvent getEndElement(QuiXCharStream localName, QuiXCharStream namespace, QuiXCharStream prefix) {
+	public static AXMLQuiXEvent getEndElement(QuiXCharStream localName, QuiXCharStream namespace,
+			QuiXCharStream prefix) {
 		createCallCount++;
 		EndElement result;
 		QuiXQName qname = getQName(localName, namespace, prefix);
@@ -627,6 +635,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static AJSONQuiXEvent getEndObject() {
 		return new EndObject();
 	}
+
 	public static AJSONQuiXEvent getStartArray() {
 		return new StartArray();
 	}
@@ -734,6 +743,5 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		createAttrCount = 0;
 		createCallCount = 0;
 	}
-
 
 }

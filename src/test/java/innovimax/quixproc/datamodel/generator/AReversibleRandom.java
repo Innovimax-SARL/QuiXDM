@@ -8,11 +8,11 @@ public abstract class AReversibleRandom {
 	protected AReversibleRandom(long seed) {
 		this.seed = seed;
 	}
-	
+
 	public abstract int next();
 
 	public abstract int prev();
-	
+
 	public void setSeed(long seed) {
 		this.seed = seed;
 	}
@@ -45,7 +45,7 @@ public abstract class AReversibleRandom {
 	}
 
 	public static void main(String[] args) {
-		
+
 		SimpleReversibleRandom rr = new SimpleReversibleRandom(0, 1, 1);
 		for (int i = 0; i < 20; i++)
 			System.out.println(rr.next());
@@ -53,22 +53,17 @@ public abstract class AReversibleRandom {
 		for (int i = 0; i < 20; i++)
 			System.out.println(rr.prev());
 		System.out.println("---A---");
-/*
-		BReversibleRandom rr = new BReversibleRandom(0);
-		for (int i = 0; i < 20; i++)
-			System.out.println(rr.next());
-		System.out.println("------");
-		for (int i = 0; i < 20; i++)
-			System.out.println(rr.prev());
-		System.out.println("---A---");
-
-		BReversibleRandom.ReversibleRandomBI rrb = new BReversibleRandom.ReversibleRandomBI(0);
-		for (int i = 0; i < 20; i++)
-			System.out.println(rrb.next());
-		System.out.println("------");
-		for (int i = 0; i < 20; i++)
-			System.out.println(rrb.prev());
-*/
+		/*
+		 * BReversibleRandom rr = new BReversibleRandom(0); for (int i = 0; i <
+		 * 20; i++) System.out.println(rr.next()); System.out.println("------");
+		 * for (int i = 0; i < 20; i++) System.out.println(rr.prev());
+		 * System.out.println("---A---");
+		 * 
+		 * BReversibleRandom.ReversibleRandomBI rrb = new
+		 * BReversibleRandom.ReversibleRandomBI(0); for (int i = 0; i < 20; i++)
+		 * System.out.println(rrb.next()); System.out.println("------"); for
+		 * (int i = 0; i < 20; i++) System.out.println(rrb.prev());
+		 */
 	}
 
 	public int nextInt(int i, boolean directionForward) {

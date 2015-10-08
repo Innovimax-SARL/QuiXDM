@@ -19,7 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.filter;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.IQuiXToken;
@@ -55,7 +59,7 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 			// this.namespaces.getLast().put(qevent.asNamespace().getPrefix(),
 			// qevent.asNamespace().getURI());
 			break;
-		default:	
+		default:
 		}
 		return item;
 	}

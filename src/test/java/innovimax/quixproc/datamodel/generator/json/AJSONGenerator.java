@@ -31,9 +31,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.AHighDensityGenerator;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.AHighTextSizeGenerator;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
 import innovimax.quixproc.datamodel.generator.annotations.Generator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
@@ -133,25 +130,22 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return r;
 	}
 
-
 	/*
-	@Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_NAME_SIZE, stype=SpecialType.STANDARD)
-	public static class HighNodeNameSizeGenerator extends ATreeGenerator.ANodeNameSizeGenerator {
-
-		protected HighNodeNameSizeGenerator(FileExtension ext, SpecialType xmlType) {
-			super(ext, xmlType);
-		}
-
-	}
+	 * @Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_NAME_SIZE,
+	 * stype=SpecialType.STANDARD) public static class HighNodeNameSizeGenerator
+	 * extends ATreeGenerator.ANodeNameSizeGenerator {
+	 * 
+	 * protected HighNodeNameSizeGenerator(FileExtension ext, SpecialType
+	 * xmlType) { super(ext, xmlType); }
+	 * 
+	 * }
 	 */
-	//@Generator(ext=FileExtension.JSON, type=Type.HIGH_TEXT_SIZE, stype=SpecialType.STANDARD)
+	// @Generator(ext=FileExtension.JSON, type=Type.HIGH_TEXT_SIZE,
+	// stype=SpecialType.STANDARD)
 	public static class HighTextSizeGenerator extends AHighTextSizeGenerator {
 
 		final byte[] start = "{".getBytes();
-		final byte[][] end = {
-				"}".getBytes(),
-				"\"}".getBytes()
-		};
+		final byte[][] end = { "}".getBytes(), "\"}".getBytes() };
 		int choose_end = 0;
 
 		@Override
@@ -164,8 +158,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "\"\":\"".getBytes(),
-				"a".getBytes()};
+		final byte[][] patterns = { "\"\":\"".getBytes(), "a".getBytes() };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -222,17 +215,14 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	}
 
-
-	@Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_DENSITY, stype=SpecialType.STANDARD)
+	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class HighDensityGenerator extends AHighDensityGenerator {
 
 		final byte[] start = "{".getBytes();
-		final byte[][] end = {
-				"}".getBytes(),
-				"]}".getBytes()
-		};
+		final byte[][] end = { "}".getBytes(), "]}".getBytes() };
 
 		int choose_end = 0;
+
 		@Override
 		protected byte[] getEnd() {
 			return this.end[this.choose_end];
@@ -252,15 +242,12 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		// more or less 7 bytes per key value looks like the densest
 
 		private final byte[][] patterns = { // empty object is allowed
-				//		"\"A\":1".getBytes(), // first used only once
-				//		",\"A\":1".getBytes() 
+				// "\"A\":1".getBytes(), // first used only once
+				// ",\"A\":1".getBytes()
 				"\"\":[".getBytes(), // first used only once
-				"{}".getBytes(), 
-				",{}".getBytes() 				
-		};
+				"{}".getBytes(), ",{}".getBytes() };
 
-		//		private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
-
+		// private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -273,7 +260,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				return 2;
 			if (current_pattern == 1)
 				return 2;
-			if (current_pattern == 0) 
+			if (current_pattern == 0)
 				return 1;
 			this.choose_end = 1;
 			return 0;
@@ -284,13 +271,13 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			int incr = 0;
 			// IMPORTANT : the uniqueness is mandatory
 			// it doesn't depends on applyRandom hence
-			//			if (pos == 1)
-			//				this.baA.nextUnique();
+			// if (pos == 1)
+			// this.baA.nextUnique();
 			switch (variation) {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-				//incr = this.random.nextInt(10);
+				// incr = this.random.nextInt(10);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
@@ -299,7 +286,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 					// no op
 					break;
 				case 2:
-					//bs[pos][1] = nextDigit(bs[pos][1], incr);
+					// bs[pos][1] = nextDigit(bs[pos][1], incr);
 					break;
 				}
 				return bs[pos];
@@ -328,7 +315,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	// start "{"
 	// end "}"
 	// '"":{' and '}'
-	@Generator(ext=FileExtension.JSON, type=Type.HIGH_NODE_DEPTH, stype=SpecialType.STANDARD)
+	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
 	public static class HighDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "{".getBytes();
 		final byte[] end = "}".getBytes();
@@ -344,7 +331,6 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		final byte[][] patterns = { "\"\":{".getBytes(), "}".getBytes() };
-
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -363,12 +349,12 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			case NO_VARIATION:
 				return bs[pos];
 			case RANDOM:
-				//incr = this.random.nextInt(128);
+				// incr = this.random.nextInt(128);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
 				switch (pos) {
 				case 0:
-					//	bs[pos][1] = nextChar(bs[pos][1], incr);
+					// bs[pos][1] = nextChar(bs[pos][1], incr);
 					break;
 				case 1:
 					// no op
@@ -393,7 +379,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	}
 
-	public static void main(String[] args) throws JsonParseException, IOException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args)
+			throws JsonParseException, IOException, InstantiationException, IllegalAccessException {
 
 		/*
 		 * final byte[][] patterns = { // empty object is allowed
