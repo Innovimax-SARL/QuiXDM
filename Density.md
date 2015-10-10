@@ -10,6 +10,7 @@ a<b/>
 which makes 5 bytes long and generates 2 nodes :
  * a text node with the string "a"
  * a element with the name "b"
+ 
 So in the end
 ```
 <r>(a<b/>)+</r>
@@ -30,6 +31,7 @@ which makes 5 bytes long and generates 3 events :
  * a text event with the string "a"
  * a start_element event with the name "b"
  * a end_element event witht the name "b"
+ 
 So in the end
 ```
 <r>(a<b/>)+</r>
