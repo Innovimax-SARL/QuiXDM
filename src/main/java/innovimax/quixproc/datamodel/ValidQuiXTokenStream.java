@@ -113,21 +113,41 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 	}
 
 	private static class NodeStack {
-		byte[] data;
+		// this is a compact implementation using the fact that most of 
+		// the time the element are of the same type
+		int[] data;
 		private static final int START_SIZE = 8;
 		int size, pos;
+		final int MASK, UNIT, MAX_ALLOWED, UPPER_MASK;
 
 		NodeStack() {
-			this.data = new byte[START_SIZE];
+			int max = Node.values()[Node.values().length-1].ordinal();
+			int mask = 1;
+			while (mask<=max) {
+				mask<<=1;
+			}
+			this.MAX_ALLOWED = Integer.MAX_VALUE >> 1;
+			this.MASK = mask - 1;
+			this.UPPER_MASK = this.MAX_ALLOWED ^this.MASK;
+			this.UNIT = mask;
+			this.data = new int[START_SIZE];
 			this.size = 8;
 			this.pos = -1;
 		}
 
 		public void push(Node node) {
+			int value = node.ordinal();
+			if (this.pos >= 0 && value == (this.data[this.pos] & this.MASK)) {
+				if (value <= this.MAX_ALLOWED) {
+					this.data[this.pos] += this.UNIT;
+					return;
+				}
+				// this is greater than maxallowed
+			}
 			this.pos++;
 			if (this.pos >= this.size) {
 				this.size = (this.size * 3) / 2 + 1;
-				// System.out.println(this.size);
+			    System.out.println(this.size);
 				this.data = Arrays.copyOf(this.data, this.size);
 			}
 			this.data[this.pos] = (byte) node.ordinal();
@@ -138,11 +158,16 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 		}
 
 		public Node pop() {
+			// simple case first
+			if ((this.data[this.pos] & this.UPPER_MASK) == 0)
 			return Node.values()[this.data[this.pos--]];
+			// now it means there is at least one
+			this.data[this.pos] -= this.UNIT;
+			return Node.values()[this.data[this.pos] & this.MASK];
 		}
 
 		public Node peek() {
-			return Node.values()[this.data[this.pos]];
+			return Node.values()[this.data[this.pos] & this.MASK];
 		}
 
 	}

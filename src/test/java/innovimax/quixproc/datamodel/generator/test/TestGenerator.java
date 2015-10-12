@@ -117,7 +117,7 @@ public class TestGenerator {
 			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : EnumSet.of(/* Process.READ_BUFFER, */ Process.READ_BYTE, Process.PARSE)) {
 			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);
-			testAll(FileExtension.JSON, process, 50, Unit.MBYTE);
+			testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
 			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);
 		}
 	}

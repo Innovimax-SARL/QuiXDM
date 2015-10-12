@@ -319,31 +319,11 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	// start "{"
 	// end "}"
 	// '"":{' and '}'
-	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
-	public static class HighDepthGenerator extends AHighNodeDepthGenerator {
-		final byte[] start = "{".getBytes();
-		final byte[] end = "}".getBytes();
-
-		@Override
-		protected byte[] getEnd() {
-			return this.end;
-		}
-
-		@Override
-		protected byte[] getStart() {
-			return this.start;
-		}
-
-		final byte[][] patterns = { "\"\":{".getBytes(), "}".getBytes() };
-
-		@Override
-		protected byte[][] getPatterns() {
-			return this.patterns;
-		}
-
+	public abstract static class AHighDepthGenerator extends AHighNodeDepthGenerator {
+		
 		@Override
 		protected int getPatternsLength() {
-			return this.patterns[0].length + this.patterns[1].length;
+			return getPatterns()[0].length + getPatterns()[1].length;
 		}
 
 		@Override
@@ -385,6 +365,56 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	}
 
+	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
+	public  static class HighDepthGeneratorObject extends AHighDepthGenerator {
+		
+		final byte[] start = "{".getBytes();
+		final byte[] end = "}".getBytes();
+
+		@Override
+		protected byte[] getEnd() {
+			return this.end;
+		}
+
+		@Override
+		protected byte[] getStart() {
+			return this.start;
+		}
+
+		final byte[][] patterns = { "\"\":{".getBytes(), "}".getBytes() };
+
+		@Override
+		protected byte[][] getPatterns() {
+			return this.patterns;
+		}
+	}
+	
+	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.ARRAY)
+	public  static class HighDepthGeneratorArray extends AHighDepthGenerator {
+		
+		final byte[] start = "{\"\":".getBytes();
+		final byte[] end = "}".getBytes();
+
+		@Override
+		protected byte[] getEnd() {
+			return this.end;
+		}
+
+		@Override
+		protected byte[] getStart() {
+			return this.start;
+		}
+
+		final byte[][] patterns = { "[".getBytes(), "]".getBytes() };
+
+		@Override
+		protected byte[][] getPatterns() {
+			return this.patterns;
+		}
+	}
+	
+	
+	
 	public static void main(String[] args)
 			throws JsonParseException, IOException, InstantiationException, IllegalAccessException {
 

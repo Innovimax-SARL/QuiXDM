@@ -150,7 +150,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			this.current = this.current.getNext();
 			T event = this.current.get();
 			if (DEBUG_LEVEL > 1)
-				System.out.println("" + counter + "/" + this.name + "<-" + event);
+				System.out.println(counter + "/" + this.name + "<-" + event);
 			return event;
 		}
 
@@ -180,7 +180,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	@Override
 	public void append(T event) {
 		if (DEBUG_LEVEL > 1)
-			System.out.println("" + counter + "->" + event);
+			System.out.println(counter + "->" + event);
 		LinkedItem<T> li = new LinkedItem<T>(event);
 		this.current.setNext(li);
 		this.current = li;
@@ -208,7 +208,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		LocalReader<T> l = new LocalReader<T>(local_head);
 		IQuiXStream<T> result = l;
 		if (DEBUG_LEVEL > 0)
-			l.setName("" + this.rank + "/" + this.currentReader + "/" + this.readerCount);
+			l.setName(this.rank + "/" + this.currentReader + "/" + this.readerCount);
 		this.currentReader++;
 		if (this.readerCount > this.currentReader) {
 			// do nothing there is still reader to register

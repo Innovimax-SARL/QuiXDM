@@ -263,7 +263,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			int i = MAX_PRODUCE;
 			while (i-- > 0) {
 				// try {
-				this.qeq.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence("" + i)));
+				this.qeq.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence(String.valueOf(i))));
 
 				if (i % LOG_MODULO == 0)
 					System.out.println("Produce " + i);

@@ -66,7 +66,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 
 	private void process() {
 		this.doc.append(AQuiXEvent.getStartSequence());
-		String uri = "" + this.node.getDocumentURI();
+		String uri = String.valueOf(this.node.getDocumentURI());
 		// System.out.println("---------->Document URI"+uri);
 		this.doc.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence(uri)));
 		processnode(this.node);

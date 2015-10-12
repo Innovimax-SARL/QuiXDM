@@ -34,7 +34,7 @@ public abstract class ATreeGenerator extends AGenerator {
 
 	public enum SpecialType {
 		STANDARD, // no specific
-		NAMESPACE, OPEN_CLOSE;
+		NAMESPACE, OPEN_CLOSE, ARRAY;
 		private static final EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>
 				map = new EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>(FileExtension.class);
 
