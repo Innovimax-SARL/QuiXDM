@@ -62,7 +62,7 @@ So in the end
 {"A":[{},{}, ... ,{}]}
 ```
 is the densiest JSON available in Event density without depth: 66,67%.
-#### Increasing depth
+#### Increasing depth: max 99,99%
 For example, the maximum node density is reached via this pattern
 ```json
 [[[.....[[......]].....]]]
