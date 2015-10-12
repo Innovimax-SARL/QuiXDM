@@ -152,7 +152,9 @@ public abstract class AGenerator {
 	protected abstract byte[] getStart();
 
 	private enum InputStreamState {
-		START, CURRENT, END
+		START, 
+		//CURRENT, 
+		END
 	}
 
 	public class GeneratorInputStream extends InputStream {
@@ -248,9 +250,9 @@ public abstract class AGenerator {
 					this.offset = -1;
 					return;
 				}
-				this.state = InputStreamState.CURRENT;
-				//$FALL-THROUGH$
-			case CURRENT:
+//				this.state = InputStreamState.CURRENT;
+//				//$FALL-THROUGH$
+//			case CURRENT:
 				this.buffer = getEnd();
 				this.offset = -1;
 				this.state = InputStreamState.END;
