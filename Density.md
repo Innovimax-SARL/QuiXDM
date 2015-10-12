@@ -49,7 +49,8 @@ So in the end
 <r>(a<b/>)+</r>
 ```
 is the densiest XML available in event density : 60%
-### JSON Event Density : max 66,67%
+### JSON Event Density : max 99,99%
+#### zero depth : max 66,67%
 For example, the maximum node density is reached via this pattern
 ```
 [{},{}, ... ,{}]
@@ -60,6 +61,18 @@ So in the end
 ```
 {"A":[{},{}, ... ,{}]}
 ```
-is the densiest JSON available in Event density : 66,67%.
+is the densiest JSON available in Event density without depth : 66,67%.
+#### increasing depth
+For example, the maximum node density is reached via this pattern
+```
+[[[.....[[......]].....]]]
+```
+which provides 2 events (start_array and end_array) for each 2 bytes :  "[" and "]".
+
+So in the end
+```
+{"A":[[[.....[[......]].....]]]}
+```
+is the densiest JSON available in Event density with depth :99,99%.
 
 
