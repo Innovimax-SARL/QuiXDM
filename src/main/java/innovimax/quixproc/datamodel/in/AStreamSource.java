@@ -29,7 +29,7 @@ import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
 
 public abstract class AStreamSource {
 	enum Type {
-		XML, JSON
+		XML, JSON, YAML, HTML, CSV, RDF
 	}
 
 	protected final Type type;
