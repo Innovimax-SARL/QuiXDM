@@ -1,8 +1,7 @@
 # QuiXDM
 **QuiXDM** is an open-source datamodel to process in a Streaming fashion:
 * XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) 
-* JSON
-* YAML
+* JSON / YAML
 * RDF
 * CSV
 * HTML
@@ -25,8 +24,7 @@ in memory/streaming | streaming | streaming | in memory | streaming | **streamin
 push/pull | push | pull | -- | pull | **pull**
 data model | low level XML | low level XML | low level XML | low level JSON | **XPath Data Model**
 handle sequence | no | no | no | no | **yes**
-handle json | no | no | no | yes | **yes**
-handle yaml | no | no | no | yes | **yes**
+handle json/yaml | no | no | no | yes | **yes**
 handle rdf  | no | no | no | no  | **yes**
 handle csv  | no | no | no | no  | **yes**
 handle html | no | no | no | no  | **yes**
@@ -36,9 +34,9 @@ It uses a consistent datamodel to represent all those contents in streaming.
 
 ```ANTLR
 // Here is the grammar of events
-sequence       := START_SEQUENCE, (document|json|yaml|table|semantic)*, END_SEQUENCE
+sequence       := START_SEQUENCE, (document|json_yaml|table|semantic)*, END_SEQUENCE
 document       := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT
-json           := START_JSON, object, END_JSON
+json_yaml      := START_JSON, object, END_JSON
 table          := START_TABLE, array_of_array, END_TABLE
 semantic       := START_RDF, statement*, END_RDF
 element        := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
