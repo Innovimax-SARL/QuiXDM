@@ -1,5 +1,11 @@
 # QuiXDM
-**QuiXDM** is an open-source datamodel to process XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) or JSON or both in a Streaming fashion.
+**QuiXDM** is an open-source datamodel to process in a Streaming fashion:
+* XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) 
+* JSON
+* YAML
+* RDF
+* CSV
+* HTML
 
 [![Build Status](https://travis-ci.org/innovimax/QuiXDM.svg?branch=master)](https://travis-ci.org/innovimax/QuiXDM)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/6518/badge.svg)](https://scan.coverity.com/projects/6518)
@@ -26,7 +32,8 @@ handle csv  | no | no | no | no  | **yes**
 handle html | no | no | no | no  | **yes**
 
 # How does it work?
-It minimizes (as far as the XPath Data Model requires it) the number of information to manage to allow processing
+It uses a consistent datamodel to represent all those contents in streaming.
+
 ```ANTLR
 // Here is the grammar of events
 sequence       := START_SEQUENCE, (document|json|yaml|table|semantic)*, END_SEQUENCE
