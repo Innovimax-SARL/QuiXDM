@@ -51,14 +51,19 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		createCount++;
 	}
 
-	public static class AXMLQuiXEvent extends AQuiXEvent {
+	public abstract static class AXMLQuiXEvent extends AQuiXEvent {
 		AXMLQuiXEvent(QuiXToken token) {
 			super(token);
 		}
 	}
 
-	public static class AJSONQuiXEvent extends AQuiXEvent {
+	public abstract static class AJSONQuiXEvent extends AQuiXEvent {
 		AJSONQuiXEvent(QuiXToken token) {
+			super(token);
+		}
+	}
+	public abstract static class ARDFQuiXEvent extends AQuiXEvent {
+		ARDFQuiXEvent(QuiXToken token) {
 			super(token);
 		}
 	}
@@ -158,6 +163,34 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static class EndArray extends AJSONQuiXEvent {
 		public EndArray() {
 			super(QuiXToken.END_ARRAY);
+		}
+	}
+
+	public static class StartRDF extends ARDFQuiXEvent {
+		public StartRDF() {
+			super(QuiXToken.START_RDF);
+		}
+	}
+	
+	public static class EndRDF extends ARDFQuiXEvent {
+		public EndRDF() {
+			super(QuiXToken.END_RDF);
+		}
+	}
+
+	public static class StartPredicate extends ARDFQuiXEvent {
+		final QuiXCharStream name;
+		public StartPredicate(QuiXCharStream name) {
+			super(QuiXToken.START_PREDICATE);
+			this.name = name;
+		}
+	}
+	
+	public static class EndPredicate extends ARDFQuiXEvent {
+		final QuiXCharStream name;
+		public EndPredicate(QuiXCharStream name) {
+			super(QuiXToken.END_PREDICATE);
+			this.name = name;
 		}
 	}
 
@@ -612,6 +645,8 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new Comment(comment);
 	}
 
+    // JSON
+	
 	public static AJSONQuiXEvent getStartJSON() {
 		return new StartJSON();
 	}
@@ -659,6 +694,25 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static AJSONQuiXEvent getValueString(QuiXCharStream str) {
 		return new ValueString(str);
 	}
+
+	// RDF
+	
+	public static ARDFQuiXEvent getStartRDF() {
+		return new StartRDF();
+	}
+
+	public static ARDFQuiXEvent getEndRDF() {
+		return new EndRDF();
+	}
+	
+	public static ARDFQuiXEvent getStartPredicate(QuiXCharStream name) {
+		return new StartPredicate(name);
+	}
+
+	public static ARDFQuiXEvent getEndPredicate(QuiXCharStream name) {
+		return new EndPredicate(name);
+	}
+	
 
 	/* utilities */
 
@@ -735,5 +789,6 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		createAttrCount = 0;
 		createCallCount = 0;
 	}
+
 
 }

@@ -32,7 +32,7 @@ import javax.xml.stream.XMLStreamReader;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
-import innovimax.quixproc.datamodel.generator.annotations.Generator;
+import innovimax.quixproc.datamodel.generator.annotations.TreeGenerator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
@@ -197,7 +197,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	@Generator(ext = FileExtension.XML, type = Type.HIGH_TEXT_SIZE, stype = SpecialType.STANDARD)
+	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_TEXT_SIZE, stype = SpecialType.STANDARD)
 	public static class HighTextSize extends AHighTextSizeGenerator {
 
 		final byte[] start = "<r>".getBytes();
@@ -271,7 +271,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
+	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class HighNodeDensityGenerator extends AHighDensityGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -332,7 +332,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
+	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
 	public static class HighNodeDepthGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -417,7 +417,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.NAMESPACE)
+	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.NAMESPACE)
 	public static class HighDepthNamespaceGenerator extends AHighNodeDepthGenerator {
 		final byte[] start = "<r>".getBytes();
 		final byte[] end = "</r>".getBytes();
@@ -501,7 +501,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_NAME_SIZE, stype = SpecialType.STANDARD)
+	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_NAME_SIZE, stype = SpecialType.STANDARD)
 	public static class HighElementNameSizeSingle extends ANodeNameSizeGenerator {
 		@Override
 		protected byte[] getEnd() {
@@ -565,7 +565,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext = FileExtension.XML, type = Type.HIGH_NODE_NAME_SIZE, stype = SpecialType.OPEN_CLOSE)
+	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_NAME_SIZE, stype = SpecialType.OPEN_CLOSE)
 	public static class HighElementNameSizeOpenClose extends ANodeNameSizeGenerator {
 
 		@Override
@@ -665,7 +665,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	private static void call(Type gtype, SpecialType special, int size, Unit unit)
+	private static void call(TreeType gtype, SpecialType special, int size, Unit unit)
 			throws IOException, XMLStreamException, InstantiationException, IllegalAccessException {
 		AGenerator generator = instance(FileExtension.XML, gtype, special);
 		call(generator, gtype.name(), size, unit);
@@ -717,11 +717,11 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		if (ONE_INSTANCE) {
 			// call(ATreeGenerator.Type.HIGH_NODE_DENSITY, null, 150,
 			// Unit.MBYTE);
-			call(Type.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
+			call(TreeType.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
 			// call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
-			for (Type gtype : EnumSet.of(Type.HIGH_NODE_NAME_SIZE, Type.HIGH_NODE_NAME_SIZE, Type.HIGH_NODE_DENSITY,
-					Type.HIGH_NODE_DEPTH)) {
+			for (TreeType gtype : EnumSet.of(TreeType.HIGH_NODE_NAME_SIZE, TreeType.HIGH_NODE_NAME_SIZE, TreeType.HIGH_NODE_DENSITY,
+					TreeType.HIGH_NODE_DEPTH)) {
 				for (SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype)) {
 					for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
 						int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };

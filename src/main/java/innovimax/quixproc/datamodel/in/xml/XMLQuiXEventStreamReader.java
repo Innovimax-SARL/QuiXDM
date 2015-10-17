@@ -43,7 +43,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 	private QuiXCharStream baseURI;
 	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
-	public XMLQuiXEventStreamReader(XMLStreamSource source) {
+	public XMLQuiXEventStreamReader() {
 		this.ifactory = XMLInputFactory.newFactory();
 		this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
 		this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);

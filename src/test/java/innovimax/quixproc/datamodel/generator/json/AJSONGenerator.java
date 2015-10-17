@@ -31,7 +31,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
-import innovimax.quixproc.datamodel.generator.annotations.Generator;
+import innovimax.quixproc.datamodel.generator.annotations.TreeGenerator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class AJSONGenerator extends ATreeGenerator {
@@ -217,7 +217,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
+	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class HighDensityGenerator extends AHighDensityGenerator {
 
 		final byte[] start = "{".getBytes();
@@ -365,7 +365,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 	}
 
-	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
+	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
 	public  static class HighDepthGeneratorObject extends AHighDepthGenerator {
 		
 		final byte[] start = "{".getBytes();
@@ -389,7 +389,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 	}
 	
-	@Generator(ext = FileExtension.JSON, type = Type.HIGH_NODE_DEPTH, stype = SpecialType.ARRAY)
+	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.ARRAY)
 	public  static class HighDepthGeneratorArray extends AHighDepthGenerator {
 		
 		final byte[] start = "{\"\":".getBytes();
@@ -432,7 +432,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		f.disable(Feature.ALLOW_COMMENTS);
 		f.disable(Feature.ALLOW_SINGLE_QUOTES);
 		// AGenerator generator = instance(ATreeGenerator.Type.HIGH_DENSITY);
-		AGenerator generator = instance(FileExtension.JSON, Type.HIGH_NODE_DEPTH, SpecialType.STANDARD);
+		AGenerator generator = instance(FileExtension.JSON, TreeType.HIGH_NODE_DEPTH, SpecialType.STANDARD);
 
 		InputStream is = generator.getInputStream(50, Unit.MBYTE, Variation.NO_VARIATION);
 		if (false) {

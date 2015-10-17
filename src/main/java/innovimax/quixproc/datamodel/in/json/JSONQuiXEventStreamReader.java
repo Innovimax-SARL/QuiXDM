@@ -20,7 +20,7 @@ public class JSONQuiXEventStreamReader extends AQuiXEventStreamReader {
 	private final JsonFactory ifactory;
 	private JsonParser iparser;
 
-	public JSONQuiXEventStreamReader(JSONStreamSource current) {
+	public JSONQuiXEventStreamReader() {
 		this.ifactory = new JsonFactory();
 		this.ifactory.enable(Feature.STRICT_DUPLICATE_DETECTION);
 	}

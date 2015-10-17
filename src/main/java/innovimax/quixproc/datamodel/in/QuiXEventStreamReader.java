@@ -8,11 +8,13 @@ import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader.CallBack;
-import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.Type;
-import innovimax.quixproc.datamodel.in.AStreamSource.XMLStreamSource;
+import innovimax.quixproc.datamodel.in.csv.CSVQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.html.HTMLQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.json.JSONQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.rdf.RDFQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.xml.XMLQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.yaml.YAMLQuiXEventStreamReader;
 
 public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
@@ -36,26 +38,33 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
 	private AQuiXEvent loadSource() throws QuiXException {
 		AStreamSource current = this.sources.next();
-		switch (current.type) {
-		case JSON:
-			if (this.delegates.containsKey(current.type)) {
-				this.delegate = this.delegates.get(current.type);
-				this.delegate.reinitialize(current);
-			} else {
-				this.delegate = new JSONQuiXEventStreamReader((JSONStreamSource) current);
+		if (this.delegates.containsKey(current.type)) {
+			this.delegate = this.delegates.get(current.type);
+			this.delegate.reinitialize(current);
+		} else {
+			switch (current.type) {
+			case JSON:
+				this.delegate = new JSONQuiXEventStreamReader();
+				break;
+			case XML:
+				this.delegate = new XMLQuiXEventStreamReader();
+				break;
+			case YAML:
+				this.delegate = new YAMLQuiXEventStreamReader();
+				break;
+			case HTML:
+				this.delegate = new HTMLQuiXEventStreamReader();
+				break;
+			case CSV:
+				this.delegate = new CSVQuiXEventStreamReader();
+				break;
+			case RDF:
+				this.delegate = new RDFQuiXEventStreamReader();
+				break;
+			default:
+				this.delegate = null;
 			}
-			break;
-		case XML:
-			if (this.delegates.containsKey(current.type)) {
-				this.delegate = this.delegates.get(current.type);
-				this.delegate.reinitialize(current);
-			} else {
-				this.delegate = new XMLQuiXEventStreamReader((XMLStreamSource) current);
-			}
-			break;
-		default:
-			this.delegate = null;
-			break;
+			this.delegates.put(current.type, this.delegate);
 		}
 		return this.delegate.load(current);
 	}

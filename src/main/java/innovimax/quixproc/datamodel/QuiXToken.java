@@ -25,24 +25,33 @@ package innovimax.quixproc.datamodel;
  */
 public enum QuiXToken implements IQuiXToken {
 	// Here is the grammar of events
-	// sequence := START_SEQUENCE, (document|json)*, END_SEQUENCE
-	// document := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element,
+	// sequence       := START_SEQUENCE, (document|json|yaml|table|semantic)*, END_SEQUENCE
+	// document       := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element,
 	// (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT
-	// json := START_JSON, object, END_JSON
-	// element := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*,
+	// json           := START_JSON, object, END_JSON
+	// table          := START_TABLE, array_of_array, END_TABLE
+	// semantic       := START_RDF, statement*, END_RDF
+	// element        := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*,
 	// (TEXT|element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
-	// object := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
-	// value :=
+	// object         := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
+	// value          :=
 	// object|array|VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
-	// array := START_ARRAY, value*, END_ARRAY
+	// array          := START_ARRAY, value*, END_ARRAY
+	// array_of_array := START_ARRAY, array+, END_ARRAY
+	// statement      := START_PREDICATE, SUBJECT, OBJECT, GRAPH?, END_PREDICATE
 	// SEQUENCE
 	START_SEQUENCE, END_SEQUENCE,
-	// XML
+	// XML and HTML
 	START_DOCUMENT, END_DOCUMENT, START_ELEMENT, END_ELEMENT, NAMESPACE, ATTRIBUTE, TEXT, PROCESSING_INSTRUCTION, COMMENT,
-	// JSON
+	// JSON or YAML
 	START_JSON, END_JSON, START_ARRAY, END_ARRAY, START_OBJECT, END_OBJECT,
-	KEY_NAME, VALUE_FALSE, VALUE_TRUE, VALUE_NUMBER, VALUE_NULL, VALUE_STRING;
-
+	KEY_NAME, VALUE_FALSE, VALUE_TRUE, VALUE_NUMBER, VALUE_NULL, VALUE_STRING,
+    // CSV, TSV
+	START_TABLE, END_TABLE,
+	// RDF triple or quad
+	START_RDF, END_RDF,
+	START_PREDICATE, END_PREDICATE, SUBJECT, OBJECT, GRAPH 
+	;
 	@Override
 	public QuiXToken getType() {
 		return this;

@@ -23,28 +23,28 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Set;
 
-import innovimax.quixproc.datamodel.generator.annotations.GeneratorRuntimeExtractor;
+import innovimax.quixproc.datamodel.generator.annotations.TreeGeneratorRuntimeExtractor;
 import innovimax.quixproc.datamodel.generator.json.AJSONGenerator;
 import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator;
 
 public abstract class ATreeGenerator extends AGenerator {
-	public enum Type {
+	public enum TreeType {
 		HIGH_NODE_DENSITY, HIGH_NODE_DEPTH, HIGH_NODE_NAME_SIZE, HIGH_TEXT_SIZE, SPECIFIC
 	}
 
 	public enum SpecialType {
 		STANDARD, // no specific
 		NAMESPACE, OPEN_CLOSE, ARRAY;
-		private static final EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>
-				map = new EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>>(FileExtension.class);
+		static final EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>>
+				map = new EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>>(FileExtension.class);
 
 		static {
-			GeneratorRuntimeExtractor.process(map, AXMLGenerator.class);
-			GeneratorRuntimeExtractor.process(map, AJSONGenerator.class);
+			TreeGeneratorRuntimeExtractor.process(map, AXMLGenerator.class);
+			TreeGeneratorRuntimeExtractor.process(map, AJSONGenerator.class);
 		}
 
-		public static Set<SpecialType> allowedModifiers(FileExtension ext, Type gtype) {
-			EnumMap<Type, EnumMap<SpecialType, Class<?>>> enumMap = map.get(ext);
+		public static Set<SpecialType> allowedModifiers(FileExtension ext, TreeType gtype) {
+			EnumMap<TreeType, EnumMap<SpecialType, Class<?>>> enumMap = map.get(ext);
 			if (enumMap == null)
 				return Collections.emptySet();
 			EnumMap<SpecialType, Class<?>> enumMap2 = enumMap.get(gtype);
@@ -134,7 +134,7 @@ public abstract class ATreeGenerator extends AGenerator {
 
 	}
 
-	public static AGenerator instance(FileExtension ext, Type gtype, SpecialType stype)
+	public static AGenerator instance(FileExtension ext, TreeType gtype, SpecialType stype)
 			throws InstantiationException, IllegalAccessException {
 		return (AGenerator) SpecialType.map.get(ext).get(gtype).get(stype).newInstance();
 	}

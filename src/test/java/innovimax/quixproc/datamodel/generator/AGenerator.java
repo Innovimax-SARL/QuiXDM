@@ -32,7 +32,7 @@ import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 public abstract class AGenerator {
 
 	public enum FileExtension {
-		XML, HTML, JSON, YAML
+		XML, HTML, JSON, YAML, RDF, CSV
 	}
 
 	public enum Variation {
@@ -247,6 +247,7 @@ public abstract class AGenerator {
 					this.buffer = applyVariation(this.variation, this.patterns, this.current_pattern);
 					// update the size
 					this.current_size = updateSize(this.current_size, this.current_pattern);
+					// System.out.println("Currentsize : "+this.current_size);								
 					this.offset = -1;
 					return;
 				}
@@ -276,6 +277,8 @@ public abstract class AGenerator {
 			}
 			update();
 			if (this.buffer == null)
+				return -1;
+			if (this.buffer.length == 0)
 				return -1;
 			this.offset++;
 			int c = this.buffer[this.offset];

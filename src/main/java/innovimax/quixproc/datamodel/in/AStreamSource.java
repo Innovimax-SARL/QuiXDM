@@ -25,6 +25,8 @@ import java.util.Arrays;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.jena.atlas.web.TypedInputStream;
+
 import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
 
 public abstract class AStreamSource {
@@ -72,8 +74,43 @@ public abstract class AStreamSource {
 		}
 
 	}
+	
+	public static class CSVStreamSource extends AStreamSource {
+		private final InputStream is;
 
-	public static Iterable<AStreamSource> instances(Source[] sources) {
+		protected CSVStreamSource(InputStream is) {
+			super(Type.CSV);
+			this.is = is;
+		}
+
+		public InputStream asInputStream() {
+			return this.is;
+		}
+
+		public static AStreamSource instance(InputStream is) {
+			return new CSVStreamSource(is);
+		}
+		
+	}
+
+	public static class RDFStreamSource extends AStreamSource {
+		private final TypedInputStream is;
+
+		protected RDFStreamSource(TypedInputStream is) {
+			super(Type.RDF);
+			this.is = is;
+		}
+
+		public TypedInputStream asTypedInputStream() {
+			return this.is;
+		}
+
+		public static AStreamSource instance(TypedInputStream is) {
+			return new RDFStreamSource(is);
+		}
+		
+	}
+  public static Iterable<AStreamSource> instances(Source[] sources) {
 		AStreamSource[] asources = new AStreamSource[sources.length];
 		int i = 0;
 		for (javax.xml.transform.Source source : sources) {

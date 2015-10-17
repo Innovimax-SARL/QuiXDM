@@ -4,19 +4,20 @@ import java.util.EnumMap;
 
 import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.Type;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.TreeType;
 
-public class GeneratorRuntimeExtractor {
+public class TreeGeneratorRuntimeExtractor {
 	public static void process(
-			EnumMap<FileExtension, EnumMap<Type, EnumMap<SpecialType, Class<?>>>> map, Class<?> c) {
+			EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>> map, Class<?> c) {
 		for (Class<?> cc : c.getClasses()) {
-			for (Generator generator : cc.getAnnotationsByType(Generator.class)) {
+			
+			for (TreeGenerator generator : cc.getAnnotationsByType(TreeGenerator.class)) {
 				// file extension
-				final EnumMap<Type, EnumMap<SpecialType, Class<?>>> type;
+				final EnumMap<TreeType, EnumMap<SpecialType, Class<?>>> type;
 				if (map.containsKey(generator.ext())) {
 					type = map.get(generator.ext());
 				} else {
-					type = new EnumMap<Type, EnumMap<SpecialType, Class<?>>>(Type.class);
+					type = new EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>(TreeType.class);
 					map.put(generator.ext(), type);
 				}
 				// type

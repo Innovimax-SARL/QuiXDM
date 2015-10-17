@@ -7,6 +7,9 @@ import innovimax.quixproc.datamodel.in.AStreamSource;
 
 public class CSVQuiXEventStreamReader extends AQuiXEventStreamReader  {
 
+	public CSVQuiXEventStreamReader() {
+		// TODO Auto-generated constructor stub
+	}
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
 		// TODO Auto-generated method stub
