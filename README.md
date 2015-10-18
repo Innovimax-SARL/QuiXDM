@@ -1,10 +1,13 @@
 # QuiXDM
 **QuiXDM** is an *ubiquituous* open-source datamodel to process in a Streaming fashion:
-* XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) 
-* JSON / YAML
-* RDF / Triple / Quad
-* CSV / TSV
-* HTML
+* [x] XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) 
+* [x] JSON 
+  * [ ] YAML
+* [x] RDF Triple 
+  * [ ] Quad
+* [x] CSV
+  * [ ] TSV
+* [ ] HTML
 
 [![Build Status](https://travis-ci.org/innovimax/QuiXDM.svg?branch=master)](https://travis-ci.org/innovimax/QuiXDM)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/6518/badge.svg)](https://scan.coverity.com/projects/6518)
@@ -37,13 +40,15 @@ It uses a consistent datamodel to represent all those contents in streaming.
 sequence       := START_SEQUENCE, (document|json_yaml|table|semantic)*, END_SEQUENCE
 document       := START_DOCUMENT, (PROCESSING-INSTRUCTION|COMMENT)*, element, (PROCESSING-INSTRUCTION|COMMENT)*, END_DOCUMENT
 json_yaml      := START_JSON, object, END_JSON
-table          := START_TABLE, array_of_array, END_TABLE
+table          := START_TABLE, header*, array_of_array, END_TABLE
 semantic       := START_RDF, statement*, END_RDF
 element        := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*, (TEXT|element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
 object         := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
-value          := object|array|VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
+value          := object|array|flat_value
+flat_value     := VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
 array          := START_ARRAY, value*, END_ARRAY
-array_of_array := START_ARRAY, array+, END_ARRAY
+array_of_array := START_ARRAY, flat_array+, END_ARRAY
+flat_array     := START_ARRAY, flat_value*, END_ARRAY
 statement      := START_PREDICATE, SUBJECT, OBJECT, GRAPH?, END_PREDICATE
 ```
 Mostly look at [QuiXToken.java](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/QuiXToken.java)
