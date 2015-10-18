@@ -171,9 +171,9 @@ public class TestGenerator {
 	}
 
 	@Test
-	public void testAllRDF10M() throws IOException {
+	public void testAllRDF100M() throws IOException {
 		for (Process process : Process.values()) {
-			testAllRDF(process, 10, Unit.MBYTE);
+			testAllRDF(process, 100, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
