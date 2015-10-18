@@ -55,7 +55,7 @@ public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamRea
 				case END_OBJECT:
 					return AQuiXEvent.getEndObject();
 				case FIELD_NAME:
-					return AQuiXEvent.getKeyName();
+					return AQuiXEvent.getKeyName(QuiXCharStream.fromSequence(this.iparser.getCurrentName()));
 				case NOT_AVAILABLE:
 					break;
 				case START_ARRAY:
@@ -69,11 +69,11 @@ public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamRea
 				case VALUE_NULL:
 					return AQuiXEvent.getValueNull();
 				case VALUE_NUMBER_FLOAT:
-					return AQuiXEvent.getValueNumber(0.0);
+					return AQuiXEvent.getValueNumber(this.iparser.getDoubleValue());
 				case VALUE_NUMBER_INT:
-					return AQuiXEvent.getValueNumber(0.0);
+					return AQuiXEvent.getValueNumber(this.iparser.getDoubleValue());
 				case VALUE_STRING:
-					return AQuiXEvent.getValueString(QuiXCharStream.EMPTY);
+					return AQuiXEvent.getValueString(QuiXCharStream.fromSequence(this.iparser.getText()));
 				case VALUE_TRUE:
 					return AQuiXEvent.getValueTrue();
 				default:

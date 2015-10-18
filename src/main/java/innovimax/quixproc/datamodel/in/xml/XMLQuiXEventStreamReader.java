@@ -19,9 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 package innovimax.quixproc.datamodel.in.xml;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
@@ -31,17 +28,16 @@ import javax.xml.transform.Source;
 import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
-import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.AQuiXEventBufferStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.XMLStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
-public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
+public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 
 	private final XMLInputFactory ifactory;
 	private XMLStreamReader sreader;
 	private QuiXCharStream baseURI;
-	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
 	public XMLQuiXEventStreamReader() {
 		this.ifactory = XMLInputFactory.newFactory();
@@ -196,11 +192,5 @@ public class XMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
 		return load(((XMLStreamSource) current).asSource());
-	}
-
-	@Override
-	public void reinitialize(AStreamSource current) {
-		//
-		this.buffer.clear();
 	}
 }

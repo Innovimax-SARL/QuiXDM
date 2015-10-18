@@ -287,8 +287,10 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	}
 
 	public static class KeyName extends AJSONQuiXEvent {
-		KeyName() {
+		private final QuiXCharStream name;
+		KeyName(QuiXCharStream name) {
 			super(QuiXToken.KEY_NAME);
+			this.name = name;
 		}
 	}
 
@@ -721,8 +723,8 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new EndArray();
 	}
 
-	public static AJSONQuiXEvent getKeyName() {
-		return new KeyName();
+	public static AJSONQuiXEvent getKeyName(QuiXCharStream name) {
+		return new KeyName(name);
 	}
 
 	public static AJSONQuiXEvent getValueNull() {

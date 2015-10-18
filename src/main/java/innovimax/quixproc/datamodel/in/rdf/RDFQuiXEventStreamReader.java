@@ -5,8 +5,6 @@ import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTuplesStream;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,14 +15,13 @@ import org.apache.jena.graph.Node;
 import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
-import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.in.AQuiXEventBufferStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.RDFStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
-public class RDFQuiXEventStreamReader extends AQuiXEventStreamReader {
+public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 	private PipedRDFIterator<Tuple<Node>> iter;
-	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 	private ExecutorService executor;
 
 	public RDFQuiXEventStreamReader() {
@@ -96,11 +93,6 @@ public class RDFQuiXEventStreamReader extends AQuiXEventStreamReader {
 		}
 	}
 
-	@Override
-	public void reinitialize(AStreamSource current) {
-		//
-		this.buffer.clear();
-	}
 
 	@Override
 	public void close() {
