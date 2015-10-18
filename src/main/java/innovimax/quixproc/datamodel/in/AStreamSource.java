@@ -29,6 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.jena.atlas.web.TypedInputStream;
 
 import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
+import innovimax.quixproc.datamodel.in.yaml.YAMLQuiXEventStreamReader;
 
 public abstract class AStreamSource {
 	enum Type {
@@ -58,11 +59,11 @@ public abstract class AStreamSource {
 		}
 	}
 
-	public static class JSONStreamSource extends AStreamSource {
+	public abstract static class AJSONYAMLStreamSource extends AStreamSource {
 		private final InputStream is;
 
-		protected JSONStreamSource(InputStream is) {
-			super(Type.JSON);
+		protected AJSONYAMLStreamSource(Type type, InputStream is) {
+			super(type);
 			this.is = is;
 		}
 
@@ -70,8 +71,27 @@ public abstract class AStreamSource {
 			return this.is;
 		}
 
+
+	}
+	public static class JSONStreamSource extends AJSONYAMLStreamSource {
+		
+		protected JSONStreamSource(InputStream is) {
+			super(Type.JSON, is);
+		}
+
 		public static AStreamSource instance(InputStream is) {
 			return new JSONStreamSource(is);
+		}
+	}
+	public static class YAMLStreamSource extends AJSONYAMLStreamSource {
+
+		protected YAMLStreamSource(InputStream is) {
+			super(Type.YAML, is);
+		}
+
+
+		public static AStreamSource instance(InputStream is) {
+			return new YAMLStreamSource(is);
 		}
 
 	}
@@ -131,7 +151,7 @@ public abstract class AStreamSource {
 		case XML:
 			return instance(new StreamSource(is));
 		case YAML:
-			break;
+			return YAMLStreamSource.instance(is);
 		default:
 			break;
 

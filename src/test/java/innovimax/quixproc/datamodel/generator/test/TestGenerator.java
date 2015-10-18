@@ -248,6 +248,13 @@ public class TestGenerator {
 	}
 
 	@Test
+	public void testAllYAML10M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+		for (Process process : Process.values()) {
+			testAll(FileExtension.YAML, process, 10, Unit.MBYTE);
+		}
+		assertTrue(true);
+	}
+	@Test
 	public void testAllRDF100M() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
 			testAll(FileExtension.RDF, process, 100, Unit.MBYTE);
@@ -268,8 +275,9 @@ public class TestGenerator {
 			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);
 			//testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
 			//testAll(FileExtension.XML, process, 2, Unit.MBYTE);
-			testAll(FileExtension.RDF, process, 100, Unit.MBYTE);
+			//testAll(FileExtension.RDF, process, 100, Unit.MBYTE);
 			//testAll(FileExtension.CSV, process, 100, Unit.MBYTE);
+			testAll(FileExtension.YAML, process, 10, Unit.MBYTE);
 		}
 	}
 	

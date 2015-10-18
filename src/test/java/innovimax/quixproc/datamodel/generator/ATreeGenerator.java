@@ -26,6 +26,7 @@ import java.util.Set;
 import innovimax.quixproc.datamodel.generator.annotations.TreeGeneratorRuntimeExtractor;
 import innovimax.quixproc.datamodel.generator.json.AJSONGenerator;
 import innovimax.quixproc.datamodel.generator.xml.AXMLGenerator;
+import innovimax.quixproc.datamodel.generator.yaml.AYAMLGenerator;
 
 public abstract class ATreeGenerator extends AGenerator {
 	public enum TreeType {
@@ -41,6 +42,7 @@ public abstract class ATreeGenerator extends AGenerator {
 		static {
 			TreeGeneratorRuntimeExtractor.process(map, AXMLGenerator.class);
 			TreeGeneratorRuntimeExtractor.process(map, AJSONGenerator.class);
+			TreeGeneratorRuntimeExtractor.process(map, AYAMLGenerator.class);
 		}
 
 		public static Set<SpecialType> allowedModifiers(FileExtension ext, TreeType gtype) {

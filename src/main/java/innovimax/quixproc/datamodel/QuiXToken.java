@@ -42,6 +42,12 @@ public enum QuiXToken implements IQuiXToken {
 	// flat_value     := VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
 	// statement      := START_PREDICATE, SUBJECT, OBJECT, GRAPH?, END_PREDICATE
 
+	// To support BSON add VALUE_BIN and VALUE_EPOCH (or add a property on VALUE_STRING isBin and VALUD_NUMBER isEpoch)
+	// To support UBSON no need to add anything
+	// To support SMILE no need to add anything
+	
+	// in RDF, we may need to store prefix mapping
+	
 	// SEQUENCE
 	START_SEQUENCE, END_SEQUENCE,
 	// XML and HTML

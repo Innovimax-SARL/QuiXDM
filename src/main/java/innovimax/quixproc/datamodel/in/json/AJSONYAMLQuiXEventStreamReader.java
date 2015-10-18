@@ -12,7 +12,7 @@ import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
-import innovimax.quixproc.datamodel.in.AStreamSource.JSONStreamSource;
+import innovimax.quixproc.datamodel.in.AStreamSource.AJSONYAMLStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
 public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamReader {
@@ -24,7 +24,7 @@ public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamRea
 	
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
-		return load(((JSONStreamSource) current).asInputStream());
+		return load(((AJSONYAMLStreamSource) current).asInputStream());
 	}
 
 	protected AQuiXEvent load(InputStream current) throws QuiXException {
