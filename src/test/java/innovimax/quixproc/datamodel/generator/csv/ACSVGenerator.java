@@ -53,7 +53,7 @@ public abstract class ACSVGenerator extends AGenerator {
 		}
 
 		private final byte[][] patterns = {
-				"A\tB\tC\r\n".getBytes()
+				"A,B,C\r\n".getBytes()
 		};
 		@Override
 		protected byte[][] getPatterns() {

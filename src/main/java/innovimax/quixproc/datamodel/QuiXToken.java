@@ -34,11 +34,12 @@ public enum QuiXToken implements IQuiXToken {
 	// element        := START_ELEMENT, (NAMESPACE|ATTRIBUTE)*,
 	// (TEXT|element|PROCESSING-INSTRUCTION|COMMENT)*, END_ELEMENT
 	// object         := START_OBJECT, (KEY_NAME, value)*, END_OBJECT
-	// value          :=
-	// object|array|VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
+	// value          := object|array|flat_value
 	// header         := COLNAME
 	// array          := START_ARRAY, value*, END_ARRAY
-	// array_of_array := START_ARRAY, array+, END_ARRAY
+	// array_of_array := START_ARRAY, flat_array+, END_ARRAY
+	// flat_array     := START_ARRAY, flat_value*, END_ARRAY
+	// flat_value     := VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
 	// statement      := START_PREDICATE, SUBJECT, OBJECT, GRAPH?, END_PREDICATE
 	// SEQUENCE
 	START_SEQUENCE, END_SEQUENCE,

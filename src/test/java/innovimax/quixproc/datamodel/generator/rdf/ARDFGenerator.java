@@ -56,7 +56,7 @@ public abstract class ARDFGenerator extends AGenerator {
 			return "".getBytes();
 		}
 		final byte[][] patterns = {
-				"<a> <b> <c>.".getBytes()
+				"<a> <b> <c>.\n".getBytes()
 		};
 		@Override
 		protected byte[][] getPatterns() {
