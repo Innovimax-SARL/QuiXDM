@@ -1,41 +1,54 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="UTF-8">
     <title>QuiXDM by innovimax</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
   <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">QuiXDM</h1>
-        <p class="header">QuiXDM is an open-source implementation of an XML and JSON able to do Streaming Processing</p>
+    <section class="page-header">
+      <h1 class="project-name">QuiXDM</h1>
+      <h2 class="project-tagline">QuiXDM is an open-source implementation of an XML and JSON able to do Streaming Processing</h2>
+      <a href="https://github.com/innovimax/QuiXDM" class="btn">View on GitHub</a>
+      <a href="https://github.com/innovimax/QuiXDM/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/innovimax/QuiXDM/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/innovimax/QuiXDM/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/innovimax/QuiXDM/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/innovimax/QuiXDM">View On GitHub</a></li>
-        </ul>
-
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/innovimax">innovimax</a></p>
-
-
-      </header>
-      <section>
-        <h1>
+    <section class="main-content">
+      <h1>
 <a id="quixdm" class="anchor" href="#quixdm" aria-hidden="true"><span class="octicon octicon-link"></span></a>QuiXDM</h1>
 
-<p><strong>QuiXDM</strong> is an open-source datamodel to process XML (via <a href="http://www.w3.org/TR/xpath-datamodel/">XQuery and XPath Data Model (XDM)</a>) or JSON or both in a Streaming fashion.</p>
+<p><strong>QuiXDM</strong> is an <em>ubiquituous</em> open-source datamodel to process in a Streaming fashion:</p>
 
-<p><a href="https://travis-ci.org/innovimax/QuiXDM"><img src="https://travis-ci.org/innovimax/QuiXDM.svg?branch=master" alt="Build Status"></a></p>
+<ul>
+<li>[x] XML (via <a href="http://www.w3.org/TR/xpath-datamodel/">XQuery and XPath Data Model (XDM)</a>) </li>
+<li>[x] JSON 
+
+<ul>
+<li>[ ] YAML</li>
+</ul>
+</li>
+<li>[x] RDF Triple 
+
+<ul>
+<li>[ ] Quad</li>
+</ul>
+</li>
+<li>[x] CSV
+
+<ul>
+<li>[ ] TSV</li>
+</ul>
+</li>
+<li>[ ] HTML</li>
+</ul>
+
+<p><a href="https://travis-ci.org/innovimax/QuiXDM"><img src="https://travis-ci.org/innovimax/QuiXDM.svg?branch=master" alt="Build Status"></a>
+<a href="https://scan.coverity.com/projects/6518"><img src="https://scan.coverity.com/projects/6518/badge.svg" alt="Coverity Scan Build Status"></a></p>
 
 <h1>
 <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h1>
@@ -99,11 +112,35 @@
 <td><strong>yes</strong></td>
 </tr>
 <tr>
-<td>handle json</td>
+<td>handle json/yaml</td>
 <td>no</td>
 <td>no</td>
 <td>no</td>
 <td>yes</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>handle rdf</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>handle csv</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td><strong>yes</strong></td>
+</tr>
+<tr>
+<td>handle html</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
 <td><strong>yes</strong></td>
 </tr>
 </tbody>
@@ -112,16 +149,22 @@
 <h1>
 <a id="how-does-it-work" class="anchor" href="#how-does-it-work" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does it work?</h1>
 
-<p>It minimizes (as far as the XPath Data Model requires it) the number of information to manage to allow processing</p>
+<p>It uses a consistent datamodel to represent all those contents in streaming.</p>
 
 <div class="highlight highlight-source-antlr"><pre><span class="pl-c">// Here is the grammar of events</span>
-<span class="pl-en">sequence</span> := <span class="pl-c1">START_SEQUENCE</span>, (document|json)*, <span class="pl-c1">END_SEQUENCE</span>
-<span class="pl-en">document</span> := <span class="pl-c1">START_DOCUMENT</span>, (<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, element, (<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_DOCUMENT</span>
-<span class="pl-en">element</span>  := <span class="pl-c1">START_ELEMENT</span>, (<span class="pl-c1">NAMESPACE</span>|<span class="pl-c1">ATTRIBUTE</span>)*, <span class="pl-c1">TEXT</span>?, ((element|<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)+, <span class="pl-c1">TEXT</span>)*, (element|<span class="pl-c1">PROCESSING_INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_ELEMENT</span>
-<span class="pl-en">json</span>     := <span class="pl-c1">START_JSON</span>, object, <span class="pl-c1">END_JSON</span>
-<span class="pl-en">object</span>   := <span class="pl-c1">START_OBJECT</span>, (<span class="pl-c1">KEY_NAME</span>, value)*, <span class="pl-c1">END_OBJECT</span>
-<span class="pl-en">value</span>    := object|array|<span class="pl-c1">VALUE_FALSE</span>|<span class="pl-c1">VALUE_TRUE</span>|<span class="pl-c1">VALUE_NUMBER</span>|<span class="pl-c1">VALUE_NULL</span>|<span class="pl-c1">VALUE_STRING</span>
-<span class="pl-en">array</span>    := <span class="pl-c1">START_ARRAY</span>, value*, <span class="pl-c1">END_ARRAY</span></pre></div>
+<span class="pl-en">sequence</span>       := <span class="pl-c1">START_SEQUENCE</span>, (document|json_yaml|table|semantic)*, <span class="pl-c1">END_SEQUENCE</span>
+<span class="pl-en">document</span>       := <span class="pl-c1">START_DOCUMENT</span>, (<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, element, (<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_DOCUMENT</span>
+<span class="pl-en">json_yaml</span>      := <span class="pl-c1">START_JSON</span>, object, <span class="pl-c1">END_JSON</span>
+<span class="pl-en">table</span>          := <span class="pl-c1">START_TABLE</span>, header*, array_of_array, <span class="pl-c1">END_TABLE</span>
+<span class="pl-en">semantic</span>       := <span class="pl-c1">START_RDF</span>, statement*, <span class="pl-c1">END_RDF</span>
+<span class="pl-en">element</span>        := <span class="pl-c1">START_ELEMENT</span>, (<span class="pl-c1">NAMESPACE</span>|<span class="pl-c1">ATTRIBUTE</span>)*, (<span class="pl-c1">TEXT</span>|element|<span class="pl-c1">PROCESSING</span>-<span class="pl-c1">INSTRUCTION</span>|<span class="pl-c1">COMMENT</span>)*, <span class="pl-c1">END_ELEMENT</span>
+<span class="pl-en">object</span>         := <span class="pl-c1">START_OBJECT</span>, (<span class="pl-c1">KEY_NAME</span>, value)*, <span class="pl-c1">END_OBJECT</span>
+<span class="pl-en">value</span>          := object|array|flat_value
+<span class="pl-en">flat_value</span>     := <span class="pl-c1">VALUE_FALSE</span>|<span class="pl-c1">VALUE_TRUE</span>|<span class="pl-c1">VALUE_NUMBER</span>|<span class="pl-c1">VALUE_NULL</span>|<span class="pl-c1">VALUE_STRING</span>
+<span class="pl-en">array</span>          := <span class="pl-c1">START_ARRAY</span>, value*, <span class="pl-c1">END_ARRAY</span>
+<span class="pl-en">array_of_array</span> := <span class="pl-c1">START_ARRAY</span>, flat_array+, <span class="pl-c1">END_ARRAY</span>
+<span class="pl-en">flat_array</span>     := <span class="pl-c1">START_ARRAY</span>, flat_value*, <span class="pl-c1">END_ARRAY</span>
+<span class="pl-en">statement</span>      := <span class="pl-c1">START_PREDICATE</span>, <span class="pl-c1">SUBJECT</span>, <span class="pl-c1">OBJECT</span>, <span class="pl-c1">GRAPH</span>?, <span class="pl-c1">END_PREDICATE</span></pre></div>
 
 <p>Mostly look at <a href="https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/QuiXToken.java">QuiXToken.java</a></p>
 
@@ -196,12 +239,15 @@ The truth is that there is no such character streaming interface in Java.</p>
 <li> QuiXPath: <a href="https://github.com/innovimax/quixpath">https://github.com/innovimax/quixpath</a>
 </li>
 </ul>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/innovimax/QuiXDM">QuiXDM</a> is maintained by <a href="https://github.com/innovimax">innovimax</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+
+    </section>
+
+  
   </body>
 </html>
