@@ -41,6 +41,7 @@ public enum QuiXToken implements IQuiXToken {
 	// flat_array     := START_ARRAY, flat_value*, END_ARRAY
 	// flat_value     := VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
 	// statement      := START_PREDICATE, SUBJECT, OBJECT, GRAPH?, END_PREDICATE
+
 	// SEQUENCE
 	START_SEQUENCE, END_SEQUENCE,
 	// XML and HTML
