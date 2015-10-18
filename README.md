@@ -1,5 +1,5 @@
 # QuiXDM
-**QuiXDM** is an *ubiquituous* open-source datamodel to process in a Streaming fashion:
+**QuiXDM** is an *ubiquitous* open-source datamodel to process in a Streaming fashion:
 * [x] XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) 
 * [x] JSON 
   * [ ] YAML
@@ -17,9 +17,10 @@ To install it
 *  Checkout this code. It's Java 1.8+ compliant
 *  Get access to Saxon 9.6: http://saxon.sourceforge.net/
 *  Get access to Jackson Core 2.6.2: https://github.com/FasterXML/jackson-core 
+*  and few other dependencies (see pom.xml)
 
 # Why QuiXDM?
-There is SAX and StAX and DOM out there for processing XML
+There is SAX,StAX, DOM, Jackson, Jena, CSVParser, HTMLParser out there for processing data
 
  Feature\API | SAX | StAX | DOM | Jackson | **QuiXDM**
 ------|-----|------|-----|-------|----
@@ -57,10 +58,13 @@ Mostly look at [QuiXToken.java](https://github.com/innovimax/QuiXDM/blob/master/
 ## With Object creation (à la [javax.xml.stream.XMLEventReader](https://docs.oracle.com/javase/8/docs/api/index.html?javax/xml/stream/XMLEventReader.html))
 Simplest way to use, is to instantiate [innovimax.quixproc.datamodel.in.QuiXEventStreamReader.java](https://github.com/innovimax/QuiXDM/blob/master/src/main/java/innovimax/quixproc/datamodel/in/QuiXEventStreamReader.java)
 ```java
-Iterable<Source> sources = Arrays.asList(new Source[] {
-		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aaa.xml"),	
-		new javax.xml.transform.stream.StreamSource("/tmp/file/file_aab.xml")	
-});
+Iterable<Source> sources = 
+		"/tmp/file/file_aaa.xml",	
+		"/tmp/file/file_aab.json",
+		"/tmp/file/file_aac.csv",
+		"/tmp/file/file_aad.yml",
+		"/tmp/file/file_aae.n3"	
+;
 QuiXEventStreamReader qesr = new QuiXEventStreamReader(sources);
 while(qesr.hasNext()) {
 	System.out.println(qesr.next());
@@ -88,7 +92,7 @@ Having such context, that's why [QuiXCharStream](https://github.com/innovimax/Qu
    * huge namespace uris
 
 # Contributors
-[Innovimax](http://innovimax.fr) and [INRIA Lille](http://www.inria.fr/centre/lille) is contributing to this work
+[Innovimax](http://innovimax.fr) is contributing to this work
 # Related Projects
 QuiXDM can be used standalone
 
