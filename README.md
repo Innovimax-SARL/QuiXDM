@@ -1,9 +1,9 @@
 # QuiXDM
-**QuiXDM** is an open-source datamodel to process in a Streaming fashion:
+**QuiXDM** is an *ubiquituous* open-source datamodel to process in a Streaming fashion:
 * XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) 
 * JSON / YAML
-* RDF
-* CSV
+* RDF / Triple / Quad
+* CSV / TSV
 * HTML
 
 [![Build Status](https://travis-ci.org/innovimax/QuiXDM.svg?branch=master)](https://travis-ci.org/innovimax/QuiXDM)
