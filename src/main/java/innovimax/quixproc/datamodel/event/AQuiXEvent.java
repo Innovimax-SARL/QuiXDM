@@ -62,12 +62,18 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 			super(token);
 		}
 	}
+	
 	public abstract static class ARDFQuiXEvent extends AQuiXEvent {
 		ARDFQuiXEvent(QuiXToken token) {
 			super(token);
 		}
 	}
 
+	public abstract static class ACSVQuiXEvent extends AQuiXEvent {
+		ACSVQuiXEvent(QuiXToken token) {
+			super(token);
+		}
+	}
 	public static final class StartSequence extends AQuiXEvent {
 		StartSequence() {
 			super(QuiXToken.START_SEQUENCE);
@@ -154,18 +160,36 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class StartArray extends AJSONQuiXEvent {
+	// start array is in JSON/YAML but also in CSV/TSV
+	public static class StartArray extends AQuiXEvent {
 		public StartArray() {
 			super(QuiXToken.START_ARRAY);
 		}
 	}
 
-	public static class EndArray extends AJSONQuiXEvent {
+	// start array is in JSON/YAML but also in CSV/TSV
+	public static class EndArray extends AQuiXEvent {
 		public EndArray() {
 			super(QuiXToken.END_ARRAY);
 		}
 	}
+	
+	// Table CSV / TSV
+	
+	public static class StartTable extends ACSVQuiXEvent {
+		public StartTable() {
+			super(QuiXToken.START_TABLE);
+		}
+	}
 
+	public static class EndTable extends ACSVQuiXEvent {
+		public EndTable() {
+			super(QuiXToken.END_TABLE);
+		}
+	}
+
+	// RDF Triple
+	
 	public static class StartRDF extends ARDFQuiXEvent {
 		public StartRDF() {
 			super(QuiXToken.START_RDF);
@@ -194,6 +218,32 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
+	public static class Subject extends ARDFQuiXEvent {
+		final QuiXCharStream name;
+		public Subject(QuiXCharStream name) {
+			super(QuiXToken.SUBJECT);
+			this.name = name;
+		}
+	}
+
+	public static class Object extends ARDFQuiXEvent {
+		final QuiXCharStream name;
+		public Object(QuiXCharStream name) {
+			super(QuiXToken.OBJECT);
+			this.name = name;
+		}
+	}
+
+	public static class Graph extends ARDFQuiXEvent {
+		final QuiXCharStream name;
+		public Graph(QuiXCharStream name) {
+			super(QuiXToken.GRAPH);
+			this.name = name;
+		}
+	}
+	
+	// JSON
+	
 	public static class AJSONValue extends AJSONQuiXEvent {
 		AJSONValue(QuiXToken token) {
 			super(token);
@@ -663,11 +713,11 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new EndObject();
 	}
 
-	public static AJSONQuiXEvent getStartArray() {
+	public static AQuiXEvent getStartArray() {
 		return new StartArray();
 	}
 
-	public static AJSONQuiXEvent getEndArray() {
+	public static AQuiXEvent getEndArray() {
 		return new EndArray();
 	}
 
@@ -694,6 +744,16 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static AJSONQuiXEvent getValueString(QuiXCharStream str) {
 		return new ValueString(str);
 	}
+	
+	// CSV/TSV
+	
+	public static ACSVQuiXEvent getStartTable() {
+		return new StartTable();
+	}
+	
+	public static ACSVQuiXEvent getEndTable() {
+		return new EndTable();
+	}
 
 	// RDF
 	
@@ -713,8 +773,21 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new EndPredicate(name);
 	}
 	
-
+	public static ARDFQuiXEvent getSubject(QuiXCharStream name) {
+		return new Subject(name);
+	}
+	
+	public static ARDFQuiXEvent getObject(QuiXCharStream name) {
+		return new Object(name);
+	}
+	
+	public static ARDFQuiXEvent getGraph(QuiXCharStream name) {
+		return new Graph(name);
+	}
+	
 	/* utilities */
+	
+	
 
 	public boolean isStartSequence() {
 		return (this.type == QuiXToken.START_SEQUENCE);

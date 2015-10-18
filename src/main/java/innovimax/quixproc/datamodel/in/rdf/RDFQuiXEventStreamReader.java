@@ -3,16 +3,16 @@ package innovimax.quixproc.datamodel.in.rdf;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
-import org.apache.jena.riot.lang.PipedTriplesStream;
+import org.apache.jena.riot.lang.PipedTuplesStream;
 
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
+import org.apache.jena.atlas.lib.Tuple;
 import org.apache.jena.atlas.web.TypedInputStream;
-import org.apache.jena.graph.Triple;
+import org.apache.jena.graph.Node;
 
 import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.QuiXException;
@@ -23,7 +23,7 @@ import innovimax.quixproc.datamodel.in.AStreamSource.RDFStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
 public class RDFQuiXEventStreamReader extends AQuiXEventStreamReader {
-	private PipedRDFIterator<Triple> iter;
+	private PipedRDFIterator<Tuple<Node>> iter;
 	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 	private ExecutorService executor;
 
@@ -41,8 +41,8 @@ public class RDFQuiXEventStreamReader extends AQuiXEventStreamReader {
 		// You can optionally supply a buffer size here for the
 		// PipedRDFIterator, see the documentation for details about recommended
 		// buffer sizes
-		this.iter = new PipedRDFIterator<Triple>();
-		final PipedRDFStream<Triple> tripleStream = new PipedTriplesStream(this.iter);
+		this.iter = new PipedRDFIterator<Tuple<Node>>();
+		final PipedRDFStream<Tuple<Node>> tripleStream = new PipedTuplesStream(this.iter);
 		final TypedInputStream tis = source.asTypedInputStream();
 		// PipedRDFStream and PipedRDFIterator need to be on different threads
 		this.executor = Executors.newSingleThreadExecutor();
@@ -84,10 +84,13 @@ public class RDFQuiXEventStreamReader extends AQuiXEventStreamReader {
 				return callback.processEndSource();
 			}
 			// this iter has next
-			Triple next = this.iter.next();
-
-			this.buffer.add(AQuiXEvent.getEndPredicate(QuiXCharStream.fromSequence(next.toString())));
-			return AQuiXEvent.getStartPredicate(QuiXCharStream.fromSequence(next.toString()));
+			Tuple<Node> next = this.iter.next();			
+			this.buffer.add(AQuiXEvent.getSubject(QuiXCharStream.fromSequence(next.get(0).toString())));
+			this.buffer.add(AQuiXEvent.getObject(QuiXCharStream.fromSequence(next.get(2).toString())));
+			if (next.size() == 4) // handle QUAD
+			   this.buffer.add(AQuiXEvent.getGraph(QuiXCharStream.fromSequence(next.get(3).toString())));			
+			this.buffer.add(AQuiXEvent.getEndPredicate(QuiXCharStream.fromSequence(next.get(1).toString())));
+			return AQuiXEvent.getStartPredicate(QuiXCharStream.fromSequence(next.get(1).toString()));
 		} catch (Exception e) {
 			throw new QuiXException(e);
 		}

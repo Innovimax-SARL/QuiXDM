@@ -1,34 +1,11 @@
 package innovimax.quixproc.datamodel.in.yaml;
 
-import innovimax.quixproc.datamodel.QuiXException;
-import innovimax.quixproc.datamodel.event.AQuiXEvent;
-import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
-import innovimax.quixproc.datamodel.in.AStreamSource;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-public class YAMLQuiXEventStreamReader extends AQuiXEventStreamReader {
+import innovimax.quixproc.datamodel.in.json.AJSONYAMLQuiXEventStreamReader;
 
-	@Override
-	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
-		// TODO Auto-generated method stub
-		return null;
+public class YAMLQuiXEventStreamReader extends AJSONYAMLQuiXEventStreamReader {
+	public YAMLQuiXEventStreamReader() {
+		super(new YAMLFactory());
 	}
-
-	@Override
-	protected AQuiXEvent process(CallBack callback) throws QuiXException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void reinitialize(AStreamSource current) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 package innovimax.quixproc.datamodel.in;
 
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Arrays;
 
 import javax.xml.transform.Source;
@@ -74,23 +75,23 @@ public abstract class AStreamSource {
 		}
 
 	}
-	
+
 	public static class CSVStreamSource extends AStreamSource {
-		private final InputStream is;
+		private final Reader r;
 
-		protected CSVStreamSource(InputStream is) {
+		protected CSVStreamSource(Reader r) {
 			super(Type.CSV);
-			this.is = is;
+			this.r = r;
 		}
 
-		public InputStream asInputStream() {
-			return this.is;
+		public Reader asReader() {
+			return this.r;
 		}
 
-		public static AStreamSource instance(InputStream is) {
-			return new CSVStreamSource(is);
+		public static AStreamSource instance(Reader r) {
+			return new CSVStreamSource(r);
 		}
-		
+
 	}
 
 	public static class RDFStreamSource extends AStreamSource {
@@ -108,9 +109,10 @@ public abstract class AStreamSource {
 		public static AStreamSource instance(TypedInputStream is) {
 			return new RDFStreamSource(is);
 		}
-		
+
 	}
-  public static Iterable<AStreamSource> instances(Source[] sources) {
+
+	public static Iterable<AStreamSource> instances(Source[] sources) {
 		AStreamSource[] asources = new AStreamSource[sources.length];
 		int i = 0;
 		for (javax.xml.transform.Source source : sources) {
