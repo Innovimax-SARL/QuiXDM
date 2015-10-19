@@ -14,7 +14,7 @@ addons:
       description: "Build submitted via Travis CI"
     notification_email: innovimax@gmail.com
     build_command_prepend: "mvn clean"
-    build_command:   "mvn -DskipTests=true compile"
+    build_command: "mvn -DskipTests=true compile"
     branch_pattern: master
 #after_success:
 #  - mvn clean test jacoco:report coveralls:report
