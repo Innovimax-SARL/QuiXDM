@@ -76,7 +76,7 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 				.hasNext();) {
 			Map<QuiXCharStream, QuiXCharStream> map = iter.next();
 			// TODO prefix is String and map of QuiXCharStream
-			if (map.containsKey(prefix))
+			if (map.containsKey(QuiXCharStream.fromSequence(prefix)))
 				return map.get(prefix);
 		}
 		return null;

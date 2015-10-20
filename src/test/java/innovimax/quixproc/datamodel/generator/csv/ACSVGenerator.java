@@ -10,7 +10,7 @@ import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 public abstract class ACSVGenerator extends AGenerator {
 
 	public Reader getReader(long size, Unit unit, Variation variation) {
-		return new InputStreamReader(getInputStream(size, unit, variation));
+		return new InputStreamReader(getInputStream(size, unit, variation), this.currentCharset);
 	}
 	
 	public static class SimpleCSVGenerator extends ACSVGenerator {

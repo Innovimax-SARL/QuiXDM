@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
@@ -61,8 +62,9 @@ public abstract class AGenerator {
 													 */,
 	}
 	
+	protected Charset currentCharset = StandardCharsets.US_ASCII;
 	protected byte[] s2b(String s) {
-		return s.getBytes(StandardCharsets.US_ASCII);
+		return s.getBytes(this.currentCharset);
 	}
 
 	protected final AReversibleRandom random;
@@ -105,8 +107,8 @@ public abstract class AGenerator {
 	public void generate(File output, long size, Unit unit, Variation variation) throws IOException {
 		output.getParentFile().mkdirs();
 		final long total = size * unit.value();
-		FileOutputStream fos = new FileOutputStream(output);
-		BufferedOutputStream bos = new BufferedOutputStream(fos, 1000 * 1000);
+		try(FileOutputStream fos = new FileOutputStream(output)) {
+		try(BufferedOutputStream bos = new BufferedOutputStream(fos, 1000 * 1000)) {
 		final byte[] start = getStart();
 		final byte[][] patterns = getPatterns();
 		// ensure that at minimum the size is start+end
@@ -129,9 +131,11 @@ public abstract class AGenerator {
 		// write the end pattern
 		bos.write(getEnd());
 		// System.out.println(display(getEnd()));
+		
 		bos.flush();
 		bos.close();
 		fos.close();
+		}}
 	}
 
 	public InputStream getInputStream(long size, Unit unit, Variation variation) {
