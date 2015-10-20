@@ -144,8 +144,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	// stype=SpecialType.STANDARD)
 	public static class HighTextSizeGenerator extends AHighTextSizeGenerator {
 
-		final byte[] start = "{".getBytes();
-		final byte[][] end = { "}".getBytes(), "\"}".getBytes() };
+		final byte[] start = s2b("{");
+		final byte[][] end = { s2b("}"), s2b("\"}") };
 		int choose_end = 0;
 
 		@Override
@@ -158,7 +158,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "\"\":\"".getBytes(), "a".getBytes() };
+		final byte[][] patterns = { s2b("\"\":\""), s2b("a") };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -220,8 +220,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class HighDensityGenerator extends AHighDensityGenerator {
 
-		final byte[] start = "{".getBytes();
-		final byte[][] end = { "}".getBytes(), "]}".getBytes() };
+		final byte[] start = s2b("{");
+		final byte[][] end = { s2b("}"), s2b("]}") };
 
 		int choose_end = 0;
 
@@ -246,8 +246,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		private final byte[][] patterns = { // empty object is allowed
 				// "\"A\":1".getBytes(), // first used only once
 				// ",\"A\":1".getBytes()
-				"\"\":[".getBytes(), // first used only once
-				"{}".getBytes(), ",{}".getBytes() };
+				s2b("\"\":["), // first used only once
+				s2b("{}"), s2b(",{}") };
 
 		// private final BoxedArray baA = new BoxedArray(this.patterns, 1, 2);
 
@@ -368,8 +368,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
 	public  static class HighDepthGeneratorObject extends AHighDepthGenerator {
 		
-		final byte[] start = "{".getBytes();
-		final byte[] end = "}".getBytes();
+		final byte[] start = s2b("{");
+		final byte[] end = s2b("}");
 
 		@Override
 		protected byte[] getEnd() {
@@ -381,7 +381,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "\"\":{".getBytes(), "}".getBytes() };
+		final byte[][] patterns = { s2b("\"\":{"), s2b("}") };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -392,8 +392,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.ARRAY)
 	public  static class HighDepthGeneratorArray extends AHighDepthGenerator {
 		
-		final byte[] start = "{\"\":".getBytes();
-		final byte[] end = "}".getBytes();
+		final byte[] start = s2b("{\"\":");
+		final byte[] end = s2b("}");
 
 		@Override
 		protected byte[] getEnd() {
@@ -405,7 +405,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "[".getBytes(), "]".getBytes() };
+		final byte[][] patterns = { s2b("["), s2b("]") };
 
 		@Override
 		protected byte[][] getPatterns() {

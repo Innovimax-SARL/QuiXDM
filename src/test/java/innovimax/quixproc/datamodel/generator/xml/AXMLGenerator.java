@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 
@@ -202,8 +201,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_TEXT_SIZE, stype = SpecialType.STANDARD)
 	public static class HighTextSize extends AHighTextSizeGenerator {
 
-		final byte[] start = "<r>".getBytes(StandardCharsets.US_ASCII);
-		final byte[] end = "</r>".getBytes(StandardCharsets.US_ASCII);
+		final byte[] start = s2b("<r>");
+		final byte[] end = s2b("</r>");
 
 		@Override
 		protected byte[] getEnd() {
@@ -215,7 +214,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "a".getBytes(StandardCharsets.US_ASCII) };
+		final byte[][] patterns = { s2b("a") };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -275,8 +274,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class HighNodeDensityGenerator extends AHighDensityGenerator {
-		final byte[] start = "<r>".getBytes(StandardCharsets.US_ASCII);
-		final byte[] end = "</r>".getBytes(StandardCharsets.US_ASCII);
+		final byte[] start = s2b("<r>");
+		final byte[] end = s2b("</r>");
 
 		@Override
 		protected byte[] getEnd() {
@@ -288,7 +287,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "a".getBytes(StandardCharsets.US_ASCII), "<b/>".getBytes(StandardCharsets.US_ASCII) };
+		final byte[][] patterns = { s2b("a"), s2b("<b/>") };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -336,8 +335,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
 	public static class HighNodeDepthGenerator extends AHighNodeDepthGenerator {
-		final byte[] start = "<r>".getBytes();
-		final byte[] end = "</r>".getBytes();
+		final byte[] start = s2b("<r>");
+		final byte[] end = s2b("</r>");
 
 		@Override
 		protected byte[] getEnd() {
@@ -349,7 +348,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "<a>".getBytes(), "</a>".getBytes(StandardCharsets.US_ASCII) };
+		final byte[][] patterns = { s2b("<a>"), s2b("</a>") };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -375,7 +374,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				return bs[pos];
 			case RANDOM:
 				// how to have reversible random ?
-
 				incr = this.random.nextInt(128, this.directionForward);
 				//$FALL-THROUGH$
 			case SEQUENTIAL:
@@ -421,8 +419,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.NAMESPACE)
 	public static class HighDepthNamespaceGenerator extends AHighNodeDepthGenerator {
-		final byte[] start = "<r>".getBytes();
-		final byte[] end = "</r>".getBytes();
+		final byte[] start = s2b("<r>");
+		final byte[] end = s2b("</r>");
 
 		@Override
 		protected byte[] getEnd() {
@@ -434,7 +432,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "<a xmlns=\"a\">".getBytes(), "</a>".getBytes() };
+		final byte[][] patterns = { s2b("<a xmlns=\"a\">"), s2b("</a>") };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -507,18 +505,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	public static class HighElementNameSizeSingle extends ANodeNameSizeGenerator {
 		@Override
 		protected byte[] getEnd() {
-			return "/>".getBytes();
+			return s2b("/>");
 		}
 
 		@Override
 		protected byte[][] getPatterns() {
-			byte[][] result = { "a".getBytes() };
+			byte[][] result = { s2b("a") };
 			return result;
 		}
 
 		@Override
 		protected byte[] getStart() {
-			return "<_".getBytes();
+			return s2b("<_");
 		}
 
 		@Override
@@ -572,10 +570,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getEnd() {
-			return ">".getBytes();
+			return s2b(">");
 		}
 
-		private final byte[][] patterns = { "a".getBytes(), "></_".getBytes(), "a".getBytes() };
+		private final byte[][] patterns = { s2b("a"), s2b("></_"), s2b("a") };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -584,7 +582,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getStart() {
-			return "<_".getBytes();
+			return s2b("<_");
 		}
 
 		private long loop = 0;

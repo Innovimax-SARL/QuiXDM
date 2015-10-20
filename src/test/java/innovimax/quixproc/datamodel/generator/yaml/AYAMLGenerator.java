@@ -46,11 +46,11 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getEnd() {
-			return "".getBytes();
+			return s2b("");
 		}
 
 		final byte[][] patterns = {
-				" - a\n".getBytes()
+				s2b(" - a\n")
 		};
 		
 		@Override
@@ -60,7 +60,7 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[] getStart() {
-			return "a:\n".getBytes();
+			return s2b("a:\n");
 		}
 		
 	}

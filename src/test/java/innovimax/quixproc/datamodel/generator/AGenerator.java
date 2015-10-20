@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AReversibleRandom.SimpleReversibleRandom;
@@ -58,6 +59,10 @@ public abstract class AGenerator {
 													 * one occurrence to the
 													 * other
 													 */,
+	}
+	
+	protected byte[] s2b(String s) {
+		return s.getBytes(StandardCharsets.US_ASCII);
 	}
 
 	protected final AReversibleRandom random;

@@ -49,11 +49,11 @@ public abstract class ACSVGenerator extends AGenerator {
 
 		@Override
 		protected byte[] getEnd() {
-			return "".getBytes();
+			return s2b("");
 		}
 
 		private final byte[][] patterns = {
-				"A,B,C\r\n".getBytes()
+				s2b("A,B,C\r\n")
 		};
 		@Override
 		protected byte[][] getPatterns() {
@@ -62,7 +62,7 @@ public abstract class ACSVGenerator extends AGenerator {
 
 		@Override
 		protected byte[] getStart() {
-			return "".getBytes();
+			return s2b("");
 		}
 		
 	}

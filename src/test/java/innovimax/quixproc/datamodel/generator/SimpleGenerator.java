@@ -21,6 +21,7 @@ package innovimax.quixproc.datamodel.generator;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public final class SimpleGenerator {
 
@@ -46,7 +47,7 @@ public final class SimpleGenerator {
 	}
 
 	private static class SimpleBufferInputStream extends InputStream {
-		final byte[] buffer = "1234567890".getBytes();
+		final byte[] buffer = "1234567890".getBytes(StandardCharsets.US_ASCII);
 		int i = 0;
 
 		@Override
