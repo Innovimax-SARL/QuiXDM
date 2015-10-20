@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 
 import javax.xml.stream.XMLInputFactory;
@@ -200,8 +202,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_TEXT_SIZE, stype = SpecialType.STANDARD)
 	public static class HighTextSize extends AHighTextSizeGenerator {
 
-		final byte[] start = "<r>".getBytes();
-		final byte[] end = "</r>".getBytes();
+		final byte[] start = "<r>".getBytes(StandardCharsets.US_ASCII);
+		final byte[] end = "</r>".getBytes(StandardCharsets.US_ASCII);
 
 		@Override
 		protected byte[] getEnd() {
@@ -213,7 +215,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "a".getBytes() };
+		final byte[][] patterns = { "a".getBytes(StandardCharsets.US_ASCII) };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -273,8 +275,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	@TreeGenerator(ext = FileExtension.XML, type = TreeType.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class HighNodeDensityGenerator extends AHighDensityGenerator {
-		final byte[] start = "<r>".getBytes();
-		final byte[] end = "</r>".getBytes();
+		final byte[] start = "<r>".getBytes(StandardCharsets.US_ASCII);
+		final byte[] end = "</r>".getBytes(StandardCharsets.US_ASCII);
 
 		@Override
 		protected byte[] getEnd() {
@@ -286,7 +288,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "a".getBytes(), "<b/>".getBytes() };
+		final byte[][] patterns = { "a".getBytes(StandardCharsets.US_ASCII), "<b/>".getBytes(StandardCharsets.US_ASCII) };
 
 		@Override
 		protected byte[][] getPatterns() {
@@ -347,7 +349,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return this.start;
 		}
 
-		final byte[][] patterns = { "<a>".getBytes(), "</a>".getBytes() };
+		final byte[][] patterns = { "<a>".getBytes(), "</a>".getBytes(StandardCharsets.US_ASCII) };
 
 		@Override
 		protected byte[][] getPatterns() {

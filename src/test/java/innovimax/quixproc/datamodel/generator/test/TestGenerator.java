@@ -114,7 +114,7 @@ public class TestGenerator {
 	}
 
 	public static void testAllRDF(FileExtension ext, Process process, int size, Unit unit) throws IOException {
-		System.out.format("Test %s START %d %s {%s}%n", ext, size, unit, process, 
+		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, 
 				Variation.NO_VARIATION);
 		long start = System.currentTimeMillis();
 		ARDFGenerator generator = new ARDFGenerator.SimpleRDFGenerator();
@@ -169,7 +169,7 @@ public class TestGenerator {
 	}
 
 	public static void testAllCSV(FileExtension ext, Process process, int size, Unit unit) throws IOException {
-		System.out.format("Test %s START %d %s {%s}%n", ext, size, unit, process, 
+		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, 
 				Variation.NO_VARIATION);
 		long start = System.currentTimeMillis();
 		ACSVGenerator generator = new ACSVGenerator.SimpleCSVGenerator();
