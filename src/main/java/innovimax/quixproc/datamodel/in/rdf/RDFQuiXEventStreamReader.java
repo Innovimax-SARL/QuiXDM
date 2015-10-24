@@ -1,18 +1,14 @@
 package innovimax.quixproc.datamodel.in.rdf;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.apache.jena.atlas.web.TypedInputStream;
+import org.apache.jena.graph.Triple;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
-import org.apache.jena.riot.lang.PipedTuplesStream;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import org.apache.jena.atlas.lib.Tuple;
-import org.apache.jena.atlas.web.TypedInputStream;
-import org.apache.jena.graph.Node;
-import org.apache.jena.graph.Triple;
 
 import innovimax.quixproc.datamodel.QuiXCharStream;
 import innovimax.quixproc.datamodel.QuiXException;

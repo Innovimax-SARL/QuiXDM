@@ -61,7 +61,7 @@ public abstract class AGenerator {
 													 * other
 													 */,
 	}
-	
+	// 7BIT
 	protected Charset currentCharset = StandardCharsets.US_ASCII;
 	protected byte[] s2b(String s) {
 		return s.getBytes(this.currentCharset);

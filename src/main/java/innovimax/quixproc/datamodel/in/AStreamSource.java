@@ -29,7 +29,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.jena.atlas.web.TypedInputStream;
 
 import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
-import innovimax.quixproc.datamodel.in.yaml.YAMLQuiXEventStreamReader;
 
 public abstract class AStreamSource {
 	enum Type {
