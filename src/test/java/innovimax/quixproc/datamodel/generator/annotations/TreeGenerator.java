@@ -5,9 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.TreeType;
 import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
+import innovimax.quixproc.datamodel.generator.ATreeGenerator.TreeType;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

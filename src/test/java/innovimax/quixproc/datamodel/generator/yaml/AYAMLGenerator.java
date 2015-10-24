@@ -2,9 +2,6 @@ package innovimax.quixproc.datamodel.generator.yaml;
 
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
-import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
-import innovimax.quixproc.datamodel.generator.ATreeGenerator.TreeType;
 import innovimax.quixproc.datamodel.generator.annotations.TreeGenerator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
