@@ -27,6 +27,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import innovimax.quixproc.datamodel.QuiXException;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AReversibleRandom.SimpleReversibleRandom;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
@@ -69,21 +71,25 @@ public abstract class AGenerator {
 
 	protected final AReversibleRandom random;
 	private final long seed;
-
+	public enum BaseUnit { BYTE, EVENT }
 	public enum Unit {
-		BYTE(1, "B"), KBYTE(1000, "KB"), MBYTE(1000000, "MB"), GBYTE(1000000000, "GB"), TBYTE(1000000000000L, "TB");
+		BYTE(1, "B", BaseUnit.BYTE), KBYTE(1000, "KB",BaseUnit.BYTE), MBYTE(1000000, "MB",BaseUnit.BYTE), GBYTE(1000000000, "GB",BaseUnit.BYTE), TBYTE(1000000000000L, "TB",BaseUnit.BYTE),
+		EVENT(1, "Ev",BaseUnit.BYTE), KEVENT(1000, "KEv",BaseUnit.BYTE), MEVENT(1000000, "MEv",BaseUnit.BYTE), GEVENT(1000000000, "GEv",BaseUnit.BYTE), TEVENT(1000000000000L, "TEv",BaseUnit.BYTE);
 		private final long value;
 		private final String display;
-
-		Unit(long value, String display) {
+		private final BaseUnit base;
+		Unit(long value, String display, BaseUnit base) {
 			this.value = value;
 			this.display = display;
+			this.base = base;
 		}
 
 		public long value() {
 			return this.value;
 		}
-
+		public BaseUnit getBase() {
+			return this.base;
+		}
 		public String display() {
 			return this.display;
 		}
@@ -103,6 +109,7 @@ public abstract class AGenerator {
 	public void generate(File output, long size, Unit unit) throws IOException {
 		generate(output, size, unit, Variation.NO_VARIATION);
 	}
+
 
 	public void generate(File output, long size, Unit unit, Variation variation) throws IOException {
 		output.getParentFile().mkdirs();
@@ -142,13 +149,17 @@ public abstract class AGenerator {
 		return new GeneratorInputStream(size, unit, variation);
 	}
 
-	public abstract IQuiXEventStreamReader getQuiXEventStreamReader();
+	public final IQuiXEventStreamReader getQuiXEventStreamReader(long size, Unit unit, Variation variation) {
+		return new GeneratorQuiXEventStreamReader(size, unit, variation);
+	}
 
 	public abstract IQuiXStreamReader getQuiXStreamReader();
 
 	protected abstract byte[] applyVariation(Variation variation, byte[][] bs, int pos);
 
 	protected abstract boolean notFinished(long current_size, int current_pattern, long total);
+
+	protected abstract boolean notFinishedEvent(long current_size, int current_pattern, long total);
 
 	protected abstract int updatePattern(int current_pattern);
 
@@ -160,12 +171,71 @@ public abstract class AGenerator {
 
 	protected abstract byte[] getStart();
 
+	protected abstract AQuiXEvent[] getEndEvent();
+
+	protected abstract AQuiXEvent[][] getPatternsEvent();
+
+	protected abstract AQuiXEvent[] getStartEvent();
+	private enum QuiXEventStreamReaderState {
+		START, 
+		CURRENT, 
+		END
+	}
+
+	public class GeneratorQuiXEventStreamReader implements IQuiXEventStreamReader {
+		final long total;
+		final Variation variation;
+		QuiXEventStreamReaderState state;
+		AQuiXEvent[] buffer;
+		int position;
+		int current_pattern;
+		long current_evsize = getStartEvent().length + getEndEvent().length;
+
+		public GeneratorQuiXEventStreamReader(long size, Unit unit, Variation variation) {
+			this.state = QuiXEventStreamReaderState.START;		
+			this.total = size * unit.value();
+			this.variation = variation;
+			this.buffer = getStartEvent();
+			this.position = 0;
+		}
+		@Override
+		public boolean hasNext() throws QuiXException {
+			return this.state != QuiXEventStreamReaderState.END;
+		}
+
+		@Override
+		public AQuiXEvent next() throws QuiXException {
+			if (this.position < this.buffer.length) {
+				return this.buffer[this.position++];
+			}
+			switch(this.state) {
+			case START:
+				if (notFinishedEvent(this.current_evsize, this.current_pattern, this.total)) {
+					// TODO
+				}
+				break;
+				
+			case END:
+				break;
+			default:
+				break;
+			
+			}
+			return null;
+		}
+
+		@Override
+		public void close() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	private enum InputStreamState {
 		START, 
 		//CURRENT, 
 		END
 	}
-
 	public class GeneratorInputStream extends InputStream {
 
 		final byte[] start = getStart();

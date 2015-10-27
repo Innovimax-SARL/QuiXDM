@@ -29,7 +29,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 import innovimax.quixproc.datamodel.generator.annotations.TreeGenerator;
@@ -258,14 +258,33 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return current_size + 1;
 		}
 
+
 		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+		public IQuiXStreamReader getQuiXStreamReader() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public IQuiXStreamReader getQuiXStreamReader() {
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -318,14 +337,33 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return null;
 		}
 
+
 		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+		public IQuiXStreamReader getQuiXStreamReader() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public IQuiXStreamReader getQuiXStreamReader() {
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -402,14 +440,33 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return null;
 		}
 
+
 		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+		public IQuiXStreamReader getQuiXStreamReader() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public IQuiXStreamReader getQuiXStreamReader() {
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -486,14 +543,33 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return null;
 		}
 
+
 		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+		public IQuiXStreamReader getQuiXStreamReader() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public IQuiXStreamReader getQuiXStreamReader() {
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -550,14 +626,33 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return null;
 		}
 
+
 		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+		public IQuiXStreamReader getQuiXStreamReader() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public IQuiXStreamReader getQuiXStreamReader() {
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -650,14 +745,33 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			return null;
 		}
 
+
 		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
+		public IQuiXStreamReader getQuiXStreamReader() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public IQuiXStreamReader getQuiXStreamReader() {
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
 			// TODO Auto-generated method stub
 			return null;
 		}

@@ -5,7 +5,7 @@ import org.apache.jena.atlas.web.ContentType;
 import org.apache.jena.atlas.web.TypedInputStream;
 import org.apache.jena.riot.WebContent;
 
-import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
@@ -19,11 +19,6 @@ public abstract class ARDFGenerator extends AGenerator {
 	
 	public static class SimpleRDFGenerator extends ARDFGenerator {
 
-		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
-			// TODO Auto-generated method stub
-			return null;
-		}
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -66,6 +61,30 @@ public abstract class ARDFGenerator extends AGenerator {
 		@Override
 		protected byte[] getStart() {
 			return s2b("");
+		}
+
+		@Override
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 	}

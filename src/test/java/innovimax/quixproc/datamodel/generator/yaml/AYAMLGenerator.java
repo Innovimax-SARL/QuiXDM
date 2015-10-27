@@ -1,6 +1,6 @@
 package innovimax.quixproc.datamodel.generator.yaml;
 
-import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator;
 import innovimax.quixproc.datamodel.generator.annotations.TreeGenerator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
@@ -9,11 +9,6 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 	@TreeGenerator(ext = FileExtension.YAML, type = TreeType.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class SimpleYAMLGenerator extends ATreeGenerator {
 
-		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
-			// TODO Auto-generated method stub
-			return null;
-		}
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -58,6 +53,30 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 		@Override
 		protected byte[] getStart() {
 			return s2b("a:\n");
+		}
+
+		@Override
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 	}

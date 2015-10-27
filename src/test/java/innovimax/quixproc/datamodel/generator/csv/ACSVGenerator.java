@@ -3,7 +3,8 @@ package innovimax.quixproc.datamodel.generator.csv;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
+import innovimax.quixproc.datamodel.QuiXCharStream;
+import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
@@ -15,11 +16,6 @@ public abstract class ACSVGenerator extends AGenerator {
 	
 	public static class SimpleCSVGenerator extends ACSVGenerator {
 
-		@Override
-		public IQuiXEventStreamReader getQuiXEventStreamReader() {
-			// TODO Auto-generated method stub
-			return null;
-		}
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -52,8 +48,17 @@ public abstract class ACSVGenerator extends AGenerator {
 			return s2b("");
 		}
 
+		
 		private final byte[][] patterns = {
 				s2b("A,B,C\r\n")
+		};
+		private final AQuiXEvent[][] patternsE = {
+				{ AQuiXEvent.getStartArray(),
+					AQuiXEvent.getValueString(QuiXCharStream.fromSequence("A")),
+					AQuiXEvent.getValueString(QuiXCharStream.fromSequence("B")),
+					AQuiXEvent.getValueString(QuiXCharStream.fromSequence("C")),
+					AQuiXEvent.getEndArray()
+				}
 		};
 		@Override
 		protected byte[][] getPatterns() {
@@ -63,6 +68,34 @@ public abstract class ACSVGenerator extends AGenerator {
 		@Override
 		protected byte[] getStart() {
 			return s2b("");
+		}
+		private final AQuiXEvent[] startE = {
+				AQuiXEvent.getStartTable(),
+				AQuiXEvent.getStartArray()
+		};
+		private final AQuiXEvent[] endE = {
+				AQuiXEvent.getEndArray(),
+				AQuiXEvent.getEndTable()
+		};
+		@Override
+		protected AQuiXEvent[] getEndEvent() {
+			return this.endE;
+		}
+
+		@Override
+		protected AQuiXEvent[][] getPatternsEvent() {
+			return this.patternsE;
+		}
+
+		@Override
+		protected AQuiXEvent[] getStartEvent() {
+			return this.startE;
+		}
+
+		@Override
+		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 		
 	}
