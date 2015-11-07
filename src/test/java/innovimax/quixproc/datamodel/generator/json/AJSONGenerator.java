@@ -179,10 +179,10 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				case 1:
 					bs[pos][0] = nextChar(bs[pos][0], incr);
 					break;
-				default:	
+				default:
 				}
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
@@ -202,7 +202,6 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		protected long updateSize(long current_size, int current_pattern) {
 			return current_size + 1;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -289,7 +288,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
-			//int incr = 0;
+			// int incr = 0;
 			// IMPORTANT : the uniqueness is mandatory
 			// it doesn't depends on applyRandom hence
 			// if (pos == 1)
@@ -309,14 +308,13 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				case 2:
 					// bs[pos][1] = nextDigit(bs[pos][1], incr);
 					break;
-				default:	
+				default:
 				}
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -358,7 +356,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	// end "}"
 	// '"":{' and '}'
 	public abstract static class AHighDepthGenerator extends AHighNodeDepthGenerator {
-		
+
 		@Override
 		protected int getPatternsLength() {
 			return getPatterns()[0].length + getPatterns()[1].length;
@@ -366,7 +364,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		@Override
 		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
-			//int incr = 0;
+			// int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
 				return bs[pos];
@@ -384,11 +382,10 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				default:
 				}
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -399,8 +396,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	}
 
 	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
-	public  static class HighDepthGeneratorObject extends AHighDepthGenerator {
-		
+	public static class HighDepthGeneratorObject extends AHighDepthGenerator {
+
 		final byte[] start = s2b("{");
 		final byte[] end = s2b("}");
 
@@ -445,10 +442,10 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return null;
 		}
 	}
-	
+
 	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.ARRAY)
-	public  static class HighDepthGeneratorArray extends AHighDepthGenerator {
-		
+	public static class HighDepthGeneratorArray extends AHighDepthGenerator {
+
 		final byte[] start = s2b("{\"\":");
 		final byte[] end = s2b("}");
 
@@ -493,9 +490,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 			return null;
 		}
 	}
-	
-	
-	
+
 	public static void main(String[] args)
 			throws JsonParseException, IOException, InstantiationException, IllegalAccessException {
 

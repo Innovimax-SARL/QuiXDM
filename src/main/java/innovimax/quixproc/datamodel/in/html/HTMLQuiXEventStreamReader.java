@@ -6,7 +6,7 @@ import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 
 public class HTMLQuiXEventStreamReader extends AQuiXEventStreamReader {
-	
+
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
 		// TODO Auto-generated method stub

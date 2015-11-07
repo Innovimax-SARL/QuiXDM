@@ -234,10 +234,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case 0:
 					bs[pos][0] = nextChar(bs[pos][0], incr);
 					break;
-				default:	
+				default:
 				}
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
@@ -257,7 +257,6 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		protected long updateSize(long current_size, int current_pattern) {
 			return current_size + 1;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -329,14 +328,13 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case 1:
 					bs[pos][1] = nextStartName(bs[pos][1], incr);
 					break;
-				default:	
+				default:
 				}
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -432,14 +430,13 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 						bs[pos][2] = prevStartName(bs[pos][2], incr);
 					}
 					break;
-				default:	
+				default:
 				}
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -535,14 +532,13 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 						bs[pos][2] = prevStartName(bs[pos][2], incr2);
 					}
 					break;
-				default:	
+				default:
 				}
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -621,11 +617,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			case SEQUENTIAL:
 				bs[pos][0] = nextName(bs[pos][0], incr);
 				return bs[pos];
-			default:	
+			default:
 			}
 			return null;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -737,14 +732,13 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				case 2:
 					bs[2][0] = nextName(bs[2][0], incr);
 					break;
-				default:	
+				default:
 				}
 				return bs[pos];
 			default:
 			}
 			return null;
 		}
-
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -833,8 +827,8 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			call(TreeType.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
 			// call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
-			for (TreeType gtype : EnumSet.of(TreeType.HIGH_NODE_NAME_SIZE, TreeType.HIGH_NODE_NAME_SIZE, TreeType.HIGH_NODE_DENSITY,
-					TreeType.HIGH_NODE_DEPTH)) {
+			for (TreeType gtype : EnumSet.of(TreeType.HIGH_NODE_NAME_SIZE, TreeType.HIGH_NODE_NAME_SIZE,
+					TreeType.HIGH_NODE_DENSITY, TreeType.HIGH_NODE_DEPTH)) {
 				for (SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype)) {
 					for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
 						int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };

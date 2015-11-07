@@ -105,25 +105,15 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 	}
 
 	private enum State {
-		START, 
-		IN_SEQUENCE, 
-		IN_DOCUMENT, IN_DOCUMENT_AFTER_ROOT, 
-		IN_ELEMENT, IN_CONTENT_TEXT, IN_CONTENT, 
-		IN_JSON, IN_JSON_AFTER_ROOT, IN_OBJECT, IN_OBJECT_VALUE, IN_ARRAY,
-		IN_RDF, IN_PREDICATE, IN_PREDICATE_AFTER_SUBJECT, IN_PREDICATE_AFTER_OBJECT, IN_PREDICATE_AFTER_GRAPH,
-		IN_TABLE, IN_TABLE_AFTER_ROOT, IN_ARRAY_OF_ARRAY, IN_ARRAY_OF_ARRAY_AFTER_FIRST, IN_FLAT_ARRAY,
-		END
+		START, IN_SEQUENCE, IN_DOCUMENT, IN_DOCUMENT_AFTER_ROOT, IN_ELEMENT, IN_CONTENT_TEXT, IN_CONTENT, IN_JSON, IN_JSON_AFTER_ROOT, IN_OBJECT, IN_OBJECT_VALUE, IN_ARRAY, IN_RDF, IN_PREDICATE, IN_PREDICATE_AFTER_SUBJECT, IN_PREDICATE_AFTER_OBJECT, IN_PREDICATE_AFTER_GRAPH, IN_TABLE, IN_TABLE_AFTER_ROOT, IN_ARRAY_OF_ARRAY, IN_ARRAY_OF_ARRAY_AFTER_FIRST, IN_FLAT_ARRAY, END
 	}
 
 	private enum Node {
-		DOCUMENT, ELEMENT, 
-		JSON, OBJECT, ARRAY, 
-		RDF, PREDICATE,
-		TABLE, ARRAY_OF_ARRAY, FLAT_ARRAY
+		DOCUMENT, ELEMENT, JSON, OBJECT, ARRAY, RDF, PREDICATE, TABLE, ARRAY_OF_ARRAY, FLAT_ARRAY
 	}
 
 	private static class NodeStack {
-		// this is a compact implementation using the fact that most of 
+		// this is a compact implementation using the fact that most of
 		// the time the element are of the same type
 		int[] data;
 		private static final int START_SIZE = 8;
@@ -131,14 +121,14 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 		final int MASK, UNIT, MAX_ALLOWED, UPPER_MASK;
 
 		NodeStack() {
-			int max = Node.values()[Node.values().length-1].ordinal();
+			int max = Node.values()[Node.values().length - 1].ordinal();
 			int mask = 1;
-			while (mask<=max) {
-				mask<<=1;
+			while (mask <= max) {
+				mask <<= 1;
 			}
 			this.MAX_ALLOWED = Integer.MAX_VALUE >> 1;
 			this.MASK = mask - 1;
-			this.UPPER_MASK = this.MAX_ALLOWED ^this.MASK;
+			this.UPPER_MASK = this.MAX_ALLOWED ^ this.MASK;
 			this.UNIT = mask;
 			this.data = new int[START_SIZE];
 			this.size = 8;
@@ -157,7 +147,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			this.pos++;
 			if (this.pos >= this.size) {
 				this.size = (this.size * 3) / 2 + 1;
-			    System.out.println(this.size);
+				System.out.println(this.size);
 				this.data = Arrays.copyOf(this.data, this.size);
 			}
 			this.data[this.pos] = (byte) node.ordinal();
@@ -170,7 +160,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 		public Node pop() {
 			// simple case first
 			if ((this.data[this.pos] & this.UPPER_MASK) == 0)
-			return Node.values()[this.data[this.pos--]];
+				return Node.values()[this.data[this.pos--]];
 			// now it means there is at least one
 			this.data[this.pos] -= this.UNIT;
 			return Node.values()[this.data[this.pos] & this.MASK];
@@ -190,12 +180,14 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 		// System.out.println(state +", "+ token);
 		switch (this.state) {
 		case START:
-			// sequence       := START_SEQUENCE, (document|json_yaml|table|semantic)*, END_SEQUENCE
+			// sequence := START_SEQUENCE, (document|json_yaml|table|semantic)*,
+			// END_SEQUENCE
 			accept(token, QuiXToken.START_SEQUENCE);
 			this.state = State.IN_SEQUENCE;
 			break;
 		case IN_SEQUENCE:
-			accept(token, EnumSet.of(QuiXToken.START_DOCUMENT, QuiXToken.START_JSON, QuiXToken.START_RDF, QuiXToken.START_TABLE, QuiXToken.END_SEQUENCE));
+			accept(token, EnumSet.of(QuiXToken.START_DOCUMENT, QuiXToken.START_JSON, QuiXToken.START_RDF,
+					QuiXToken.START_TABLE, QuiXToken.END_SEQUENCE));
 			switch (token) {
 			case START_DOCUMENT:
 				this.state = State.IN_DOCUMENT;
@@ -403,9 +395,9 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			acceptStackAndSetState(token, Node.JSON);
 			break;
 		case IN_RDF:
-			// semantic       := START_RDF, statement*, END_RDF			
+			// semantic := START_RDF, statement*, END_RDF
 			accept(token, EnumSet.of(QuiXToken.START_PREDICATE, QuiXToken.END_RDF));
-			switch(token) {
+			switch (token) {
 			case START_PREDICATE:
 				this.stack.push(Node.PREDICATE);
 				this.state = State.IN_PREDICATE;
@@ -413,16 +405,17 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			case END_RDF:
 				acceptStackAndSetState(token, Node.RDF);
 				break;
-			default:	
+			default:
 			}
 			break;
-		case IN_PREDICATE :
-			// statement      := START_PREDICATE, SUBJECT, OBJECT, GRAPH?, END_PREDICATE
-			accept(token, EnumSet.of(QuiXToken.SUBJECT));	
+		case IN_PREDICATE:
+			// statement := START_PREDICATE, SUBJECT, OBJECT, GRAPH?,
+			// END_PREDICATE
+			accept(token, EnumSet.of(QuiXToken.SUBJECT));
 			this.state = State.IN_PREDICATE_AFTER_SUBJECT;
 			break;
 		case IN_PREDICATE_AFTER_SUBJECT:
-			accept(token, EnumSet.of(QuiXToken.OBJECT));	
+			accept(token, EnumSet.of(QuiXToken.OBJECT));
 			this.state = State.IN_PREDICATE_AFTER_OBJECT;
 			break;
 		case IN_PREDICATE_AFTER_OBJECT:
@@ -442,17 +435,17 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			acceptStackAndSetState(token, Node.PREDICATE);
 			break;
 		case IN_TABLE:
-			// table          := START_TABLE, header*, array_of_array, END_TABLE
+			// table := START_TABLE, header*, array_of_array, END_TABLE
 			accept(token, EnumSet.of(QuiXToken.COLNAME, QuiXToken.START_ARRAY));
-			switch(token) {
-			case COLNAME :
+			switch (token) {
+			case COLNAME:
 				// stay in this state
 				break;
-			case START_ARRAY :
+			case START_ARRAY:
 				this.stack.push(Node.ARRAY_OF_ARRAY);
 				this.state = State.IN_ARRAY_OF_ARRAY;
 				break;
-			default:	
+			default:
 			}
 			break;
 		case IN_TABLE_AFTER_ROOT:
@@ -467,21 +460,23 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			break;
 		case IN_ARRAY_OF_ARRAY_AFTER_FIRST:
 			accept(token, EnumSet.of(QuiXToken.START_ARRAY, QuiXToken.END_ARRAY));
-			switch(token) {
+			switch (token) {
 			case START_ARRAY:
 				this.stack.push(Node.FLAT_ARRAY);
 				this.state = State.IN_FLAT_ARRAY;
 				break;
-			case END_ARRAY :
-				acceptStackAndSetState(token, Node.ARRAY_OF_ARRAY);				
+			case END_ARRAY:
+				acceptStackAndSetState(token, Node.ARRAY_OF_ARRAY);
 				break;
-			default:	
+			default:
 			}
 			break;
 		case IN_FLAT_ARRAY:
-			// flat_array     := START_ARRAY, flat_value*, END_ARRAY
-			// flat_value     := VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
-			accept(token, EnumSet.of(QuiXToken.VALUE_FALSE, QuiXToken.VALUE_TRUE, QuiXToken.VALUE_NULL, QuiXToken.VALUE_NUMBER, QuiXToken.VALUE_STRING, QuiXToken.END_ARRAY));
+			// flat_array := START_ARRAY, flat_value*, END_ARRAY
+			// flat_value :=
+			// VALUE_FALSE|VALUE_TRUE|VALUE_NUMBER|VALUE_NULL|VALUE_STRING
+			accept(token, EnumSet.of(QuiXToken.VALUE_FALSE, QuiXToken.VALUE_TRUE, QuiXToken.VALUE_NULL,
+					QuiXToken.VALUE_NUMBER, QuiXToken.VALUE_STRING, QuiXToken.END_ARRAY));
 			switch (token) {
 			case VALUE_FALSE:
 			case VALUE_NULL:
@@ -493,9 +488,9 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			case END_ARRAY:
 				acceptStackAndSetState(token, Node.FLAT_ARRAY);
 				break;
-			default:	
+			default:
 			}
-			break;	
+			break;
 		default:
 		}
 		return token;
@@ -537,13 +532,13 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 				case RDF:
 					this.state = State.IN_RDF;
 					break;
-				case TABLE :
+				case TABLE:
 					this.state = State.IN_TABLE_AFTER_ROOT;
 					break;
 				case ARRAY_OF_ARRAY:
 					this.state = State.IN_ARRAY_OF_ARRAY_AFTER_FIRST;
 					break;
-				//case FLAT_ARRAY: impossible to have flat array here	
+				// case FLAT_ARRAY: impossible to have flat array here
 				default:
 				}
 			}

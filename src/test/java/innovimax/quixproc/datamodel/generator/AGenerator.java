@@ -63,21 +63,31 @@ public abstract class AGenerator {
 													 * other
 													 */,
 	}
+
 	// 7BIT
 	protected Charset currentCharset = StandardCharsets.US_ASCII;
+
 	protected byte[] s2b(String s) {
 		return s.getBytes(this.currentCharset);
 	}
 
 	protected final AReversibleRandom random;
 	private final long seed;
-	public enum BaseUnit { BYTE, EVENT }
+
+	public enum BaseUnit {
+		BYTE, EVENT
+	}
+
 	public enum Unit {
-		BYTE(1, "B", BaseUnit.BYTE), KBYTE(1000, "KB",BaseUnit.BYTE), MBYTE(1000000, "MB",BaseUnit.BYTE), GBYTE(1000000000, "GB",BaseUnit.BYTE), TBYTE(1000000000000L, "TB",BaseUnit.BYTE),
-		EVENT(1, "Ev",BaseUnit.BYTE), KEVENT(1000, "KEv",BaseUnit.BYTE), MEVENT(1000000, "MEv",BaseUnit.BYTE), GEVENT(1000000000, "GEv",BaseUnit.BYTE), TEVENT(1000000000000L, "TEv",BaseUnit.BYTE);
+		BYTE(1, "B", BaseUnit.BYTE), KBYTE(1000, "KB", BaseUnit.BYTE), MBYTE(1000000, "MB", BaseUnit.BYTE), GBYTE(
+				1000000000, "GB",
+				BaseUnit.BYTE), TBYTE(1000000000000L, "TB", BaseUnit.BYTE), EVENT(1, "Ev", BaseUnit.BYTE), KEVENT(1000,
+						"KEv", BaseUnit.BYTE), MEVENT(1000000, "MEv", BaseUnit.BYTE), GEVENT(1000000000, "GEv",
+								BaseUnit.BYTE), TEVENT(1000000000000L, "TEv", BaseUnit.BYTE);
 		private final long value;
 		private final String display;
 		private final BaseUnit base;
+
 		Unit(long value, String display, BaseUnit base) {
 			this.value = value;
 			this.display = display;
@@ -87,9 +97,11 @@ public abstract class AGenerator {
 		public long value() {
 			return this.value;
 		}
+
 		public BaseUnit getBase() {
 			return this.base;
 		}
+
 		public String display() {
 			return this.display;
 		}
@@ -110,39 +122,39 @@ public abstract class AGenerator {
 		generate(output, size, unit, Variation.NO_VARIATION);
 	}
 
-
 	public void generate(File output, long size, Unit unit, Variation variation) throws IOException {
 		output.getParentFile().mkdirs();
 		final long total = size * unit.value();
-		try(FileOutputStream fos = new FileOutputStream(output)) {
-		try(BufferedOutputStream bos = new BufferedOutputStream(fos, 1000 * 1000)) {
-		final byte[] start = getStart();
-		final byte[][] patterns = getPatterns();
-		// ensure that at minimum the size is start+end
-		long current_size = start.length + getEnd().length;
-		// write the start pattern
-		bos.write(start);
-		// System.out.println(display(start));
-		int current_pattern = -1;
-		while (notFinished(current_size, current_pattern, total)) {
-			// move to next pattern
-			current_pattern = updatePattern(current_pattern);
-			// System.out.println(current_size);
-			// write the alternate pattern
-			byte[] toWrite = applyVariation(variation, patterns, current_pattern);
-			// System.out.println(display(toWrite));
-			bos.write(toWrite);
-			// update the size
-			current_size = updateSize(current_size, current_pattern);
+		try (FileOutputStream fos = new FileOutputStream(output)) {
+			try (BufferedOutputStream bos = new BufferedOutputStream(fos, 1000 * 1000)) {
+				final byte[] start = getStart();
+				final byte[][] patterns = getPatterns();
+				// ensure that at minimum the size is start+end
+				long current_size = start.length + getEnd().length;
+				// write the start pattern
+				bos.write(start);
+				// System.out.println(display(start));
+				int current_pattern = -1;
+				while (notFinished(current_size, current_pattern, total)) {
+					// move to next pattern
+					current_pattern = updatePattern(current_pattern);
+					// System.out.println(current_size);
+					// write the alternate pattern
+					byte[] toWrite = applyVariation(variation, patterns, current_pattern);
+					// System.out.println(display(toWrite));
+					bos.write(toWrite);
+					// update the size
+					current_size = updateSize(current_size, current_pattern);
+				}
+				// write the end pattern
+				bos.write(getEnd());
+				// System.out.println(display(getEnd()));
+
+				bos.flush();
+				bos.close();
+				fos.close();
+			}
 		}
-		// write the end pattern
-		bos.write(getEnd());
-		// System.out.println(display(getEnd()));
-		
-		bos.flush();
-		bos.close();
-		fos.close();
-		}}
 	}
 
 	public InputStream getInputStream(long size, Unit unit, Variation variation) {
@@ -176,10 +188,9 @@ public abstract class AGenerator {
 	protected abstract AQuiXEvent[][] getPatternsEvent();
 
 	protected abstract AQuiXEvent[] getStartEvent();
+
 	private enum QuiXEventStreamReaderState {
-		START, 
-		CURRENT, 
-		END
+		START, CURRENT, END
 	}
 
 	public class GeneratorQuiXEventStreamReader implements IQuiXEventStreamReader {
@@ -192,12 +203,13 @@ public abstract class AGenerator {
 		long current_evsize = getStartEvent().length + getEndEvent().length;
 
 		public GeneratorQuiXEventStreamReader(long size, Unit unit, Variation variation) {
-			this.state = QuiXEventStreamReaderState.START;		
+			this.state = QuiXEventStreamReaderState.START;
 			this.total = size * unit.value();
 			this.variation = variation;
 			this.buffer = getStartEvent();
 			this.position = 0;
 		}
+
 		@Override
 		public boolean hasNext() throws QuiXException {
 			return this.state != QuiXEventStreamReaderState.END;
@@ -208,18 +220,18 @@ public abstract class AGenerator {
 			if (this.position < this.buffer.length) {
 				return this.buffer[this.position++];
 			}
-			switch(this.state) {
+			switch (this.state) {
 			case START:
 				if (notFinishedEvent(this.current_evsize, this.current_pattern, this.total)) {
 					// TODO
 				}
 				break;
-				
+
 			case END:
 				break;
 			default:
 				break;
-			
+
 			}
 			return null;
 		}
@@ -227,15 +239,17 @@ public abstract class AGenerator {
 		@Override
 		public void close() {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 	}
+
 	private enum InputStreamState {
-		START, 
-		//CURRENT, 
+		START,
+		// CURRENT,
 		END
 	}
+
 	public class GeneratorInputStream extends InputStream {
 
 		final byte[] start = getStart();
@@ -326,13 +340,13 @@ public abstract class AGenerator {
 					this.buffer = applyVariation(this.variation, this.patterns, this.current_pattern);
 					// update the size
 					this.current_size = updateSize(this.current_size, this.current_pattern);
-					// System.out.println("Currentsize : "+this.current_size);								
+					// System.out.println("Currentsize : "+this.current_size);
 					this.offset = -1;
 					return;
 				}
-//				this.state = InputStreamState.CURRENT;
-//				//$FALL-THROUGH$
-//			case CURRENT:
+				// this.state = InputStreamState.CURRENT;
+				// //$FALL-THROUGH$
+				// case CURRENT:
 				this.buffer = getEnd();
 				this.offset = -1;
 				this.state = InputStreamState.END;
@@ -340,7 +354,7 @@ public abstract class AGenerator {
 			case END:
 				this.buffer = null;
 				break;
-			default:	
+			default:
 			}
 		}
 

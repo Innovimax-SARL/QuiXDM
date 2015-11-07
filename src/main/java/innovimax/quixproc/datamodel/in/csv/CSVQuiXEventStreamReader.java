@@ -15,18 +15,21 @@ import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.CSVStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
-public class CSVQuiXEventStreamReader extends AQuiXEventBufferStreamReader  {
-	
+public class CSVQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
+
 	private CSVParser parser;
 	private Iterator<CSVRecord> iter;
+
 	public CSVQuiXEventStreamReader() {
 	}
+
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
-	  return load((CSVStreamSource ) current);
+		return load((CSVStreamSource) current);
 	}
+
 	private AQuiXEvent load(CSVStreamSource source) throws QuiXException {
-		
+
 		try {
 			this.parser = CSVFormat.EXCEL.parse(source.asReader());
 			this.iter = this.parser.iterator();
@@ -57,8 +60,8 @@ public class CSVQuiXEventStreamReader extends AQuiXEventBufferStreamReader  {
 			}
 			// this iter has next
 			CSVRecord next = this.iter.next();
-			for(String cell : next) {
-			this.buffer.add(AQuiXEvent.getValueString(QuiXCharStream.fromSequence(cell)));
+			for (String cell : next) {
+				this.buffer.add(AQuiXEvent.getValueString(QuiXCharStream.fromSequence(cell)));
 			}
 			this.buffer.add(AQuiXEvent.getEndArray());
 			return AQuiXEvent.getStartArray();
@@ -74,7 +77,7 @@ public class CSVQuiXEventStreamReader extends AQuiXEventBufferStreamReader  {
 			this.parser = null;
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	@Override
@@ -83,7 +86,7 @@ public class CSVQuiXEventStreamReader extends AQuiXEventBufferStreamReader  {
 			this.parser.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}				
+		}
 	}
 
 }

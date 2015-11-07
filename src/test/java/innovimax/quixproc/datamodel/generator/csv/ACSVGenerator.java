@@ -13,9 +13,8 @@ public abstract class ACSVGenerator extends AGenerator {
 	public Reader getReader(long size, Unit unit, Variation variation) {
 		return new InputStreamReader(getInputStream(size, unit, variation), this.currentCharset);
 	}
-	
-	public static class SimpleCSVGenerator extends ACSVGenerator {
 
+	public static class SimpleCSVGenerator extends ACSVGenerator {
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -40,7 +39,7 @@ public abstract class ACSVGenerator extends AGenerator {
 
 		@Override
 		protected long updateSize(long current_size, int current_pattern) {
-			return current_size+this.patterns[current_pattern].length;
+			return current_size + this.patterns[current_pattern].length;
 		}
 
 		@Override
@@ -48,18 +47,12 @@ public abstract class ACSVGenerator extends AGenerator {
 			return s2b("");
 		}
 
-		
-		private final byte[][] patterns = {
-				s2b("A,B,C\r\n")
-		};
+		private final byte[][] patterns = { s2b("A,B,C\r\n") };
 		private final AQuiXEvent[][] patternsE = {
-				{ AQuiXEvent.getStartArray(),
-					AQuiXEvent.getValueString(QuiXCharStream.fromSequence("A")),
-					AQuiXEvent.getValueString(QuiXCharStream.fromSequence("B")),
-					AQuiXEvent.getValueString(QuiXCharStream.fromSequence("C")),
-					AQuiXEvent.getEndArray()
-				}
-		};
+				{ AQuiXEvent.getStartArray(), AQuiXEvent.getValueString(QuiXCharStream.fromSequence("A")),
+						AQuiXEvent.getValueString(QuiXCharStream.fromSequence("B")),
+						AQuiXEvent.getValueString(QuiXCharStream.fromSequence("C")), AQuiXEvent.getEndArray() } };
+
 		@Override
 		protected byte[][] getPatterns() {
 			return this.patterns;
@@ -69,14 +62,10 @@ public abstract class ACSVGenerator extends AGenerator {
 		protected byte[] getStart() {
 			return s2b("");
 		}
-		private final AQuiXEvent[] startE = {
-				AQuiXEvent.getStartTable(),
-				AQuiXEvent.getStartArray()
-		};
-		private final AQuiXEvent[] endE = {
-				AQuiXEvent.getEndArray(),
-				AQuiXEvent.getEndTable()
-		};
+
+		private final AQuiXEvent[] startE = { AQuiXEvent.getStartTable(), AQuiXEvent.getStartArray() };
+		private final AQuiXEvent[] endE = { AQuiXEvent.getEndArray(), AQuiXEvent.getEndTable() };
+
 		@Override
 		protected AQuiXEvent[] getEndEvent() {
 			return this.endE;
@@ -97,6 +86,6 @@ public abstract class ACSVGenerator extends AGenerator {
 			// TODO Auto-generated method stub
 			return false;
 		}
-		
+
 	}
 }

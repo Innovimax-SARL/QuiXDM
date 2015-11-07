@@ -9,7 +9,6 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 	@TreeGenerator(ext = FileExtension.YAML, type = TreeType.HIGH_NODE_DENSITY, stype = SpecialType.STANDARD)
 	public static class SimpleYAMLGenerator extends ATreeGenerator {
 
-
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
 			// TODO Auto-generated method stub
@@ -33,7 +32,7 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected long updateSize(long current_size, int current_pattern) {
-			return current_size+this.patterns[current_pattern].length;
+			return current_size + this.patterns[current_pattern].length;
 		}
 
 		@Override
@@ -41,10 +40,8 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 			return s2b("");
 		}
 
-		final byte[][] patterns = {
-				s2b(" - a\n")
-		};
-		
+		final byte[][] patterns = { s2b(" - a\n") };
+
 		@Override
 		protected byte[][] getPatterns() {
 			return this.patterns;
@@ -78,7 +75,7 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 			// TODO Auto-generated method stub
 			return null;
 		}
-		
+
 	}
 
 }

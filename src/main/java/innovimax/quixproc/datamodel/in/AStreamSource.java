@@ -70,10 +70,10 @@ public abstract class AStreamSource {
 			return this.is;
 		}
 
-
 	}
+
 	public static class JSONStreamSource extends AJSONYAMLStreamSource {
-		
+
 		protected JSONStreamSource(InputStream is) {
 			super(Type.JSON, is);
 		}
@@ -82,12 +82,12 @@ public abstract class AStreamSource {
 			return new JSONStreamSource(is);
 		}
 	}
+
 	public static class YAMLStreamSource extends AJSONYAMLStreamSource {
 
 		protected YAMLStreamSource(InputStream is) {
 			super(Type.YAML, is);
 		}
-
 
 		public static AStreamSource instance(InputStream is) {
 			return new YAMLStreamSource(is);

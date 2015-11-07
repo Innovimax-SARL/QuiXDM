@@ -66,12 +66,12 @@ public final class SimpleGenerator {
 		long i = 0;
 		int c;
 		while ((c = is.read()) != -1) {
-            i++;
-            if (i % 100000 == 0) {
-                long now = System.currentTimeMillis();
-                System.out.println("" + i * 1000 / (now - start));
-            }
-        }
+			i++;
+			if (i % 100000 == 0) {
+				long now = System.currentTimeMillis();
+				System.out.println("" + i * 1000 / (now - start));
+			}
+		}
 
 	}
 

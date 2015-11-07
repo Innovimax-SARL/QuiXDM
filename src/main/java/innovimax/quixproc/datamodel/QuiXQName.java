@@ -54,11 +54,9 @@ import javax.xml.namespace.QName;
  * </p>
  *
  * <p>
- * If not specified, the Namespace URI is set to
- * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI}. If not
- * specified, the prefix is set to
- * {@link XMLConstants#DEFAULT_NS_PREFIX
- * XMLConstants.DEFAULT_NS_PREFIX}.
+ * If not specified, the Namespace URI is set to {@link XMLConstants#NULL_NS_URI
+ * XMLConstants.NULL_NS_URI}. If not specified, the prefix is set to
+ * {@link XMLConstants#DEFAULT_NS_PREFIX XMLConstants.DEFAULT_NS_PREFIX}.
  * </p>
  *
  * <p>
@@ -105,13 +103,12 @@ public class QuiXQName implements Serializable {
 	 *
 	 * <p>
 	 * If the Namespace URI is {@code null}, it is set to
-	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI}. This
-	 * value represents no explicitly defined Namespace as defined by the
+	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI}. This value
+	 * represents no explicitly defined Namespace as defined by the
 	 * <a href="http://www.w3.org/TR/REC-xml-names/#ns-qualnames">Namespaces in
 	 * XML</a> specification. This action preserves compatible behavior with
-	 * QName 1.0. Explicitly providing the
-	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI} value
-	 * is the preferred coding style.
+	 * QName 1.0. Explicitly providing the {@link XMLConstants#NULL_NS_URI
+	 * XMLConstants.NULL_NS_URI} value is the preferred coding style.
 	 * </p>
 	 *
 	 * <p>
@@ -122,8 +119,7 @@ public class QuiXQName implements Serializable {
 	 *
 	 * <p>
 	 * When using this constructor, the prefix is set to
-	 * {@link XMLConstants#DEFAULT_NS_PREFIX
-	 * XMLConstants.DEFAULT_NS_PREFIX}.
+	 * {@link XMLConstants#DEFAULT_NS_PREFIX XMLConstants.DEFAULT_NS_PREFIX}.
 	 * </p>
 	 *
 	 * <p>
@@ -158,13 +154,12 @@ public class QuiXQName implements Serializable {
 	 *
 	 * <p>
 	 * If the Namespace URI is {@code null}, it is set to
-	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI}. This
-	 * value represents no explicitly defined Namespace as defined by the
+	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI}. This value
+	 * represents no explicitly defined Namespace as defined by the
 	 * <a href="http://www.w3.org/TR/REC-xml-names/#ns-qualnames">Namespaces in
 	 * XML</a> specification. This action preserves compatible behavior with
-	 * QName 1.0. Explicitly providing the
-	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI} value
-	 * is the preferred coding style.
+	 * QName 1.0. Explicitly providing the {@link XMLConstants#NULL_NS_URI
+	 * XMLConstants.NULL_NS_URI} value is the preferred coding style.
 	 * </p>
 	 *
 	 * <p>
@@ -232,8 +227,8 @@ public class QuiXQName implements Serializable {
 	 *
 	 * <p>
 	 * When using this constructor, the Namespace URI is set to
-	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI} and
-	 * the prefix is set to {@link XMLConstants#DEFAULT_NS_PREFIX
+	 * {@link XMLConstants#NULL_NS_URI XMLConstants.NULL_NS_URI} and the prefix
+	 * is set to {@link XMLConstants#DEFAULT_NS_PREFIX
 	 * XMLConstants.DEFAULT_NS_PREFIX}.
 	 * </p>
 	 *
@@ -267,8 +262,7 @@ public class QuiXQName implements Serializable {
 	 *      QName(String namespaceURI, String localPart, String prefix)
 	 */
 	public QuiXQName(QuiXCharStream localPart) {
-		this(QuiXCharStream.NULL_NS_URI, localPart,
-				QuiXCharStream.DEFAULT_NS_PREFIX);
+		this(QuiXCharStream.NULL_NS_URI, localPart, QuiXCharStream.DEFAULT_NS_PREFIX);
 	}
 
 	/**
@@ -367,8 +361,8 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * <p>
-	 * This method satisfies the general contract of
-	 * {@link Object#hashCode() Object.hashCode()}.
+	 * This method satisfies the general contract of {@link Object#hashCode()
+	 * Object.hashCode()}.
 	 * </p>
 	 *
 	 * @return hash code for this <code>QName</code> {@code Object}
@@ -402,8 +396,8 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * <p>
-	 * This method satisfies the general contract of
-	 * {@link Object#toString() Object.toString()}.
+	 * This method satisfies the general contract of {@link Object#toString()
+	 * Object.toString()}.
 	 * </p>
 	 *
 	 * @return <code>String</code> representation of this {@code QName}
@@ -447,8 +441,7 @@ public class QuiXQName implements Serializable {
 	 *
 	 * <p>
 	 * The prefix value <strong><em>CANNOT</em></strong> be represented in the
-	 * {@code String} and will be set to
-	 * {@link XMLConstants#DEFAULT_NS_PREFIX
+	 * {@code String} and will be set to {@link XMLConstants#DEFAULT_NS_PREFIX
 	 * XMLConstants.DEFAULT_NS_PREFIX}.
 	 * </p>
 	 *
@@ -481,15 +474,13 @@ public class QuiXQName implements Serializable {
 
 		// "" local part is valid to preserve compatible behavior with QName 1.0
 		if (qNameAsString.isEmpty()) {
-			return new QuiXQName(QuiXCharStream.NULL_NS_URI,
-					QuiXCharStream.fromSequence(qNameAsString),
+			return new QuiXQName(QuiXCharStream.NULL_NS_URI, QuiXCharStream.fromSequence(qNameAsString),
 					QuiXCharStream.DEFAULT_NS_PREFIX);
 		}
 
 		// local part only?
 		if (qNameAsString.charAt(0) != '{') {
-			return new QuiXQName(QuiXCharStream.NULL_NS_URI,
-					QuiXCharStream.fromSequence(qNameAsString),
+			return new QuiXQName(QuiXCharStream.NULL_NS_URI, QuiXCharStream.fromSequence(qNameAsString),
 					QuiXCharStream.DEFAULT_NS_PREFIX);
 		}
 

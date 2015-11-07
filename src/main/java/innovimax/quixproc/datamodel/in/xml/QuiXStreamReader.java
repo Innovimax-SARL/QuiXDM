@@ -136,15 +136,16 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 					// sreader.getNamespaceURI(), sreader.getPrefix());
 					event = updateText(event);
 					for (int i = 0; i < this.sreader.getNamespaceCount(); i++) {
-						this.buffer.add(AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(this.sreader.getNamespacePrefix(i)),
-								QuiXCharStream.fromSequence(this.sreader.getNamespaceURI(i))));
+						this.buffer.add(
+								AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(this.sreader.getNamespacePrefix(i)),
+										QuiXCharStream.fromSequence(this.sreader.getNamespaceURI(i))));
 					}
 					for (int i = 0; i < this.sreader.getAttributeCount(); i++) {
-						this.buffer.add(
-								AQuiXEvent.getAttribute(QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
-										QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
+						this.buffer.add(AQuiXEvent.getAttribute(
+								QuiXCharStream.fromSequence(this.sreader.getAttributeLocalName(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributeNamespace(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributePrefix(i)),
+								QuiXCharStream.fromSequence(this.sreader.getAttributeValue(i))));
 					}
 					return event;
 				case XMLStreamConstants.END_DOCUMENT:

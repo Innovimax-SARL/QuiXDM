@@ -36,8 +36,8 @@ public abstract class ATreeGenerator extends AGenerator {
 	public enum SpecialType {
 		STANDARD, // no specific
 		NAMESPACE, OPEN_CLOSE, ARRAY;
-		static final EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>>
-				map = new EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>>(FileExtension.class);
+		static final EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>> map = new EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>>(
+				FileExtension.class);
 
 		static {
 			TreeGeneratorRuntimeExtractor.process(map, AXMLGenerator.class);

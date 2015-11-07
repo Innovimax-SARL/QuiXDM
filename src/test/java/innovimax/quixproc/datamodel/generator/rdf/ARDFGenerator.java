@@ -1,6 +1,5 @@
 package innovimax.quixproc.datamodel.generator.rdf;
 
-
 import org.apache.jena.atlas.web.ContentType;
 import org.apache.jena.atlas.web.TypedInputStream;
 import org.apache.jena.riot.WebContent;
@@ -10,15 +9,14 @@ import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class ARDFGenerator extends AGenerator {
-	
-	private final static ContentType CONTENT_TYPE = WebContent.ctTurtle; 
+
+	private final static ContentType CONTENT_TYPE = WebContent.ctTurtle;
 
 	public TypedInputStream getTypedInputStream(long size, Unit unit, Variation variation) {
-	  return new TypedInputStream(getInputStream(size, unit, variation), CONTENT_TYPE);
-    }
-	
-	public static class SimpleRDFGenerator extends ARDFGenerator {
+		return new TypedInputStream(getInputStream(size, unit, variation), CONTENT_TYPE);
+	}
 
+	public static class SimpleRDFGenerator extends ARDFGenerator {
 
 		@Override
 		public IQuiXStreamReader getQuiXStreamReader() {
@@ -43,16 +41,16 @@ public abstract class ARDFGenerator extends AGenerator {
 
 		@Override
 		protected long updateSize(long current_size, int current_pattern) {
-			return current_size+this.patterns[current_pattern].length;
+			return current_size + this.patterns[current_pattern].length;
 		}
 
 		@Override
 		protected byte[] getEnd() {
 			return s2b("");
 		}
-		final byte[][] patterns = {
-				s2b("<a> <b> <c>.\n")
-		};
+
+		final byte[][] patterns = { s2b("<a> <b> <c>.\n") };
+
 		@Override
 		protected byte[][] getPatterns() {
 			return this.patterns;
@@ -86,6 +84,6 @@ public abstract class ARDFGenerator extends AGenerator {
 			// TODO Auto-generated method stub
 			return null;
 		}
-		
+
 	}
 }

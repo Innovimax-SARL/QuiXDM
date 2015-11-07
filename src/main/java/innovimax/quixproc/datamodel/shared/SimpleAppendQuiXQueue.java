@@ -118,7 +118,8 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 					return true;
 				// if (iterator.hasNext()) return true;
 				// si c'est faux ca d�pends de close
-				while (this.i >= SimpleAppendQuiXQueue.this.events.size()/* !iterator.hasNext() */) {
+				while (this.i >= SimpleAppendQuiXQueue.this.events
+						.size()/* !iterator.hasNext() */) {
 					if (SimpleAppendQuiXQueue.this.closed)
 						return false;
 					SimpleAppendQuiXQueue.this.rwl.readLock().unlock();
@@ -147,7 +148,8 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 				}
 				// if (iterator.hasNext()) return iterator.next();
 				// si c'est faux ca d�pends de close
-				while (this.i >= SimpleAppendQuiXQueue.this.events.size()/* !iterator.hasNext() */) {
+				while (this.i >= SimpleAppendQuiXQueue.this.events
+						.size()/* !iterator.hasNext() */) {
 					if (SimpleAppendQuiXQueue.this.closed)
 						return null;
 					SimpleAppendQuiXQueue.this.rwl.readLock().unlock();
@@ -169,12 +171,14 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		@Override
 		public void close() {
 			if (DEBUG)
-				System.out.println("CreateSimpleQEQ (close reader " + SimpleAppendQuiXQueue.this.readerCount + ") : " + SimpleAppendQuiXQueue.this.rank);
+				System.out.println("CreateSimpleQEQ (close reader " + SimpleAppendQuiXQueue.this.readerCount + ") : "
+						+ SimpleAppendQuiXQueue.this.rank);
 			if (!this.readerClosed) {
 				this.readerClosed = true;
 				SimpleAppendQuiXQueue.this.readerCount--;
 				if (DEBUG)
-					System.out.println("CreateSimpleQEQ (really close reader " + SimpleAppendQuiXQueue.this.readerCount + ") : " + SimpleAppendQuiXQueue.this.rank);
+					System.out.println("CreateSimpleQEQ (really close reader " + SimpleAppendQuiXQueue.this.readerCount
+							+ ") : " + SimpleAppendQuiXQueue.this.rank);
 				if (SimpleAppendQuiXQueue.this.readerCount == 0) {
 					SimpleAppendQuiXQueue.this.events.clear();
 					if (DEBUG)

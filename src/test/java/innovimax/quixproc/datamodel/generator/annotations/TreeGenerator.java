@@ -13,7 +13,7 @@ import innovimax.quixproc.datamodel.generator.ATreeGenerator.TreeType;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TreeGenerator {
 	FileExtension ext();
-  
+
 	TreeType type();
 
 	SpecialType stype();

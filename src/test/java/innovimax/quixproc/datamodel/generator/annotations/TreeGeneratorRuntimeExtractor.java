@@ -7,10 +7,10 @@ import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator.TreeType;
 
 public class TreeGeneratorRuntimeExtractor {
-	public static void process(
-			EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>> map, Class<?> c) {
+	public static void process(EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>> map,
+			Class<?> c) {
 		for (Class<?> cc : c.getClasses()) {
-			
+
 			for (TreeGenerator generator : cc.getAnnotationsByType(TreeGenerator.class)) {
 				// file extension
 				final EnumMap<TreeType, EnumMap<SpecialType, Class<?>>> type;

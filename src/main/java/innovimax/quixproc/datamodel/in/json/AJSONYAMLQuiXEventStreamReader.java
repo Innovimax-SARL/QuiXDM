@@ -18,10 +18,11 @@ import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 	protected final JsonFactory ifactory;
 	private JsonParser iparser;
+
 	protected AJSONYAMLQuiXEventStreamReader(JsonFactory factory) {
 		this.ifactory = factory;
 	}
-	
+
 	@Override
 	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
 		return load(((AJSONYAMLStreamSource) current).asInputStream());

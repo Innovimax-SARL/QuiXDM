@@ -31,8 +31,9 @@ public class TestGenerator {
 	enum Process {
 		READ_BYTE, READ_BUFFER, PARSE
 	}
-	
-	public static void testAll(FileExtension ext,  Process process, int size, Unit unit) throws IOException, QuiXException, InstantiationException, IllegalAccessException {
+
+	public static void testAll(FileExtension ext, Process process, int size, Unit unit)
+			throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		switch (ext) {
 		case CSV:
 			testAllCSV(ext, process, size, unit);
@@ -49,7 +50,7 @@ public class TestGenerator {
 			testAllRDF(ext, process, size, unit);
 			break;
 		default:
-			break;		
+			break;
 		}
 	}
 
@@ -95,7 +96,7 @@ public class TestGenerator {
 						}
 						totalsize = size * unit.value();
 						break;
-					default:	
+					default:
 					}
 					long time = System.currentTimeMillis() - start;
 					if (time == 0)
@@ -114,8 +115,7 @@ public class TestGenerator {
 	}
 
 	public static void testAllRDF(FileExtension ext, Process process, int size, Unit unit) throws IOException {
-		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, 
-				Variation.NO_VARIATION);
+		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, Variation.NO_VARIATION);
 		long start = System.currentTimeMillis();
 		ARDFGenerator generator = new ARDFGenerator.SimpleRDFGenerator();
 		TypedInputStream is = generator.getTypedInputStream(size, unit, Variation.NO_VARIATION);
@@ -142,9 +142,9 @@ public class TestGenerator {
 			QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.RDFStreamSource.instance(is));
 			IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
 			while (vqxs.hasNext()) {
-				//System.out.println(
+				// System.out.println(
 				vqxs.next()
-				//)
+				// )
 				;
 
 				event++;
@@ -152,7 +152,7 @@ public class TestGenerator {
 			vqxs.close();
 			totalsize = size * unit.value();
 			break;
-		default:	
+		default:
 		}
 		long time = System.currentTimeMillis() - start;
 		if (time == 0)
@@ -169,8 +169,7 @@ public class TestGenerator {
 	}
 
 	public static void testAllCSV(FileExtension ext, Process process, int size, Unit unit) throws IOException {
-		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, 
-				Variation.NO_VARIATION);
+		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, Variation.NO_VARIATION);
 		long start = System.currentTimeMillis();
 		ACSVGenerator generator = new ACSVGenerator.SimpleCSVGenerator();
 		Reader is = generator.getReader(size, unit, Variation.NO_VARIATION);
@@ -197,7 +196,7 @@ public class TestGenerator {
 			QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.CSVStreamSource.instance(is));
 			IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
 			while (vqxs.hasNext()) {
-				//System.out.println(
+				// System.out.println(
 				vqxs.next()
 				// )
 				;
@@ -207,7 +206,7 @@ public class TestGenerator {
 			vqxs.close();
 			totalsize = size * unit.value();
 			break;
-		default:	
+		default:
 		}
 		long time = System.currentTimeMillis() - start;
 		if (time == 0)
@@ -254,6 +253,7 @@ public class TestGenerator {
 		}
 		assertTrue(true);
 	}
+
 	@Test
 	public void testAllRDF100M() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
@@ -269,17 +269,17 @@ public class TestGenerator {
 		}
 		assertTrue(true);
 	}
+
 	public static void main(String[] args)
 			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : EnumSet.of(/* Process.READ_BUFFER, */ Process.READ_BYTE, Process.PARSE)) {
 			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);
-			//testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
-			//testAll(FileExtension.XML, process, 2, Unit.MBYTE);
-			//testAll(FileExtension.RDF, process, 100, Unit.MBYTE);
-			//testAll(FileExtension.CSV, process, 100, Unit.MBYTE);
+			// testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
+			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);
+			// testAll(FileExtension.RDF, process, 100, Unit.MBYTE);
+			// testAll(FileExtension.CSV, process, 100, Unit.MBYTE);
 			testAll(FileExtension.YAML, process, 10, Unit.MBYTE);
 		}
 	}
-	
-	
+
 }
