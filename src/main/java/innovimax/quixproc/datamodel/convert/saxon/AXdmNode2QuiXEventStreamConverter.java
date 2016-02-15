@@ -33,7 +33,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 	private XdmNode node = null;
 	private boolean running = true;
 	private static int counter = 1;
-	private final int rank = counter++;
+//	private final int rank = counter++;
 
 	protected AXdmNode2QuiXEventStreamConverter(ISimpleQuiXQueue<AQuiXEvent> doc, XdmNode node) {
 		this.doc = doc;
