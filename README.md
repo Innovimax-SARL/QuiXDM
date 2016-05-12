@@ -15,8 +15,8 @@
 
 To install it
 *  Checkout this code. It's Java 1.8+ compliant
-*  Get access to Saxon 9.6: http://saxon.sourceforge.net/
-*  Get access to Jackson Core 2.6.2: https://github.com/FasterXML/jackson-core 
+*  Get access to Saxon 9.7: http://saxon.sourceforge.net/
+*  Get access to Jackson Core 2.7.4: https://github.com/FasterXML/jackson-core
 *  and few other dependencies (see pom.xml)
 
 # Why QuiXDM?
