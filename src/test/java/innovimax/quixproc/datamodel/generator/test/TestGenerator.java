@@ -265,7 +265,7 @@ public class TestGenerator {
 	@Test
 	public void testAllCSV1M() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.CSV, process, 100, Unit.MBYTE);
+			testAll(FileExtension.CSV, process, 1, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
@@ -273,12 +273,12 @@ public class TestGenerator {
 	public static void main(String[] args)
 			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : EnumSet.of(/* Process.READ_BUFFER, */ Process.READ_BYTE, Process.PARSE)) {
-			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);
+			 testAll(FileExtension.XML, process, 1, Unit.MBYTE);
 			// testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
 			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);
 			// testAll(FileExtension.RDF, process, 100, Unit.MBYTE);
 			// testAll(FileExtension.CSV, process, 100, Unit.MBYTE);
-			testAll(FileExtension.YAML, process, 10, Unit.MBYTE);
+			//testAll(FileExtension.YAML, process, 10, Unit.MBYTE);
 		}
 	}
 
