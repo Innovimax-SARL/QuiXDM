@@ -229,7 +229,7 @@ public class TestGenerator {
 		assertTrue(true);
 	}
 
-	@Test
+//	@Test
 	public void testAllXML1GNotParse()
 			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE)) {
@@ -239,25 +239,25 @@ public class TestGenerator {
 	}
 
 	@Test
-	public void testAllJSON10M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+	public void testAllJSON1M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
+			testAll(FileExtension.JSON, process, 1, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
 
 	@Test
-	public void testAllYAML10M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+	public void testAllYAML1M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.YAML, process, 10, Unit.MBYTE);
+			testAll(FileExtension.YAML, process, 1, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
 
 	@Test
-	public void testAllRDF100M() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
+	public void testAllRDF1M() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.RDF, process, 100, Unit.MBYTE);
+			testAll(FileExtension.RDF, process, 1, Unit.MBYTE);
 		}
 		assertTrue(true);
 	}
