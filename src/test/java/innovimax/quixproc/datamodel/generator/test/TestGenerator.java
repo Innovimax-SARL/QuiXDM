@@ -222,9 +222,9 @@ public class TestGenerator {
 	}
 
 	@Test
-	public void testAllXML1M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+	public void testAllXML1K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.XML, process, 1, Unit.MBYTE);
+			testAll(FileExtension.XML, process, 1, Unit.KBYTE);
 		}
 		assertTrue(true);
 	}
@@ -239,33 +239,33 @@ public class TestGenerator {
 	}
 
 	@Test
-	public void testAllJSON1M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+	public void testAllJSON1K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.JSON, process, 1, Unit.MBYTE);
+			testAll(FileExtension.JSON, process, 1, Unit.KBYTE);
 		}
 		assertTrue(true);
 	}
 
 	@Test
-	public void testAllYAML1M() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+	public void testAllYAML1K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.YAML, process, 1, Unit.MBYTE);
+			testAll(FileExtension.YAML, process, 1, Unit.KBYTE);
 		}
 		assertTrue(true);
 	}
 
 	@Test
-	public void testAllRDF1M() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
+	public void testAllRDF1K() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.RDF, process, 1, Unit.MBYTE);
+			testAll(FileExtension.RDF, process, 1, Unit.KBYTE);
 		}
 		assertTrue(true);
 	}
 
 	@Test
-	public void testAllCSV1M() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
+	public void testAllCSV1K() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.CSV, process, 1, Unit.MBYTE);
+			testAll(FileExtension.CSV, process, 1, Unit.KBYTE);
 		}
 		assertTrue(true);
 	}
