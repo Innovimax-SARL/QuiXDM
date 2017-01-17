@@ -86,7 +86,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		public T get() {
 			return this.event;
 		}
-
+		// see to get around locking http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
 		public LinkedItem<T> getNext() {
 			try {
 				// this.latch.await();
