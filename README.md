@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/Innovimax-SARL/QuiXDM.svg?branch=master)](https://travis-ci.org/Innovimax-SARL/QuiXDM)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/6518/badge.svg)](https://scan.coverity.com/projects/6518)
+[![Code Climate](https://codeclimate.com/github/Innovimax-SARL/QuiXDM/badges/gpa.svg)](https://codeclimate.com/github/Innovimax-SARL/QuiXDM)
+
 # QuiXDM
 **QuiXDM** is an *ubiquitous* open-source datamodel to process in a Streaming fashion:
 * [x] XML (via [XQuery and XPath Data Model (XDM)](http://www.w3.org/TR/xpath-datamodel/)) 
@@ -9,8 +13,6 @@
   * [ ] TSV
 * [ ] HTML
 
-[![Build Status](https://travis-ci.org/innovimax/QuiXDM.svg?branch=master)](https://travis-ci.org/innovimax/QuiXDM)
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/6518/badge.svg)](https://scan.coverity.com/projects/6518)
 # Getting Started
 
 To install it
