@@ -44,7 +44,7 @@ public enum QuiXToken implements IQuiXToken {
 	// statement := START_PREDICATE, SUBJECT, OBJECT, GRAPH?, END_PREDICATE
 
 	// To support BSON add VALUE_BIN and VALUE_EPOCH (or add a property on
-	// VALUE_STRING isBin and VALUD_NUMBER isEpoch)
+	// VALUE_STRING isBin and VALUE_NUMBER isEpoch)
 	// To support UBSON no need to add anything
 	// To support SMILE no need to add anything
 
