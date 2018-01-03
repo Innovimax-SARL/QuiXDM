@@ -222,9 +222,9 @@ public class TestGenerator {
 	}
 
 	@Test
-	public void testAllXML100K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
+	public void testAllXML1K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (Process process : Process.values()) {
-			testAll(FileExtension.XML, process, 100, Unit.KBYTE);
+			testAll(FileExtension.XML, process, 1, Unit.KBYTE);
 		}
 		assertTrue(true);
 	}

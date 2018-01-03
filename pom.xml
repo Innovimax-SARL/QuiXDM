@@ -26,14 +26,10 @@
 		<url>http://innovimax.fr</url>
 	</organization>
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>src/test</testSourceDirectory>
-		<!-- resources> <resource> <directory>quixdm</directory> <excludes> <exclude>**/*.java</exclude> 
-			</excludes> </resource> </resources -->
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.7.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -42,7 +38,7 @@
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>4.0.0</version>
+				<version>4.3.0</version>
 				<configuration>
 					<repoToken>yourcoverallsprojectrepositorytoken</repoToken>
 				</configuration>
@@ -50,7 +46,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.5.201505241946</version>
+				<version>0.7.9</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -66,37 +62,37 @@
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
-			<version>9.8.0-6</version>
+			<version>9.8.0-7</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
-			<version>2.8.10</version>
+			<version>2.9.3</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
-			<version>2.8.10</version>
+			<version>2.9.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
 			<type>pom</type>
-			<version>3.5.0</version>
+			<version>3.6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
 			<version>1.5</version>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>nu.validator.htmlparser</groupId>
 			<artifactId>htmlparser</artifactId>
 			<version>1.4</version>
-			<!-- lastest is 1.4 from 2012 -->
-			<!--  but the source have 
-				been update in september 2015 -->
-		</dependency>
+			<!- - lastest is 1.4 from 2012 - ->
+			<!- -  but the source have
+				been update in september 2015 - ->
+		</dependency-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
