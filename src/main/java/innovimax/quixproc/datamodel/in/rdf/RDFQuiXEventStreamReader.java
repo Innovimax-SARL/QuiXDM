@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.jena.atlas.web.TypedInputStream;
 import org.apache.jena.graph.Triple;
+import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
@@ -60,7 +61,7 @@ public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 			public void run() {
 				// Call the parsing process.
 				// System.out.println("started thread before");
-				RDFDataMgr.parse(tripleStream, tis);
+				RDFDataMgr.parse(tripleStream, tis, Lang.N3);
 				// System.out.println("started thread after");
 			}
 		};
