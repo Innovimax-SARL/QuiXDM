@@ -63,27 +63,32 @@
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
 			<version>9.8.0-7</version>
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.9.3</version>
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
 			<version>2.9.3</version>
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>apache-jena-libs</artifactId>
 			<type>pom</type>
 			<version>3.6.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-csv</artifactId>
 			<version>1.5</version>
+			<scope>provided</scope>
 		</dependency>
 		<!--dependency>
 			<groupId>nu.validator.htmlparser</groupId>
@@ -97,6 +102,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
