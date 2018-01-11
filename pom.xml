@@ -6,23 +6,35 @@
 	<version>2.0.0-SNAPSHOT</version>
 	<name>Innovimax QuiXDM</name>
 	<description>QuiXDM Ubiquitous Data Model</description>
+	<url>https://github.com/Innovimax-SARL/QuiXDM</url>
 	<licenses>
 		<license>
-			<name>GPL 3</name>
-			<url>http://www.gnu.org/licenses/gpl-3.0-standalone.html</url>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<issueManagement>
+		<url>https://github.com/Innovimax-SARL/QuiXDM/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+	<scm>
+		<url>https://github.com/Innovimax-SARL/QuiXDM</url>
+		<connection>scm:git:git://github.com/Innovimax-SARL/QuiXDM.git</connection>
+		<developerConnection>scm:git:git@github.com:Innovimax-SARL/QuiXDM.git</developerConnection>
+	</scm>
 	<developers>
 		<developer>
 			<id>innovimax</id>
 			<name>innovimax</name>
+			<url>https://github.com/innovimax</url>
 			<roles>
 				<role>developer</role>
 			</roles>
 		</developer>
 	</developers>
 	<organization>
-		<name>Innovimax</name>
+		<name>Innovimax SARL</name>
 		<url>http://innovimax.fr</url>
 	</organization>
 	<build>
