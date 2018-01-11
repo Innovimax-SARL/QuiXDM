@@ -12,11 +12,11 @@ import java.math.BigInteger;
 public abstract class AReversibleRandom {
 	long seed;
 
-	protected AReversibleRandom(long seed) {
+	AReversibleRandom(long seed) {
 		this.seed = seed;
 	}
 
-	public abstract int next();
+	protected abstract int next();
 
 	public abstract int prev();
 
@@ -101,12 +101,12 @@ public abstract class AReversibleRandom {
  * https://github.com/bobbaluba/rlcg/blob/master/include/rlcg.hpp
  */
 class BReversibleRandom {
-	long M = 1L << 63;
-	long A = 6364136223846793005L;
-	long ainverse;
-	long C = 1442695040888963407L;
-	int D = 32;
-	long x;
+	private final long M = 1L << 63;
+	private final long A = 6364136223846793005L;
+	private final long ainverse;
+	private final long C = 1442695040888963407L;
+	private final int D = 32;
+	private long x;
 
 	// modulus M, multiplicand A, increment C, least significant bits to discard
 	// D
@@ -154,33 +154,33 @@ class BReversibleRandom {
 	 */
 	// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b);
 	// constexpr uint64_t extendedEuclidX(uint64_t a, uint64_t b){
-	long extendedEuclidX(long a, long b) {
+    private long extendedEuclidX(long a, long b) {
 		return (b == 0) ? 1 : extendedEuclidY(b, a - b * (a / b));
 	}
 
 	// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b){
-	long extendedEuclidY(long a, long b) {
+    private long extendedEuclidY(long a, long b) {
 		return (b == 0) ? 0 : extendedEuclidX(b, a - b * (a / b)) - (a / b) * extendedEuclidY(b, a - b * (a / b));
 	}
 
-	BigInteger extendedEuclidX(BigInteger a, BigInteger b) {
+	private BigInteger extendedEuclidX(BigInteger a, BigInteger b) {
 		return (b.equals(BigInteger.ZERO)) ? BigInteger.ONE : extendedEuclidY(b, a.subtract(b.multiply(a.divide(b))));
 	}
 
 	// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b){
-	BigInteger extendedEuclidY(BigInteger a, BigInteger b) {
+    private BigInteger extendedEuclidY(BigInteger a, BigInteger b) {
 		return (b.equals(BigInteger.ZERO)) ? BigInteger.ZERO
 				: extendedEuclidX(b, a.subtract(b.multiply(a.divide(b))))
 						.subtract(a.divide(b).multiply(extendedEuclidY(b, a.subtract(b.multiply(a.divide(b))))));
 	}
 
 	static class ReversibleRandomBI {
-		BigInteger M = BigInteger.ONE.shiftLeft(63);
-		BigInteger A = new BigInteger("6364136223846793005");
-		BigInteger ainverse;
-		BigInteger C = new BigInteger("1442695040888963407");
+		final BigInteger M = BigInteger.ONE.shiftLeft(63);
+		final BigInteger A = new BigInteger("6364136223846793005");
+		final BigInteger ainverse;
+		final BigInteger C = new BigInteger("1442695040888963407");
 		BigInteger x;
-		int D = 32;
+		final int D = 32;
 
 		// modulus M, multiplicand A, increment C, least significant bits to
 		// discard D

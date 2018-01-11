@@ -32,8 +32,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		return results;
 	}
 
-	static final byte[] nextChar = initNextChar();
-	static final byte[] nextDigit = initNextDigit();
+	private static final byte[] nextChar = initNextChar();
+	private static final byte[] nextDigit = initNextDigit();
 
 	private static byte[] initNextDigit() {
 		byte[] results = new byte[10];
@@ -104,7 +104,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 	}
 
-	static byte nextChar(byte b, int incr) {
+	private static byte nextChar(byte b, int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = nextChar[(b + incr) & 0x7F];
@@ -114,8 +114,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	}
 
 	static byte nextDigit(byte b, int incr) {
-		byte r = nextDigit[(b + incr) % 10];
-		return r;
+		return nextDigit[(b + incr) % 10];
 	}
 
 	/*
@@ -134,7 +133,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 
 		final byte[] start = s2b("{");
 		final byte[][] end = { s2b("}"), s2b("\"}") };
-		int choose_end = 0;
+		final int choose_end = 0;
 
 		@Override
 		protected byte[] getEnd() {
@@ -384,7 +383,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	}
 
 	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.STANDARD)
-	public static class HighDepthGeneratorObject extends AHighDepthGenerator {
+	protected static class HighDepthGeneratorObject extends AHighDepthGenerator {
 
 		final byte[] start = s2b("{");
 		final byte[] end = s2b("}");
@@ -432,7 +431,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	}
 
 	@TreeGenerator(ext = FileExtension.JSON, type = TreeType.HIGH_NODE_DEPTH, stype = SpecialType.ARRAY)
-	public static class HighDepthGeneratorArray extends AHighDepthGenerator {
+	protected static class HighDepthGeneratorArray extends AHighDepthGenerator {
 
 		final byte[] start = s2b("{\"\":");
 		final byte[] end = s2b("}");

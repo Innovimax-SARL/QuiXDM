@@ -67,7 +67,7 @@ import innovimax.quixproc.datamodel.filter.AQuiXEventStreamFilter;
  */
 public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 
-	State state;
+	private State state;
 
 	public ValidQuiXTokenStream(IQuiXStream<IQuiXToken> stream) {
 		this(stream, ExtraProcess.NONE);
@@ -87,7 +87,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 		NONE,
 	}
 
-	protected ValidQuiXTokenStream(IQuiXStream<IQuiXToken> stream, ExtraProcess process) {
+	private ValidQuiXTokenStream(IQuiXStream<IQuiXToken> stream, ExtraProcess process) {
 		super(stream);
 		this.state = State.START;
 	}
@@ -123,7 +123,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			this.pos = -1;
 		}
 
-		public void push(Node node) {
+		void push(Node node) {
 			int value = node.ordinal();
 			if (this.pos >= 0 && value == (this.data[this.pos] & this.MASK)) {
 				if (value <= this.MAX_ALLOWED) {
@@ -141,11 +141,11 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			this.data[this.pos] = (byte) node.ordinal();
 		}
 
-		public boolean empty() {
+		boolean empty() {
 			return this.pos < 0;
 		}
 
-		public Node pop() {
+		Node pop() {
 			// simple case first
 			if ((this.data[this.pos] & this.UPPER_MASK) == 0)
 				return Node.values()[this.data[this.pos--]];
@@ -154,7 +154,7 @@ public class ValidQuiXTokenStream extends AQuiXEventStreamFilter {
 			return Node.values()[this.data[this.pos] & this.MASK];
 		}
 
-		public Node peek() {
+		Node peek() {
 			return Node.values()[this.data[this.pos] & this.MASK];
 		}
 

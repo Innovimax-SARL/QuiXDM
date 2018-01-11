@@ -25,11 +25,11 @@ import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 
 public abstract class AXMLGenerator extends ATreeGenerator {
 
-	static final byte[] nextChar = initNextChar(false);
-	static final byte[] nextAttributeValue = initNextChar(true);
-	static final byte[] nextStartName = initNextName(true);
-	static final byte[] nextName = initNextName(false);
-	static final byte[] prevStartName = initPrevStartName();
+	private static final byte[] nextChar = initNextChar(false);
+	private static final byte[] nextAttributeValue = initNextChar(true);
+	private static final byte[] nextStartName = initNextName(true);
+	private static final byte[] nextName = initNextName(false);
+	private static final byte[] prevStartName = initPrevStartName();
 
 	private static int nextAllowedChar(int b, boolean attributeValue) {
 		if (b <= 0x20) {
@@ -134,7 +134,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return results;
 	}
 
-	static byte nextChar(byte b, int incr) {
+	private static byte nextChar(byte b, int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = nextChar[(b + incr) & 0x7F];
@@ -143,7 +143,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	static byte nextAttributeValue(byte b, int incr) {
+	private static byte nextAttributeValue(byte b, int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = nextAttributeValue[(b + incr) & 0x7F];
@@ -152,7 +152,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	static byte nextStartName(byte b, int incr) {
+	private static byte nextStartName(byte b, int incr) {
 		// System.out.println("nextStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = b;
@@ -164,7 +164,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	static byte nextName(byte b, int incr) {
+	private static byte nextName(byte b, int incr) {
 		// System.out.println("nextName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = nextName[(b + incr) & 0x7F];
@@ -173,7 +173,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	static byte prevStartName(byte b, int incr) {
+	private static byte prevStartName(byte b, int incr) {
 		// System.out.println("prevStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		byte r = b;
@@ -382,7 +382,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		protected int getPatternsLength() {
 
 			int result = this.patterns[0].length + this.patterns[1].length;
-			// System.out.println("get patterns lenght " +result);
+			// System.out.println("get patterns length " +result);
 			return result;
 		}
 
@@ -569,8 +569,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 		@Override
 		protected byte[][] getPatterns() {
-			byte[][] result = { s2b("a") };
-			return result;
+			return new byte[][]{ s2b("a") };
 		}
 
 		@Override
@@ -831,10 +830,10 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 	}
 
-	protected static final boolean USE_STREAM = true;
-	protected static final Process PROCESS = Process.READ_BUFFER;
-	protected static final boolean ONE_INSTANCE = true;
-	protected static final Variation VARIATION = Variation.SEQUENTIAL;
+	private static final boolean USE_STREAM = true;
+	private static final Process PROCESS = Process.READ_BUFFER;
+	private static final boolean ONE_INSTANCE = true;
+	private static final Variation VARIATION = Variation.SEQUENTIAL;
 
 	public enum Process {
 		READ_CHAR, READ_BUFFER, PARSE

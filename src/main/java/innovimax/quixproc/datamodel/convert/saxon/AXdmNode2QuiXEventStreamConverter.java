@@ -17,8 +17,8 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmSequenceIterator;
 
 public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
-	private ISimpleQuiXQueue<AQuiXEvent> doc = null;
-	private XdmNode node = null;
+	private final ISimpleQuiXQueue<AQuiXEvent> doc;
+	private final XdmNode node;
 	private boolean running = true;
 	private static int counter = 1;
 //	private final int rank = counter++;

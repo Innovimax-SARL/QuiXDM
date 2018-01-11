@@ -27,11 +27,11 @@ import innovimax.quixproc.datamodel.event.AQuiXEvent;
 public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
 	private static final boolean DEBUG = false;
-	final List<T> events;
-	final ReentrantReadWriteLock rwl;
+	private final List<T> events;
+	private final ReentrantReadWriteLock rwl;
 	//
-	int readerCount = 0;
-	boolean closed = false;
+	private int readerCount = 0;
+	private boolean closed = false;
 	private boolean startWorking = false;
 	//
 	private static int counter = 0;
@@ -105,7 +105,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 				if (this.i < SimpleAppendQuiXQueue.this.events.size())
 					return true;
 				// if (iterator.hasNext()) return true;
-				// si c'est faux ca d�pends de close
+				// si c'est faux ca depends de close
 				while (this.i >= SimpleAppendQuiXQueue.this.events
 						.size()/* !iterator.hasNext() */) {
 					if (SimpleAppendQuiXQueue.this.closed)
@@ -116,7 +116,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 					// System.out.println("hasNextAfterYield");
 					SimpleAppendQuiXQueue.this.rwl.readLock().lock();
 				}
-				// il n'y a pas de concurrence sur la lecture, chacun lit � son
+				// il n'y a pas de concurrence sur la lecture, chacun lit a son
 				// rythme
 				// donc si il y a un element il l'est toujours
 				return true;
@@ -239,8 +239,8 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		this.maxReader = this.readerCount;
 	}
 
-	static final int MAX_PRODUCE = 10000000;
-	static final int LOG_MODULO = MAX_PRODUCE / 10;
+	private static final int MAX_PRODUCE = 10000000;
+	private static final int LOG_MODULO = MAX_PRODUCE / 10;
 
 	private static class SimpleProducer implements Runnable {
 		private final IQuiXQueue<AQuiXEvent> qeq;

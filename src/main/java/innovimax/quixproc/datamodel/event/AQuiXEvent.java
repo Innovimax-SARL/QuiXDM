@@ -28,10 +28,10 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	private static long createCount = 0;
 	private static long createCallCount = 0;
-	static long createDocCount = 0;
-	static long createAttrCount = 0;
+	private static long createDocCount = 0;
+	private static long createAttrCount = 0;
 
-	protected final QuiXToken type;
+	final QuiXToken type;
 
 	/* constructors */
 	AQuiXEvent(QuiXToken type) {
@@ -125,112 +125,112 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		}
 	}
 
-	public static class StartJSON extends AJSONQuiXEvent {
-		public StartJSON() {
+	static class StartJSON extends AJSONQuiXEvent {
+		StartJSON() {
 			super(QuiXToken.START_JSON);
 		}
 	}
 
-	public static class EndJSON extends AJSONQuiXEvent {
-		public EndJSON() {
+	static class EndJSON extends AJSONQuiXEvent {
+		EndJSON() {
 			super(QuiXToken.END_JSON);
 		}
 	}
 
-	public static class StartObject extends AJSONQuiXEvent {
-		public StartObject() {
+	static class StartObject extends AJSONQuiXEvent {
+		StartObject() {
 			super(QuiXToken.START_OBJECT);
 		}
 	}
 
-	public static class EndObject extends AJSONQuiXEvent {
-		public EndObject() {
+	static class EndObject extends AJSONQuiXEvent {
+		EndObject() {
 			super(QuiXToken.END_OBJECT);
 		}
 	}
 
 	// start array is in JSON/YAML but also in CSV/TSV
-	public static class StartArray extends AQuiXEvent {
-		public StartArray() {
+	static class StartArray extends AQuiXEvent {
+		StartArray() {
 			super(QuiXToken.START_ARRAY);
 		}
 	}
 
 	// start array is in JSON/YAML but also in CSV/TSV
-	public static class EndArray extends AQuiXEvent {
-		public EndArray() {
+	static class EndArray extends AQuiXEvent {
+		EndArray() {
 			super(QuiXToken.END_ARRAY);
 		}
 	}
 
 	// Table CSV / TSV
 
-	public static class StartTable extends ACSVQuiXEvent {
-		public StartTable() {
+	static class StartTable extends ACSVQuiXEvent {
+		StartTable() {
 			super(QuiXToken.START_TABLE);
 		}
 	}
 
-	public static class EndTable extends ACSVQuiXEvent {
-		public EndTable() {
+	static class EndTable extends ACSVQuiXEvent {
+		EndTable() {
 			super(QuiXToken.END_TABLE);
 		}
 	}
 
 	// RDF Triple
 
-	public static class StartRDF extends ARDFQuiXEvent {
-		public StartRDF() {
+	static class StartRDF extends ARDFQuiXEvent {
+		StartRDF() {
 			super(QuiXToken.START_RDF);
 		}
 	}
 
-	public static class EndRDF extends ARDFQuiXEvent {
-		public EndRDF() {
+	static class EndRDF extends ARDFQuiXEvent {
+		EndRDF() {
 			super(QuiXToken.END_RDF);
 		}
 	}
 
-	public static class StartPredicate extends ARDFQuiXEvent {
+	static class StartPredicate extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		public StartPredicate(QuiXCharStream name) {
+		StartPredicate(QuiXCharStream name) {
 			super(QuiXToken.START_PREDICATE);
 			this.name = name;
 		}
 	}
 
-	public static class EndPredicate extends ARDFQuiXEvent {
+	static class EndPredicate extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		public EndPredicate(QuiXCharStream name) {
+		EndPredicate(QuiXCharStream name) {
 			super(QuiXToken.END_PREDICATE);
 			this.name = name;
 		}
 	}
 
-	public static class Subject extends ARDFQuiXEvent {
+	static class Subject extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		public Subject(QuiXCharStream name) {
+		Subject(QuiXCharStream name) {
 			super(QuiXToken.SUBJECT);
 			this.name = name;
 		}
 	}
 
-	public static class Object extends ARDFQuiXEvent {
+	static class Object extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		public Object(QuiXCharStream name) {
+		Object(QuiXCharStream name) {
 			super(QuiXToken.OBJECT);
 			this.name = name;
 		}
 	}
 
-	public static class Graph extends ARDFQuiXEvent {
+	static class Graph extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		public Graph(QuiXCharStream name) {
+		Graph(QuiXCharStream name) {
 			super(QuiXToken.GRAPH);
 			this.name = name;
 		}
@@ -238,49 +238,49 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	// JSON
 
-	public static class AJSONValue extends AJSONQuiXEvent {
+	static class AJSONValue extends AJSONQuiXEvent {
 		AJSONValue(QuiXToken token) {
 			super(token);
 		}
 	}
 
-	public static class ValueNull extends AJSONValue {
-		public ValueNull() {
+	static class ValueNull extends AJSONValue {
+		ValueNull() {
 			super(QuiXToken.VALUE_NULL);
 		}
 	}
 
-	public static class ValueTrue extends AJSONValue {
-		public ValueTrue() {
+	static class ValueTrue extends AJSONValue {
+		ValueTrue() {
 			super(QuiXToken.VALUE_TRUE);
 		}
 	}
 
-	public static class ValueFalse extends AJSONValue {
-		public ValueFalse() {
+	static class ValueFalse extends AJSONValue {
+		ValueFalse() {
 			super(QuiXToken.VALUE_FALSE);
 		}
 	}
 
-	public static class ValueNumber extends AJSONValue {
+	static class ValueNumber extends AJSONValue {
 		final double value;
 
-		public ValueNumber(double value) {
+		ValueNumber(double value) {
 			super(QuiXToken.VALUE_NUMBER);
 			this.value = value;
 		}
 	}
 
-	public static class ValueString extends AJSONValue {
+	static class ValueString extends AJSONValue {
 		final QuiXCharStream value;
 
-		public ValueString(QuiXCharStream value) {
+		ValueString(QuiXCharStream value) {
 			super(QuiXToken.VALUE_STRING);
 			this.value = value;
 		}
 	}
 
-	public static class KeyName extends AJSONQuiXEvent {
+	static class KeyName extends AJSONQuiXEvent {
 		private final QuiXCharStream name;
 
 		KeyName(QuiXCharStream name) {
@@ -504,7 +504,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	/* get typed event */
 
-	private static StartSequence newStartSequence = SEQUENCE_CACHING_ENABLED ? new StartSequence() : null;
+	private static final StartSequence newStartSequence = SEQUENCE_CACHING_ENABLED ? new StartSequence() : null;
 
 	public static AQuiXEvent getStartSequence() {
 		createCallCount++;
@@ -513,7 +513,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return result;
 	}
 
-	private static EndSequence newEndSequence = SEQUENCE_CACHING_ENABLED ? new EndSequence() : null;
+	private static final EndSequence newEndSequence = SEQUENCE_CACHING_ENABLED ? new EndSequence() : null;
 
 	public static AQuiXEvent getEndSequence() {
 		createCallCount++;
@@ -522,7 +522,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return result;
 	}
 
-	private static Map<QuiXCharStream, StartDocument> startDocumentMap = DOCUMENT_CACHING_ENABLED
+	private static final Map<QuiXCharStream, StartDocument> startDocumentMap = DOCUMENT_CACHING_ENABLED
 			? new HashMap<QuiXCharStream, StartDocument>() : null;
 
 	public static AXMLQuiXEvent getStartDocument(QuiXCharStream uri) {
@@ -543,7 +543,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return result;
 	}
 
-	private static Map<QuiXCharStream, EndDocument> endDocumentMap = DOCUMENT_CACHING_ENABLED
+	private static final Map<QuiXCharStream, EndDocument> endDocumentMap = DOCUMENT_CACHING_ENABLED
 			? new HashMap<QuiXCharStream, EndDocument>() : null;
 
 	public static AXMLQuiXEvent getEndDocument(QuiXCharStream uri) {
@@ -568,7 +568,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new Namespace(prefix == null ? QuiXCharStream.EMPTY : prefix, uri);
 	}
 
-	private static Map<QuiXCharStream, QuiXQName> qNameMap = NAME_CACHING_ENABLED
+	private static final Map<QuiXCharStream, QuiXQName> qNameMap = NAME_CACHING_ENABLED
 			? new HashMap<QuiXCharStream, QuiXQName>() : null;
 
 	private static QuiXQName getQName(QuiXCharStream localName, QuiXCharStream namespace, QuiXCharStream pref) {
@@ -595,7 +595,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return result;
 	}
 
-	private static Map<QuiXQName, StartElement> startElementMap = ELEMENT_CACHING_ENABLED
+	private static final Map<QuiXQName, StartElement> startElementMap = ELEMENT_CACHING_ENABLED
 			? new HashMap<QuiXQName, StartElement>() : null;
 
 	public static AXMLQuiXEvent getStartElement(QuiXCharStream qName, QuiXCharStream namespace) {
@@ -628,7 +628,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return result;
 	}
 
-	private static Map<QuiXQName, EndElement> endElementMap = ELEMENT_CACHING_ENABLED
+	private static final Map<QuiXQName, EndElement> endElementMap = ELEMENT_CACHING_ENABLED
 			? new HashMap<QuiXQName, EndElement>() : null;
 
 	public static AXMLQuiXEvent getEndElement(QuiXCharStream qName, QuiXCharStream namespace) {

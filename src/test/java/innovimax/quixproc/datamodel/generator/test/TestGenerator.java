@@ -39,7 +39,7 @@ public class TestGenerator {
 		READ_BYTE, READ_BUFFER, PARSE
 	}
 
-	public static void testAll(FileExtension ext, Process process, int size, Unit unit)
+	private static void testAll(FileExtension ext, Process process, int size, Unit unit)
 			throws IOException, QuiXException, InstantiationException, IllegalAccessException {
 		switch (ext) {
 		case CSV:
@@ -61,7 +61,7 @@ public class TestGenerator {
 		}
 	}
 
-	public static void testAllTree(FileExtension ext, Process process, int size, Unit unit)
+	private static void testAllTree(FileExtension ext, Process process, int size, Unit unit)
 			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
 		for (TreeType gtype : TreeType.values()) {
 			for (SpecialType stype : SpecialType.allowedModifiers(ext, gtype)) {
@@ -121,7 +121,7 @@ public class TestGenerator {
 		}
 	}
 
-	public static void testAllRDF(FileExtension ext, Process process, int size, Unit unit) throws IOException {
+	private static void testAllRDF(FileExtension ext, Process process, int size, Unit unit) throws IOException {
 		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, Variation.NO_VARIATION);
 		long start = System.currentTimeMillis();
 		ARDFGenerator generator = new ARDFGenerator.SimpleRDFGenerator();
@@ -175,7 +175,7 @@ public class TestGenerator {
 
 	}
 
-	public static void testAllCSV(FileExtension ext, Process process, int size, Unit unit) throws IOException {
+	private static void testAllCSV(FileExtension ext, Process process, int size, Unit unit) throws IOException {
 		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, Variation.NO_VARIATION);
 		long start = System.currentTimeMillis();
 		ACSVGenerator generator = new ACSVGenerator.SimpleCSVGenerator();

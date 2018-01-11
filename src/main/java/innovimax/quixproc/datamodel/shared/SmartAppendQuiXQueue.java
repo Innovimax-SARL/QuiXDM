@@ -18,10 +18,12 @@ import innovimax.quixproc.datamodel.IQuiXStream;
 public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	private static final int DEBUG_LEVEL = 0; // 0 none, 1 simple, 2 detailled
 	private static int counter = 0;
-	private static Set<Integer> open = Collections.synchronizedSet(new TreeSet<Integer>());
+	private static final Set<Integer> open = Collections.synchronizedSet(new TreeSet<Integer>());
 	private LinkedItem<T> head;
 	private LinkedItem<T> current;
-	private int readerCount, currentReader, rank;
+	private int readerCount;
+	private int currentReader;
+	private final int rank;
 
 	/**
 	 * Item of manul LinkedList
@@ -58,24 +60,24 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		// }
 		// }
 
-		public static final LinkedItem END = null;
+		static final LinkedItem END = null;
 		private final T event;
 		// private final BooleanLatch latch;
 		private Object lock;
 		//
 		private LinkedItem<T> next;
 
-		public LinkedItem(T event) {
+		LinkedItem(T event) {
 			this.event = event;
 			// this.latch = new BooleanLatch();
 			this.lock = new Object();
 		}
 
-		public T get() {
+		T get() {
 			return this.event;
 		}
 		// see to get around locking http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
-		public LinkedItem<T> getNext() {
+		LinkedItem<T> getNext() {
 			try {
 				// this.latch.await();
 				if (this.lock != null) {
@@ -97,7 +99,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 			}
 		}
 
-		public void setNext(LinkedItem<T> li) {
+		void setNext(LinkedItem<T> li) {
 			this.next = li;
 			// this.latch.signal();
 			synchronized (this.lock) {
@@ -194,7 +196,6 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		if (DEBUG_LEVEL > 0)
 			System.out.println("head " + this.head);
 		LocalReader<T> l = new LocalReader<T>(local_head);
-		IQuiXStream<T> result = l;
 		if (DEBUG_LEVEL > 0)
 			l.setName(this.rank + "/" + this.currentReader + "/" + this.readerCount);
 		this.currentReader++;
@@ -211,7 +212,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 					// System.out.println(
 					"readerCount < currentReader : " + this.readerCount + "," + this.currentReader);
 		}
-		return result;
+		return l;
 	}
 
 	private static final class LocalProxyReader<T> implements ProxyReader<T> {

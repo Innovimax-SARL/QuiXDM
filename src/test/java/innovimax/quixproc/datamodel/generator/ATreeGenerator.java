@@ -44,15 +44,15 @@ public abstract class ATreeGenerator extends AGenerator {
 		}
 	}
 
-	public abstract static class ANodeNameSizeGenerator extends ATreeGenerator {
+	protected abstract static class ANodeNameSizeGenerator extends ATreeGenerator {
 
 	}
 
-	public abstract static class AHighTextSizeGenerator extends ATreeGenerator {
+	protected abstract static class AHighTextSizeGenerator extends ATreeGenerator {
 
 	}
 
-	public abstract static class AHighDensityGenerator extends ATreeGenerator {
+	protected abstract static class AHighDensityGenerator extends ATreeGenerator {
 
 		@Override
 		protected int updatePattern(int current_pattern) {
@@ -71,7 +71,7 @@ public abstract class ATreeGenerator extends AGenerator {
 
 	}
 
-	public abstract static class AHighNodeDepthGenerator extends ATreeGenerator {
+	protected abstract static class AHighNodeDepthGenerator extends ATreeGenerator {
 
 		private int next_pattern = 0;
 

@@ -53,7 +53,7 @@ public class CSVQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 			if (!this.buffer.isEmpty()) {
 				return this.buffer.poll();
 			}
-			AQuiXEvent event = null;
+			AQuiXEvent event;
 			if (!this.iter.hasNext() && callback.getState() == State.START_SOURCE) {
 				// special case if the buffer is empty but the document has not
 				// been closed

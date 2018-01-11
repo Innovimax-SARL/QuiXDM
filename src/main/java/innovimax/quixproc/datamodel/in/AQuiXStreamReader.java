@@ -7,6 +7,6 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.in;
 
-public abstract class AQuiXStreamReader {
+abstract class AQuiXStreamReader {
  // empty
 }

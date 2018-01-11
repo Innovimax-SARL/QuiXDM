@@ -19,7 +19,7 @@ import net.sf.saxon.s9api.DocumentBuilder;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XdmNode;
 
-public class QuiXEventStream2XdmNodeConverter {
+class QuiXEventStream2XdmNodeConverter {
 	private final IQuiXEventStreamReader reader;
 	private final DocumentBuilder db;
 	private XdmNode node = null;

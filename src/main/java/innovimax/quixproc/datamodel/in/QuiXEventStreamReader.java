@@ -25,11 +25,11 @@ import innovimax.quixproc.datamodel.in.yaml.YAMLQuiXEventStreamReader;
 
 public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
-	protected final Iterator<AStreamSource> sources;
+	private final Iterator<AStreamSource> sources;
 	private final EnumMap<Type, AQuiXEventStreamReader> delegates;
 	private AQuiXEventStreamReader delegate;
 
-	public QuiXEventStreamReader(javax.xml.transform.Source... sources) {
+	private QuiXEventStreamReader(javax.xml.transform.Source... sources) {
 		this(AStreamSource.instances(sources));
 	}
 
@@ -37,7 +37,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 		this(Collections.singleton(ass));
 	}
 
-	public QuiXEventStreamReader(Iterable<AStreamSource> sources) {
+	private QuiXEventStreamReader(Iterable<AStreamSource> sources) {
 		this.sources = sources.iterator();
 		this.delegates = new EnumMap<Type, AQuiXEventStreamReader>(Type.class);
 		this.delegate = null;
@@ -81,7 +81,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 		return this.state != State.FINISH;
 	}
 
-	public static class AQuiXEventAndState {
+	static class AQuiXEventAndState {
 		final AQuiXEvent event;
 		final State state;
 

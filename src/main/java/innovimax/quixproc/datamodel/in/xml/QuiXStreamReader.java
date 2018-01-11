@@ -36,7 +36,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	private QuiXCharStream baseURI;
 	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
-	public QuiXStreamReader(Iterable<Source> sources) {
+	private QuiXStreamReader(Iterable<Source> sources) {
 		this.ifactory = XMLInputFactory.newFactory();
 		this.position = 0;
 		this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
@@ -216,8 +216,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 			// AQuiXEvent.getText(charBuffer.toString());
 			this.charBuffer.setLength(0);
 			// this.buffer.add(event);
-			QuiXToken text = QuiXToken.TEXT;
-			return text;
+			return QuiXToken.TEXT;
 		}
 		return event;
 	}

@@ -143,19 +143,24 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 		int eventType = next();
 		StringBuilder content = new StringBuilder();
 		while (eventType != XMLStreamConstants.END_ELEMENT) {
-			if (eventType == XMLStreamConstants.CHARACTERS || eventType == XMLStreamConstants.CDATA
-					|| eventType == XMLStreamConstants.SPACE || eventType == XMLStreamConstants.ENTITY_REFERENCE) {
-				content.append(getText());
-			} else if (eventType == XMLStreamConstants.PROCESSING_INSTRUCTION
-					|| eventType == XMLStreamConstants.COMMENT) {
-				// skipping
-			} else if (eventType == XMLStreamConstants.END_DOCUMENT) {
-				throw new XMLStreamException("unexpected end of document when reading element text content",
-						getLocation());
-			} else if (eventType == XMLStreamConstants.START_ELEMENT) {
-				throw new XMLStreamException("element text content may not contain START_ELEMENT", getLocation());
-			} else {
-				throw new XMLStreamException("Unexpected event type " + eventType, getLocation());
+			switch (eventType) {
+				case XMLStreamConstants.CHARACTERS:
+				case XMLStreamConstants.CDATA:
+				case XMLStreamConstants.SPACE:
+				case XMLStreamConstants.ENTITY_REFERENCE:
+					content.append(getText());
+					break;
+				case XMLStreamConstants.PROCESSING_INSTRUCTION:
+				case XMLStreamConstants.COMMENT:
+					// skipping
+					break;
+				case XMLStreamConstants.END_DOCUMENT:
+					throw new XMLStreamException("unexpected end of document when reading element text content",
+							getLocation());
+				case XMLStreamConstants.START_ELEMENT:
+					throw new XMLStreamException("element text content may not contain START_ELEMENT", getLocation());
+				default:
+					throw new XMLStreamException("Unexpected event type " + eventType, getLocation());
 			}
 			eventType = next();
 		}
@@ -218,7 +223,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		for (Attribute attribute : this.attributes) {
 			// TODO compare between String and QuiXCharStream
-			if (localName.equals(attribute.getLocalName()) && namespaceURI.equals(attribute.getURI()))
+			if (localName.equals(attribute.getLocalName().toString()) && namespaceURI.equals(attribute.getURI().toString()))
 				return attribute.getValue().toString();
 		}
 		return null;

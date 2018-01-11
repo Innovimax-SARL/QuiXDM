@@ -55,16 +55,12 @@ public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 		this.executor = Executors.newSingleThreadExecutor();
 
 		// Create a runnable for our parser thread
-		Runnable parser = new Runnable() {
-
-			@Override
-			public void run() {
-				// Call the parsing process.
-				// System.out.println("started thread before");
-				RDFDataMgr.parse(tripleStream, tis, Lang.N3);
-				// System.out.println("started thread after");
-			}
-		};
+		Runnable parser = () -> {
+            // Call the parsing process.
+            // System.out.println("started thread before");
+            RDFDataMgr.parse(tripleStream, tis, Lang.N3);
+            // System.out.println("started thread after");
+        };
 
 		// Start the parser on another thread
 		this.executor.execute(parser);
@@ -79,7 +75,7 @@ public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 			if (!this.buffer.isEmpty()) {
 				return this.buffer.poll();
 			}
-			AQuiXEvent event = null;
+			AQuiXEvent event;
 			if (!this.iter.hasNext() && callback.getState() == State.START_SOURCE) {
 				// special case if the buffer is empty but the document has not
 				// been closed

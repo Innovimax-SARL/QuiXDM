@@ -53,7 +53,7 @@ public abstract class AGenerator {
 	}
 
 	// 7BIT
-	protected Charset currentCharset = StandardCharsets.US_ASCII;
+	protected final Charset currentCharset = StandardCharsets.US_ASCII;
 
 	protected byte[] s2b(String s) {
 		return s.getBytes(this.currentCharset);
@@ -184,13 +184,13 @@ public abstract class AGenerator {
 	public class GeneratorQuiXEventStreamReader implements IQuiXEventStreamReader {
 		final long total;
 		final Variation variation;
-		QuiXEventStreamReaderState state;
-		AQuiXEvent[] buffer;
+		final QuiXEventStreamReaderState state;
+		final AQuiXEvent[] buffer;
 		int position;
 		int current_pattern;
-		long current_evsize = getStartEvent().length + getEndEvent().length;
+		final long current_evsize = getStartEvent().length + getEndEvent().length;
 
-		public GeneratorQuiXEventStreamReader(long size, Unit unit, Variation variation) {
+		GeneratorQuiXEventStreamReader(long size, Unit unit, Variation variation) {
 			this.state = QuiXEventStreamReaderState.START;
 			this.total = size * unit.value();
 			this.variation = variation;
@@ -238,7 +238,7 @@ public abstract class AGenerator {
 		END
 	}
 
-	public class GeneratorInputStream extends InputStream {
+	class GeneratorInputStream extends InputStream {
 
 		final byte[] start = getStart();
 		final byte[][] patterns = getPatterns();
@@ -247,12 +247,12 @@ public abstract class AGenerator {
 		long current_size = this.start.length + getEnd().length;
 		int current_pattern = -1;
 		int offset = -1;
-		byte[] buffer = null;
+		byte[] buffer;
 		InputStreamState state;
 		final long total;
 		final Variation variation;
 
-		public GeneratorInputStream(long size, Unit unit, Variation variation) {
+		GeneratorInputStream(long size, Unit unit, Variation variation) {
 			this.state = InputStreamState.START;
 			this.buffer = this.start;
 			// System.out.println("START : length : "+this.buffer.length+" :
@@ -369,7 +369,7 @@ public abstract class AGenerator {
 
 	}
 
-	public static String display(byte b) {
+	protected static String display(byte b) {
 		return Integer.toHexString(b & 0xFF) + "(" + Character.toString((char) (b & 0xFF)) + ")";
 	}
 

@@ -40,8 +40,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 			throw new QuiXException(e);
 		}
 		this.baseURI = QuiXCharStream.fromSequence(current.getSystemId());
-		AQuiXEvent event = AQuiXEvent.getStartDocument(this.baseURI);
-		return event;
+		return AQuiXEvent.getStartDocument(this.baseURI);
 	}
 
 	private QuiXCharStream charBuffer = QuiXCharStream.EMPTY;
@@ -52,7 +51,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 			if (!this.buffer.isEmpty()) {
 				return this.buffer.poll();
 			}
-			AQuiXEvent event = null;
+			AQuiXEvent event;
 			if (!this.sreader.hasNext() && callback.getState() == State.START_SOURCE) {
 				// special case if the buffer is empty but the document has not
 				// been closed

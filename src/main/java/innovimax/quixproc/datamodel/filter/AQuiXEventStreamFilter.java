@@ -36,6 +36,6 @@ public abstract class AQuiXEventStreamFilter implements IQuiXStream<IQuiXToken> 
 		this.stream.close();
 	}
 
-	public abstract IQuiXToken process(IQuiXToken item);
+	protected abstract IQuiXToken process(IQuiXToken item);
 
 }

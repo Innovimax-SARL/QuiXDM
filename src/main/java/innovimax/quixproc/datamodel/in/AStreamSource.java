@@ -23,18 +23,18 @@ public abstract class AStreamSource {
 		XML, JSON, YAML, HTML, CSV, RDF
 	}
 
-	protected final Type type;
+	final Type type;
 
-	protected AStreamSource(Type type) {
+	AStreamSource(Type type) {
 		this.type = type;
 	}
 
-	public static XMLStreamSource instance(Source source) {
+	private static XMLStreamSource instance(Source source) {
 		return new XMLStreamSource(source);
 	}
 
 	public static final class XMLStreamSource extends AStreamSource {
-		public final Source source;
+		final Source source;
 
 		XMLStreamSource(Source source) {
 			super(Type.XML);
@@ -49,7 +49,7 @@ public abstract class AStreamSource {
 	public abstract static class AJSONYAMLStreamSource extends AStreamSource {
 		private final InputStream is;
 
-		protected AJSONYAMLStreamSource(Type type, InputStream is) {
+		AJSONYAMLStreamSource(Type type, InputStream is) {
 			super(type);
 			this.is = is;
 		}
@@ -60,24 +60,24 @@ public abstract class AStreamSource {
 
 	}
 
-	public static class JSONStreamSource extends AJSONYAMLStreamSource {
+	static class JSONStreamSource extends AJSONYAMLStreamSource {
 
-		protected JSONStreamSource(InputStream is) {
+		JSONStreamSource(InputStream is) {
 			super(Type.JSON, is);
 		}
 
-		public static AStreamSource instance(InputStream is) {
+		static AStreamSource instance(InputStream is) {
 			return new JSONStreamSource(is);
 		}
 	}
 
-	public static class YAMLStreamSource extends AJSONYAMLStreamSource {
+	static class YAMLStreamSource extends AJSONYAMLStreamSource {
 
-		protected YAMLStreamSource(InputStream is) {
+		YAMLStreamSource(InputStream is) {
 			super(Type.YAML, is);
 		}
 
-		public static AStreamSource instance(InputStream is) {
+		static AStreamSource instance(InputStream is) {
 			return new YAMLStreamSource(is);
 		}
 
@@ -86,7 +86,7 @@ public abstract class AStreamSource {
 	public static class CSVStreamSource extends AStreamSource {
 		private final Reader r;
 
-		protected CSVStreamSource(Reader r) {
+		CSVStreamSource(Reader r) {
 			super(Type.CSV);
 			this.r = r;
 		}
@@ -104,7 +104,7 @@ public abstract class AStreamSource {
 	public static class RDFStreamSource extends AStreamSource {
 		private final TypedInputStream is;
 
-		protected RDFStreamSource(TypedInputStream is) {
+		RDFStreamSource(TypedInputStream is) {
 			super(Type.RDF);
 			this.is = is;
 		}

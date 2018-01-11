@@ -23,7 +23,7 @@ import innovimax.quixproc.datamodel.in.AStreamSource.AJSONYAMLStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
 
 public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamReader {
-	protected final JsonFactory ifactory;
+	final JsonFactory ifactory;
 	private JsonParser iparser;
 
 	protected AJSONYAMLQuiXEventStreamReader(JsonFactory factory) {
@@ -35,7 +35,7 @@ public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamRea
 		return load(((AJSONYAMLStreamSource) current).asInputStream());
 	}
 
-	protected AQuiXEvent load(InputStream current) throws QuiXException {
+	private AQuiXEvent load(InputStream current) throws QuiXException {
 		try {
 			this.iparser = this.ifactory.createParser(current);
 		} catch (IOException e) {

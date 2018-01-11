@@ -7,7 +7,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.event;
 
-public class QuiXValue {
+class QuiXValue {
 	private final String value;
 
 	public QuiXValue(String value) {

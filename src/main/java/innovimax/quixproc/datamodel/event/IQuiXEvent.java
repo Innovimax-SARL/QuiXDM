@@ -8,6 +8,6 @@
 package innovimax.quixproc.datamodel.event;
 
 @FunctionalInterface
-public interface IQuiXEvent {
+interface IQuiXEvent {
 	AQuiXEvent getEvent();
 }

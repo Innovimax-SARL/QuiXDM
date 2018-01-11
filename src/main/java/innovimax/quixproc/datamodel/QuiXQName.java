@@ -127,8 +127,8 @@ public class QuiXQName implements Serializable {
 	 * @throws IllegalArgumentException
 	 *             When <code>localPart</code> is {@code null}
 	 *
-	 * @see #QName(String namespaceURI, String localPart, String prefix)
-	 *      QName(String namespaceURI, String localPart, String prefix)
+	 * @see javax.xml.namespace.QName(String namespaceURI, String localPart, String prefix)
+	 *      javax.xml.namespace.QName(String namespaceURI, String localPart, String prefix)
 	 */
 	public QuiXQName(final QuiXCharStream namespaceURI, final QuiXCharStream localPart) {
 		this(namespaceURI, localPart, QuiXCharStream.DEFAULT_NS_PREFIX);

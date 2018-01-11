@@ -9,11 +9,11 @@ package innovimax.quixproc.datamodel;
 
 public class QuiXException extends RuntimeException {
 
-	public QuiXException() {
+	protected QuiXException() {
 		this(null, null);
 	}
 
-	public QuiXException(String message, Throwable cause) {
+	protected QuiXException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

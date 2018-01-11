@@ -23,7 +23,7 @@ public class QuiXConvertException extends QuiXException {
 		this(null, cause);
 	}
 
-	public QuiXConvertException(String message, Throwable cause) {
+	private QuiXConvertException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public final class SimpleGenerator {
+final class SimpleGenerator {
 
 	private static class SimpleStableInputStream extends InputStream {
 
