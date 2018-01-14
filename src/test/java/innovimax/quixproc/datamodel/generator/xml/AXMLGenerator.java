@@ -152,7 +152,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	private static byte nextStartName(final byte b, int incr) {
+	private static byte nextStartName(final byte b, final int incr) {
 		// System.out.println("nextStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		int incr1 = incr;
@@ -174,7 +174,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return r;
 	}
 
-	private static byte prevStartName(final byte b, int incr) {
+	private static byte prevStartName(final byte b, final int incr) {
 		// System.out.println("prevStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
 		int incr1 = incr;

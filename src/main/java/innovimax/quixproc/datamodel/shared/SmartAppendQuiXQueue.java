@@ -240,7 +240,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	}
 
 	@Override
-	public void setReaderCount(int count) {
+	public void setReaderCount(final int count) {
         int count1 = count;
         if (count1 < 1)
 			count1 = 1;

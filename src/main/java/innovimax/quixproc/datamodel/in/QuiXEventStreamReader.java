@@ -158,7 +158,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
 	public static void main(final String[] args) {
 
-		final IQuiXStream qesr = new QuiXEventStreamReader(
+		final IQuiXStream<AQuiXEvent> qesr = new QuiXEventStreamReader(
 				new StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
 				new StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml"));
 		while (qesr.hasNext()) {

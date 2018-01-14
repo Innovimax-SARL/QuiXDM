@@ -62,8 +62,18 @@ import javax.xml.namespace.QName;
  */
 public class QuiXQName implements Serializable {
 
+	/**
+	 * <p>
+	 * Namespace URI of this {@code QName}.
+	 * </p>
+	 */
 	private final QuiXCharStream namespaceURI;
 
+	/**
+	 * <p>
+	 * local part of this {@code QName}.
+	 * </p>
+	 */
 	private final QuiXCharStream localPart;
 
 	/**
@@ -245,10 +255,6 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * Namespace URI of this {@code QName}.
-	 * </p>
-	 */ /**
-	 * <p>
 	 * Get the Namespace URI of this {@code QName}.
 	 * </p>
 	 *
@@ -259,10 +265,6 @@ public class QuiXQName implements Serializable {
 	}
 
 	/**
-	 * <p>
-	 * local part of this {@code QName}.
-	 * </p>
-	 */ /**
 	 * <p>
 	 * Get the local part of this {@code QName}.
 	 * </p>
