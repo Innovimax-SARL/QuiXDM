@@ -12,10 +12,8 @@ import innovimax.quixproc.datamodel.generator.rdf.ARDFGenerator.SimpleRDFGenerat
 import innovimax.quixproc.datamodel.in.AStreamSource.CSVStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.RDFStreamSource;
 import java.lang.reflect.InvocationTargetException;
-import org.hamcrest.CoreMatchers;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Assert;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +25,6 @@ import org.junit.Test;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.IQuiXToken;
-import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.ValidQuiXTokenStream;
 import innovimax.quixproc.datamodel.generator.AGenerator;
 import innovimax.quixproc.datamodel.generator.AGenerator.FileExtension;

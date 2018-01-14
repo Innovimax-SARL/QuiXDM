@@ -121,14 +121,14 @@ class BReversibleRandom {
 	// ReversibleLCG(unsigned int seed) : x(seed){}
 	BReversibleRandom(final long seed) {
 		this.x = seed;
-		this.ainverse = extendedEuclidX(BigInteger.valueOf(this.A), BigInteger.valueOf(this.M)).longValue();
+		this.ainverse = extendedEuclidX(BigInteger.valueOf(A), BigInteger.valueOf(M)).longValue();
 	}
 
 	// unsigned int next() {
 	public int next() {
 		// nextx = (a * x + c) % m;
-		this.x = (this.A * this.x + this.C) & (this.M - 1);
-		return (int) (this.x >> this.D);
+		this.x = (A * this.x + C) & (M - 1);
+		return (int) (this.x >> D);
 	}
 
 	// unsigned int prev() {
@@ -136,13 +136,13 @@ class BReversibleRandom {
 
 		// const uint64_t ainverse = extendedEuclidX(A, M);
 		// prevx = (ainverse * (x - c)) mod m
-		this.x = this.ainverse * (this.x - this.C) & (this.M - 1);
-		return (int) (this.x >> this.D);
+		this.x = this.ainverse * (this.x - C) & (M - 1);
+		return (int) (this.x >> D);
 	}
 
 	// unsigned int max() const {
 	int max() {
-		return (int) ((this.M - 1) >> this.D);
+		return (int) ((M - 1) >> D);
 	}
 
 	// constexpr implementation of euclids algorithm
@@ -202,7 +202,7 @@ class BReversibleRandom {
 		public int next() {
 			// nextx = (a * x + c) % m;
 			this.x = this.A.multiply(this.x).add(this.C).mod(this.M.subtract(BigInteger.ONE));
-			return this.x.shiftRight(this.D).intValue();
+			return this.x.shiftRight(D).intValue();
 		}
 
 		// unsigned int prev() {
@@ -211,12 +211,12 @@ class BReversibleRandom {
 			// const uint64_t ainverse = extendedEuclidX(A, M);
 			// prevx = (ainverse * (x - c)) mod m
 			this.x = this.ainverse.multiply(this.x.subtract(this.C)).mod(this.M.subtract(BigInteger.ONE));
-			return this.x.shiftRight(this.D).intValue();
+			return this.x.shiftRight(D).intValue();
 		}
 
 		// unsigned int max() const {
 		int max() {
-			return this.M.subtract(BigInteger.ONE).shiftRight(this.D).intValue();
+			return this.M.subtract(BigInteger.ONE).shiftRight(D).intValue();
 		}
 
 		// constexpr implementation of euclids algorithm

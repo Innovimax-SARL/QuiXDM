@@ -57,7 +57,7 @@ final class SimpleGenerator {
 			i++;
 			if (i % 100000 == 0) {
 				final long now = System.currentTimeMillis();
-				System.out.println(String.valueOf(i * 1000 / (now - start)));
+				System.out.println(i * 1000 / (now - start));
 			}
 		}
 

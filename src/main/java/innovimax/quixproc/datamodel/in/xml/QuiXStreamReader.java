@@ -22,7 +22,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
 import innovimax.quixproc.datamodel.QuiXCharStream;
-import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.QuiXToken;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;

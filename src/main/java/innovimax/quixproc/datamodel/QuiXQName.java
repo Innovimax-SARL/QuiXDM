@@ -62,18 +62,8 @@ import javax.xml.namespace.QName;
  */
 public class QuiXQName implements Serializable {
 
-	/**
-	 * <p>
-	 * Namespace URI of this {@code QName}.
-	 * </p>
-	 */
 	private final QuiXCharStream namespaceURI;
 
-	/**
-	 * <p>
-	 * local part of this {@code QName}.
-	 * </p>
-	 */
 	private final QuiXCharStream localPart;
 
 	/**
@@ -255,6 +245,10 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
+	 * Namespace URI of this {@code QName}.
+	 * </p>
+	 */ /**
+	 * <p>
 	 * Get the Namespace URI of this {@code QName}.
 	 * </p>
 	 *
@@ -265,6 +259,10 @@ public class QuiXQName implements Serializable {
 	}
 
 	/**
+	 * <p>
+	 * local part of this {@code QName}.
+	 * </p>
+	 */ /**
 	 * <p>
 	 * Get the local part of this {@code QName}.
 	 * </p>
@@ -334,7 +332,7 @@ public class QuiXQName implements Serializable {
 
 		final QuiXQName qName = (QuiXQName) objectToTest;
 
-		return this.localPart.equals(qName.localPart) && this.namespaceURI.equals(qName.namespaceURI);
+		return this.getLocalPart().equals(qName.getLocalPart()) && this.getNamespaceURI().equals(qName.getNamespaceURI());
 	}
 
 	/**
@@ -357,7 +355,7 @@ public class QuiXQName implements Serializable {
 	 */
 	@Override
 	public final int hashCode() {
-		return this.namespaceURI.hashCode() ^ this.localPart.hashCode();
+		return this.getNamespaceURI().hashCode() ^ this.getLocalPart().hashCode();
 	}
 
 	/**
@@ -393,10 +391,10 @@ public class QuiXQName implements Serializable {
 	@Override
 	public String toString() {
 		// TODO convert XMLConstants to a local one
-		if (this.namespaceURI.equals(QuiXCharStream.NULL_NS_URI)) {
-			return this.localPart.toString();
+		if (this.getNamespaceURI().equals(QuiXCharStream.NULL_NS_URI)) {
+			return this.getLocalPart().toString();
 		}
-		return "{" + this.namespaceURI + '}' + this.localPart;
+		return "{" + this.getNamespaceURI() + '}' + this.getLocalPart();
 	}
 
 	/**
@@ -491,7 +489,7 @@ public class QuiXQName implements Serializable {
 	}
 
 	public QName asQName() {
-		return new QName(this.namespaceURI.toString(), this.localPart.toString(), this.prefix.toString());
+		return new QName(this.getNamespaceURI().toString(), this.getLocalPart().toString(), this.prefix.toString());
 	}
 
 }

@@ -222,7 +222,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		// TODO compare between String and QuiXCharStream
-		return this.attributes.stream().filter(attribute -> localName.equals(attribute.getLocalName().toString()) && namespaceURI.equals(attribute.getURI().toString())).findFirst().map(attribute -> attribute.getValue().toString()).orElse(null);
+		return this.attributes.stream().filter((Attribute attribute) -> localName.equals(attribute.getLocalName().toString()) && namespaceURI.equals(attribute.getURI().toString())).findFirst().map((Attribute attribute) -> attribute.getValue().toString()).orElse(null);
 	}
 
 	@Override

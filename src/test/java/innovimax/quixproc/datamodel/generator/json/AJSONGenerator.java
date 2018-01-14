@@ -7,11 +7,9 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.generator.json;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonToken;

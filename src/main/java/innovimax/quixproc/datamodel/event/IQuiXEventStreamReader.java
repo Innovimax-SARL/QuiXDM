@@ -9,7 +9,6 @@ package innovimax.quixproc.datamodel.event;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.IQuiXToken;
-import innovimax.quixproc.datamodel.QuiXException;
 
 public interface IQuiXEventStreamReader extends IQuiXStream<AQuiXEvent> {
 	default IQuiXStream<IQuiXToken> asIQuiXTokenStream() {

@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
 
-import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader.CallBack;

@@ -9,7 +9,6 @@ package innovimax.quixproc.datamodel.filter;
 
 import innovimax.quixproc.datamodel.IQuiXStream;
 import innovimax.quixproc.datamodel.IQuiXToken;
-import innovimax.quixproc.datamodel.QuiXException;
 
 public abstract class AQuiXEventStreamFilter implements IQuiXStream<IQuiXToken> {
 	private final IQuiXStream<IQuiXToken> stream;

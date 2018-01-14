@@ -7,7 +7,6 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.in.html;
 
-import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.in.AQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;

@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import innovimax.quixproc.datamodel.QuiXException;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AReversibleRandom.SimpleReversibleRandom;
@@ -376,7 +375,7 @@ public abstract class AGenerator {
 	}
 
 	protected static String display(final byte[] bytea) {
-		return IntStream.range(0, bytea.length).mapToObj(i -> display(bytea[i])).collect(Collectors.joining(", ", "[", "]"));
+		return IntStream.range(0, bytea.length).mapToObj((int i) -> display(bytea[i])).collect(Collectors.joining(", ", "[", "]"));
 	}
 
 	protected AGenerator() {
