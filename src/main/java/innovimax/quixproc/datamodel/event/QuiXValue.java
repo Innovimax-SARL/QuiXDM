@@ -10,7 +10,7 @@ package innovimax.quixproc.datamodel.event;
 class QuiXValue {
 	private final String value;
 
-	public QuiXValue(String value) {
+	public QuiXValue(final String value) {
 		this.value = value;
 	}
 

@@ -14,11 +14,11 @@ import innovimax.quixproc.datamodel.generator.ATreeGenerator.SpecialType;
 import innovimax.quixproc.datamodel.generator.ATreeGenerator.TreeType;
 
 public class TreeGeneratorRuntimeExtractor {
-	public static void process(EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>> map,
-			Class<?> c) {
-		for (Class<?> cc : c.getClasses()) {
+	public static void process(final EnumMap<FileExtension, EnumMap<TreeType, EnumMap<SpecialType, Class<?>>>> map,
+                               final Class<?> c) {
+		for (final Class<?> cc : c.getClasses()) {
 
-			for (TreeGenerator generator : cc.getAnnotationsByType(TreeGenerator.class)) {
+			for (final TreeGenerator generator : cc.getAnnotationsByType(TreeGenerator.class)) {
 				// file extension
 				final EnumMap<TreeType, EnumMap<SpecialType, Class<?>>> type;
 				if (map.containsKey(generator.ext())) {
@@ -45,7 +45,7 @@ public class TreeGeneratorRuntimeExtractor {
 		System.out.println(map);
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		// process(AXMLGenerator.class);
 	}
 }

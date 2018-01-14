@@ -23,22 +23,22 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		protected byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			return bs[pos];
 		}
 
 		@Override
-		protected boolean notFinished(long current_size, int current_pattern, long total) {
+		protected boolean notFinished(final long current_size, final int current_pattern, final long total) {
 			return current_size < total;
 		}
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			return 0;
 		}
 
 		@Override
-		protected long updateSize(long current_size, int current_pattern) {
+		protected long updateSize(final long current_size, final int current_pattern) {
 			return current_size + this.patterns[current_pattern].length;
 		}
 
@@ -60,7 +60,7 @@ public abstract class AYAMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}

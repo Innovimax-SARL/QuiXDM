@@ -25,7 +25,7 @@ import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 public abstract class AJSONGenerator extends ATreeGenerator {
 
 	private static byte[] initNextChar() {
-		byte[] results = new byte[128];
+		final byte[] results = new byte[128];
 		for (int i = 0; i < results.length; i++) {
 			results[i] = (byte) nextAllowedChar(((i & 0x7F) + 1) & 0x7F);
 		}
@@ -36,14 +36,14 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 	private static final byte[] nextDigit = initNextDigit();
 
 	private static byte[] initNextDigit() {
-		byte[] results = new byte[10];
+		final byte[] results = new byte[10];
 		for (int i = 0; i < results.length; i++) {
 			results[i] = (byte) ('0' + ((i + 1) % 10));
 		}
 		return results;
 	}
 
-	private static int nextAllowedChar(int b) {
+	private static int nextAllowedChar(final int b) {
 		if (b <= 0x20) {
 			// if (b <= 0xD) {
 			// if (b <= 0xa) {
@@ -73,7 +73,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		final byte character;
 		int end;
 
-		BoxedArray(byte[][] array, int selector, int start) {
+		BoxedArray(final byte[][] array, final int selector, final int start) {
 			this.array = array;
 			this.selector = selector;
 			this.start = start;
@@ -84,8 +84,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		void nextUnique() {
 			int pos = this.end;
 			while (pos >= this.start) {
-				byte r = this.array[this.selector][pos];
-				byte s = nextChar(r, 0);
+				final byte r = this.array[this.selector][pos];
+				final byte s = nextChar(r, 0);
 				this.array[this.selector][pos] = s;
 				if (s != this.character) {
 					return;
@@ -95,7 +95,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 				pos--;
 			}
 			// if here we have to extend the buffer
-			byte[] replace = new byte[this.array[this.selector].length + 1];
+			final byte[] replace = new byte[this.array[this.selector].length + 1];
 			System.arraycopy(this.array[this.selector], 0, replace, 0, this.start + 1);
 			System.arraycopy(this.array[this.selector], this.start, replace, this.start + 1,
 					replace.length - this.start - 1);
@@ -104,16 +104,16 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 	}
 
-	private static byte nextChar(byte b, int incr) {
+	private static byte nextChar(final byte b, final int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextChar[(b + incr) & 0x7F];
+		final byte r = nextChar[(b + incr) & 0x7F];
 		// System.out.println("nextChar : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	static byte nextDigit(byte b, int incr) {
+	static byte nextDigit(final byte b, final int incr) {
 		return nextDigit[(b + incr) % 10];
 	}
 
@@ -153,7 +153,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
@@ -175,18 +175,18 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinished(long current_size, int current_pattern, long total) {
+		protected boolean notFinished(final long current_size, final int current_pattern, final long total) {
 
 			return current_size < total;
 		}
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			return 0;
 		}
 
 		@Override
-		protected long updateSize(long current_size, int current_pattern) {
+		protected long updateSize(final long current_size, final int current_pattern) {
 			return current_size + 1;
 		}
 
@@ -197,7 +197,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -262,7 +262,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			if (current_pattern == 2)
 				return 2;
 			if (current_pattern == 1)
@@ -274,7 +274,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			// int incr = 0;
 			// IMPORTANT : the uniqueness is mandatory
 			// it doesn't depends on applyRandom hence
@@ -310,7 +310,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -350,7 +350,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			// int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
@@ -406,7 +406,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -454,7 +454,7 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -478,8 +478,8 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		}
 	}
 
-	public static void main(String[] args)
-			throws JsonParseException, IOException, InstantiationException, IllegalAccessException {
+	public static void main(final String[] args)
+			throws Exception {
 
 		/*
 		 * final byte[][] patterns = { // empty object is allowed
@@ -491,20 +491,20 @@ public abstract class AJSONGenerator extends ATreeGenerator {
 		 * 
 		 * System.out.println(display(patterns[1]));
 		 */
-		JsonFactory f = new JsonFactory();
+		final JsonFactory f = new JsonFactory();
 		f.disable(Feature.ALLOW_COMMENTS);
 		f.disable(Feature.ALLOW_SINGLE_QUOTES);
 		// AGenerator generator = instance(ATreeGenerator.Type.HIGH_DENSITY);
-		AGenerator generator = instance(FileExtension.JSON, TreeType.HIGH_NODE_DEPTH, SpecialType.STANDARD);
+		final AGenerator generator = instance(FileExtension.JSON, TreeType.HIGH_NODE_DEPTH, SpecialType.STANDARD);
 
-		InputStream is = generator.getInputStream(50, Unit.MBYTE, Variation.NO_VARIATION);
+		final InputStream is = generator.getInputStream(50, Unit.MBYTE, Variation.NO_VARIATION);
 		if (false) {
 			int c;
 			while ((c = is.read()) != -1) {
 				System.out.println(display((byte) (c & 0xFF)));
 			}
 		} else {
-			JsonParser p = f.createParser(is);
+			final JsonParser p = f.createParser(is);
 			p.enable(Feature.STRICT_DUPLICATE_DETECTION);
 
 			while (p.nextToken() != JsonToken.END_OBJECT) {

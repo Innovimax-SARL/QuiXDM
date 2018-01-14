@@ -7,6 +7,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.in;
 
+import innovimax.quixproc.datamodel.IQuiXStream;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
@@ -22,6 +23,8 @@ import innovimax.quixproc.datamodel.in.json.JSONQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.rdf.RDFQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.xml.XMLQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.in.yaml.YAMLQuiXEventStreamReader;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
 
 public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 
@@ -29,22 +32,22 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 	private final EnumMap<Type, AQuiXEventStreamReader> delegates;
 	private AQuiXEventStreamReader delegate;
 
-	private QuiXEventStreamReader(javax.xml.transform.Source... sources) {
+	private QuiXEventStreamReader(final Source... sources) {
 		this(AStreamSource.instances(sources));
 	}
 
-	public QuiXEventStreamReader(AStreamSource ass) {
+	public QuiXEventStreamReader(final AStreamSource ass) {
 		this(Collections.singleton(ass));
 	}
 
-	private QuiXEventStreamReader(Iterable<AStreamSource> sources) {
+	private QuiXEventStreamReader(final Iterable<AStreamSource> sources) {
 		this.sources = sources.iterator();
 		this.delegates = new EnumMap<Type, AQuiXEventStreamReader>(Type.class);
 		this.delegate = null;
 	}
 
-	private AQuiXEvent loadSource() throws QuiXException {
-		AStreamSource current = this.sources.next();
+	private AQuiXEvent loadSource() {
+		final AStreamSource current = this.sources.next();
 		if (this.delegates.containsKey(current.type)) {
 			this.delegate = this.delegates.get(current.type);
 			this.delegate.reinitialize(current);
@@ -85,7 +88,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 		final AQuiXEvent event;
 		final State state;
 
-		public AQuiXEventAndState(AQuiXEvent event, State state) {
+		public AQuiXEventAndState(final AQuiXEvent event, final State state) {
 			this.event = event;
 			this.state = state;
 		}
@@ -98,7 +101,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 	private State state = State.INIT;
 
 	@Override
-	public void setState(State state) {
+	public void setState(final State state) {
 		this.state = state;
 	}
 
@@ -108,7 +111,7 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 	}
 
 	@Override
-	public AQuiXEvent next() throws QuiXException {
+	public AQuiXEvent next() {
 		// System.out.println(state);
 		final AQuiXEvent event;
 		switch (this.state) {
@@ -137,28 +140,28 @@ public class QuiXEventStreamReader implements IQuiXEventStreamReader, CallBack {
 	}
 
 	@Override
-	public AQuiXEvent processEndSource() throws QuiXException {
+	public AQuiXEvent processEndSource() {
 		if (this.sources.hasNext()) {
 			// there is still sources
 			return loadSource();
 		}
-		AQuiXEvent event = AQuiXEvent.getEndSequence();
+		final AQuiXEvent event = AQuiXEvent.getEndSequence();
 		this.state = State.FINISH;
 		return event;
 	}
 
 	@Override
 	public void close() {
-		for (AQuiXEventStreamReader aqxsr : this.delegates.values()) {
+		for (final AQuiXEventStreamReader aqxsr : this.delegates.values()) {
 			aqxsr.close();
 		}
 	}
 
-	public static void main(String[] args) throws QuiXException {
+	public static void main(final String[] args) {
 
-		QuiXEventStreamReader qesr = new QuiXEventStreamReader(
-				new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
-				new javax.xml.transform.stream.StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml"));
+		final IQuiXStream qesr = new QuiXEventStreamReader(
+				new StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
+				new StreamSource("/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml"));
 		while (qesr.hasNext()) {
 			System.out.println(qesr.next());
 		}

@@ -33,10 +33,10 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 		this.ifactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
 	}
 
-	private AQuiXEvent load(Source current) throws QuiXException {
+	private AQuiXEvent load(final Source current) {
 		try {
 			this.sreader = this.ifactory.createXMLStreamReader(current);
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			throw new QuiXException(e);
 		}
 		this.baseURI = QuiXCharStream.fromSequence(current.getSystemId());
@@ -46,7 +46,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 	private QuiXCharStream charBuffer = QuiXCharStream.EMPTY;
 
 	@Override
-	public AQuiXEvent process(CallBack callback) throws QuiXException {
+	public AQuiXEvent process(final CallBack callback) {
 		try {
 			if (!this.buffer.isEmpty()) {
 				return this.buffer.poll();
@@ -63,7 +63,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 				return callback.processEndSource();
 			}
 			while (true) {
-				int code = this.sreader.next();
+				final int code = this.sreader.next();
 				switch (code) {
 				case XMLStreamConstants.START_DOCUMENT:
 					// System.out.println("START_DOCUMENT");
@@ -144,7 +144,7 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 					break;
 				}
 			}
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			throw new QuiXException(e);
 		}
 	}
@@ -157,9 +157,9 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 	 * @param event
 	 * @return
 	 */
-	private AQuiXEvent updateText(AQuiXEvent event) {
+	private AQuiXEvent updateText(final AQuiXEvent event) {
 		if (!this.charBuffer.isEmpty()) {
-			AQuiXEvent text = AQuiXEvent.getText(this.charBuffer);
+			final AQuiXEvent text = AQuiXEvent.getText(this.charBuffer);
 			this.charBuffer = QuiXCharStream.EMPTY;
 			this.buffer.add(event);
 			return text;
@@ -171,13 +171,13 @@ public class XMLQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 	public void close() {
 		try {
 			this.sreader.close();
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
+	protected AQuiXEvent load(final AStreamSource current) {
 		return load(((XMLStreamSource) current).asSource());
 	}
 }

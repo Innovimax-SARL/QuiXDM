@@ -14,17 +14,17 @@ import innovimax.quixproc.datamodel.QuiXException;
 public abstract class AQuiXEventStreamFilter implements IQuiXStream<IQuiXToken> {
 	private final IQuiXStream<IQuiXToken> stream;
 
-	protected AQuiXEventStreamFilter(IQuiXStream<IQuiXToken> stream) {
+	protected AQuiXEventStreamFilter(final IQuiXStream<IQuiXToken> stream) {
 		this.stream = stream;
 	}
 
 	@Override
-	public boolean hasNext() throws QuiXException {
+	public boolean hasNext() {
 		return this.stream.hasNext();
 	}
 
 	@Override
-	public IQuiXToken next() throws QuiXException {
+	public IQuiXToken next() {
 		IQuiXToken item;
 		while ((item = process(this.stream.next().getType())) == null)
 			/* NOP */;

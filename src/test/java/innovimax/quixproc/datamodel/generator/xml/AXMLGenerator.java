@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.EnumSet;
 
 import javax.xml.stream.XMLInputFactory;
@@ -31,7 +32,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	private static final byte[] nextName = initNextName(false);
 	private static final byte[] prevStartName = initPrevStartName();
 
-	private static int nextAllowedChar(int b, boolean attributeValue) {
+	private static int nextAllowedChar(final int b, final boolean attributeValue) {
 		if (b <= 0x20) {
 			if (b <= 0xD) {
 				if (b <= 0xa) {
@@ -58,7 +59,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return b;
 	}
 
-	private static int nextAllowedName(int b, boolean startName) {
+	private static int nextAllowedName(final int b, final boolean startName) {
 		// NameStartChar ::= "[A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] |
 		// [#xF8
 		// NameChar ::= NameStartChar | "-" | "." | [0-9] | #xB7 |
@@ -108,16 +109,16 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		return b;
 	}
 
-	private static byte[] initNextChar(boolean attributeValue) {
-		byte[] results = new byte[128];
+	private static byte[] initNextChar(final boolean attributeValue) {
+		final byte[] results = new byte[128];
 		for (int i = 0; i < results.length; i++) {
 			results[i] = (byte) nextAllowedChar(((i & 0x7F) + 1) & 0x7F, attributeValue);
 		}
 		return results;
 	}
 
-	private static byte[] initNextName(boolean startName) {
-		byte[] results = new byte[128];
+	private static byte[] initNextName(final boolean startName) {
+		final byte[] results = new byte[128];
 		for (int i = 0; i < results.length; i++) {
 			results[i] = (byte) nextAllowedName(((i & 0x7F) + 1) & 0x7F, startName);
 		}
@@ -125,61 +126,63 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 	}
 
 	private static byte[] initPrevStartName() {
-		byte[] results = new byte[128];
+		final byte[] results = new byte[128];
 		for (int i = results.length; i > 0; i--) {
-			int r = nextAllowedName(((i & 0x7F) + 1) & 0x7F, true);
+			final int r = nextAllowedName(((i & 0x7F) + 1) & 0x7F, true);
 			results[r] = (byte) i;
 		}
-		results[0x41] = (byte) 0x7a;
+		results[0x41] = 0x7a;
 		return results;
 	}
 
-	private static byte nextChar(byte b, int incr) {
+	private static byte nextChar(final byte b, final int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextChar[(b + incr) & 0x7F];
+		final byte r = nextChar[(b + incr) & 0x7F];
 		// System.out.println("nextChar : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte nextAttributeValue(byte b, int incr) {
+	private static byte nextAttributeValue(final byte b, final int incr) {
 		// System.out.println("nextChar : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextAttributeValue[(b + incr) & 0x7F];
+		final byte r = nextAttributeValue[(b + incr) & 0x7F];
 		// System.out.println("nextChar : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte nextStartName(byte b, int incr) {
+	private static byte nextStartName(final byte b, int incr) {
 		// System.out.println("nextStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
+		int incr1 = incr;
 		byte r = b;
 		do {
 			r = nextStartName[r & 0x7F];
-		} while (incr-- > 0);
+		} while (incr1-- > 0);
 		// System.out.println("nextStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte nextName(byte b, int incr) {
+	private static byte nextName(final byte b, final int incr) {
 		// System.out.println("nextName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
-		byte r = nextName[(b + incr) & 0x7F];
+		final byte r = nextName[(b + incr) & 0x7F];
 		// System.out.println("nextName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
 	}
 
-	private static byte prevStartName(byte b, int incr) {
+	private static byte prevStartName(final byte b, int incr) {
 		// System.out.println("prevStartName : "+Integer.toHexString(b &
 		// 0xFF)+"("+Character.toString((char) (b& 0xFF))+")" );
+		int incr1 = incr;
 		byte r = b;
 		do {
 			r = prevStartName[r & 0x7F];
-		} while (incr-- > 0);
+		} while (incr1-- > 0);
 		// System.out.println("prevStartName : "+Integer.toHexString(r &
 		// 0xFF)+"("+Character.toString((char) (r& 0xFF))+")" );
 		return r;
@@ -209,7 +212,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
@@ -231,18 +234,18 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinished(long current_size, int current_pattern, long total) {
+		protected boolean notFinished(final long current_size, final int current_pattern, final long total) {
 
 			return current_size < total;
 		}
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			return 0;
 		}
 
 		@Override
-		protected long updateSize(long current_size, int current_pattern) {
+		protected long updateSize(final long current_size, final int current_pattern) {
 			return current_size + 1;
 		}
 
@@ -253,7 +256,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -300,7 +303,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
@@ -331,7 +334,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -381,7 +384,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		@Override
 		protected int getPatternsLength() {
 
-			int result = this.patterns[0].length + this.patterns[1].length;
+			final int result = this.patterns[0].length + this.patterns[1].length;
 			// System.out.println("get patterns length " +result);
 			return result;
 		}
@@ -390,7 +393,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		boolean directionForward = true;
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
@@ -433,7 +436,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -489,8 +492,9 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		boolean directionForward = true;
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
-			int incr = 0, incr2 = 0;
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
+			int incr = 0;
+			int incr2 = 0;
 			switch (variation) {
 			case NO_VARIATION:
 				return bs[pos];
@@ -535,7 +539,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -578,22 +582,22 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinished(long current_size, int current_pattern, long total) {
+		protected boolean notFinished(final long current_size, final int current_pattern, final long total) {
 			return current_size < total;
 		}
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			return 0;
 		}
 
 		@Override
-		protected long updateSize(long current_size, int current_pattern) {
+		protected long updateSize(final long current_size, final int current_pattern) {
 			return current_size + 1;
 		}
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
@@ -616,7 +620,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -664,7 +668,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		private long loop = 0;
 
 		@Override
-		protected boolean notFinished(long current_size, int current_pattern, long total) {
+		protected boolean notFinished(final long current_size, final int current_pattern, final long total) {
 			// System.out.println(current_size + ", "+current_pattern+",
 			// "+total);
 			if (current_size + this.patterns[1].length < total) {
@@ -689,17 +693,17 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		int next_pattern = 0;
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			return this.next_pattern;
 		}
 
 		@Override
-		protected long updateSize(long current_size, int current_pattern) {
+		protected long updateSize(final long current_size, final int current_pattern) {
 			return current_size + (current_pattern == 0 ? 2 : 0);
 		}
 
 		@Override
-		public byte[] applyVariation(Variation variation, byte[][] bs, int pos) {
+		public byte[] applyVariation(final Variation variation, final byte[][] bs, final int pos) {
 			int incr = 0;
 			switch (variation) {
 			case NO_VARIATION:
@@ -734,7 +738,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		}
 
 		@Override
-		protected boolean notFinishedEvent(long current_size, int current_pattern, long total) {
+		protected boolean notFinishedEvent(final long current_size, final int current_pattern, final long total) {
 			// TODO Auto-generated method stub
 			return false;
 		}
@@ -759,17 +763,17 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 
 	}
 
-	private static void call(TreeType gtype, SpecialType special, int size, Unit unit)
-			throws IOException, XMLStreamException, InstantiationException, IllegalAccessException {
-		AGenerator generator = instance(FileExtension.XML, gtype, special);
+	private static void call(final TreeType gtype, final SpecialType special, final int size, final Unit unit)
+			throws IOException, XMLStreamException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+		final AGenerator generator = instance(FileExtension.XML, gtype, special);
 		call(generator, gtype.name(), size, unit);
 	}
 
-	private static void call(AGenerator generator, String gtypename, int size, Unit unit)
+	private static void call(final AGenerator generator, final String gtypename, final int size, final Unit unit)
 			throws IOException, XMLStreamException {
-		long start = System.currentTimeMillis();
+		final long start = System.currentTimeMillis();
 		if (USE_STREAM) {
-			InputStream is = generator.getInputStream(size, unit, VARIATION);
+			final InputStream is = generator.getInputStream(size, unit, VARIATION);
 			switch (PROCESS) {
 			case READ_CHAR:
 				int c;
@@ -778,14 +782,15 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 				}
 				break;
 			case READ_BUFFER:
-				byte[] b = new byte[1024];
-				while ((c = is.read(b)) != -1) {
-					// System.out.println(display((byte) (c & 0xFF)));
+				final byte[] b = new byte[1024];
+				int d;
+				while ((d = is.read(b)) != -1) {
+					// System.out.println(display((byte) (d & 0xFF)));
 				}
 				break;
 			case PARSE:
-				XMLInputFactory xif = XMLInputFactory.newFactory();
-				XMLStreamReader xsr = xif.createXMLStreamReader(is);
+				final XMLInputFactory xif = XMLInputFactory.newFactory();
+				final XMLStreamReader xsr = xif.createXMLStreamReader(is);
 				while (xsr.hasNext()) {
 					xsr.next();
 				}
@@ -793,7 +798,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			default:
 			}
 		} else {
-			File f = new File(
+			final File f = new File(
 					"/Users/innovimax/tmp/quixdm/" + gtypename.toLowerCase() + "-" + size + unit.display() + ".xml");
 			generator.generate(f, size, unit, VARIATION);
 			System.out.print("File : " + f.getName() + "\tSize : " + f.length() + "\t\t");
@@ -801,8 +806,7 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 		System.out.println("Time : " + (System.currentTimeMillis() - start));
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, IOException, XMLStreamException,
-			InstantiationException, IllegalAccessException {
+	public static void main(final String[] args) throws Exception {
 		System.out.println("nextChar\t: " + display(nextChar));
 		System.out.println("nextAttributeValue\t: " + display(nextAttributeValue));
 		System.out.println("nextStartName\t: " + display(nextStartName));
@@ -814,12 +818,12 @@ public abstract class AXMLGenerator extends ATreeGenerator {
 			call(TreeType.HIGH_NODE_DEPTH, null, 201, Unit.MBYTE);
 			// call(ATreeGenerator.Type.HIGH_NODE_DEPTH, null, 112, Unit.MBYTE);
 		} else {
-			for (TreeType gtype : EnumSet.of(TreeType.HIGH_NODE_NAME_SIZE, TreeType.HIGH_NODE_NAME_SIZE,
+			for (final TreeType gtype : EnumSet.of(TreeType.HIGH_NODE_NAME_SIZE, TreeType.HIGH_NODE_NAME_SIZE,
 					TreeType.HIGH_NODE_DENSITY, TreeType.HIGH_NODE_DEPTH)) {
-				for (SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype)) {
-					for (Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
-						int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
-						for (int i : values) {
+				for (final SpecialType stype : SpecialType.allowedModifiers(FileExtension.XML, gtype)) {
+					for (final Unit unit : EnumSet.of(Unit.BYTE, Unit.KBYTE, Unit.MBYTE, Unit.GBYTE)) {
+						final int[] values = { 1, 2, 5, 10, 20, 50, 100, 200, 500 };
+						for (final int i : values) {
 							if (unit == Unit.GBYTE && i > 1)
 								continue;
 							call(gtype, stype, i, unit);

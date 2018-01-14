@@ -15,19 +15,19 @@ import innovimax.quixproc.datamodel.in.AStreamSource;
 public class HTMLQuiXEventStreamReader extends AQuiXEventStreamReader {
 
 	@Override
-	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
+	protected AQuiXEvent load(final AStreamSource current) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected AQuiXEvent process(CallBack callback) throws QuiXException {
+	protected AQuiXEvent process(final CallBack callback) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void reinitialize(AStreamSource current) {
+	public void reinitialize(final AStreamSource current) {
 		// TODO Auto-generated method stub
 
 	}

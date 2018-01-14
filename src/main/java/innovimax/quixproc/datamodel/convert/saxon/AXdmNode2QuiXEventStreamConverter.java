@@ -23,7 +23,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 	private static int counter = 1;
 //	private final int rank = counter++;
 
-	protected AXdmNode2QuiXEventStreamConverter(ISimpleQuiXQueue<AQuiXEvent> doc, XdmNode node) {
+	protected AXdmNode2QuiXEventStreamConverter(final ISimpleQuiXQueue<AQuiXEvent> doc, final XdmNode node) {
 		this.doc = doc;
 		this.node = node;
 	}
@@ -37,9 +37,9 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 			this.doc.close();
 			endProcess();
 			this.running = false;
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			throw e;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -54,7 +54,7 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 
 	private void process() {
 		this.doc.append(AQuiXEvent.getStartSequence());
-		String uri = String.valueOf(this.node.getDocumentURI());
+		final String uri = String.valueOf(this.node.getDocumentURI());
 		// System.out.println("---------->Document URI"+uri);
 		this.doc.append(AQuiXEvent.getStartDocument(QuiXCharStream.fromSequence(uri)));
 		processnode(this.node);
@@ -62,12 +62,12 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 		this.doc.append(AQuiXEvent.getEndSequence());
 	}
 
-	private void processnode(XdmNode localnode) {
+	private void processnode(final XdmNode localnode) {
 		switch (localnode.getNodeKind()) {
 		case DOCUMENT:
 			// do nothing
-			for (XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD); iter.hasNext();) {
-				XdmNode item = (XdmNode) iter.next();
+			for (final XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD); iter.hasNext();) {
+				final XdmNode item = (XdmNode) iter.next();
 				processnode(item);
 			}
 			break;
@@ -77,12 +77,12 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 							QuiXCharStream.fromSequence(localnode.getNodeName().getNamespaceURI()),
 							QuiXCharStream.fromSequence(localnode.getNodeName().getPrefix())));
 			namespaceProcess(localnode);
-			for (XdmSequenceIterator iter = localnode.axisIterator(Axis.ATTRIBUTE); iter.hasNext();) {
-				XdmNode item = (XdmNode) iter.next();
+			for (final XdmSequenceIterator iter = localnode.axisIterator(Axis.ATTRIBUTE); iter.hasNext();) {
+				final XdmNode item = (XdmNode) iter.next();
 				processnode(item);
 			}
-			for (XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD); iter.hasNext();) {
-				XdmNode item = (XdmNode) iter.next();
+			for (final XdmSequenceIterator iter = localnode.axisIterator(Axis.CHILD); iter.hasNext();) {
+				final XdmNode item = (XdmNode) iter.next();
 				processnode(item);
 			}
 			this.doc.append(
@@ -113,15 +113,15 @@ public abstract class AXdmNode2QuiXEventStreamConverter implements Runnable {
 		}
 	}
 
-	private void namespaceProcess(XdmNode node) {
-		NodeInfo inode = node.getUnderlyingNode();
-		NamespaceBinding[] inscopeNS = inode.getDeclaredNamespaces(null);
+	private void namespaceProcess(final XdmNode node) {
+		final NodeInfo inode = node.getUnderlyingNode();
+		final NamespaceBinding[] inscopeNS = inode.getDeclaredNamespaces(null);
 		// NamespaceIterator.getInScopeNamespaceCodes(inode);
 
 		if (inscopeNS.length > 0) {
-			for (NamespaceBinding ns : inscopeNS) {
-				String pfx = ns.getPrefix();
-				String uri = ns.getURI();
+			for (final NamespaceBinding ns : inscopeNS) {
+				final String pfx = ns.getPrefix();
+				final String uri = ns.getURI();
 				this.doc.append(
 						AQuiXEvent.getNamespace(QuiXCharStream.fromSequence(pfx), QuiXCharStream.fromSequence(uri)));
 			}

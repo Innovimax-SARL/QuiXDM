@@ -19,40 +19,39 @@ public class NodeKindFilter extends AQuiXEventStreamFilter {
 
 	private final EnumSet<Kind> enumset;
 
-	public NodeKindFilter(IQuiXStream<IQuiXToken> stream, EnumSet<Kind> enumset) {
+	public NodeKindFilter(final IQuiXStream<IQuiXToken> stream, final EnumSet<Kind> enumset) {
 		super(stream);
 		this.enumset = enumset;
 	}
 
 	@Override
-	public IQuiXToken process(IQuiXToken item) {
+	public IQuiXToken process(final IQuiXToken item) {
 		// We cannot extends the list of Kind in order to be able to assert that
 		// this process terminate
 		switch (item.getType()) {
 		case ATTRIBUTE:
 			if (this.enumset.contains(Kind.ATTRIBUTE))
 				return null;
-			break;
+			return item;
 		case TEXT:
 			if (this.enumset.contains(Kind.TEXT))
 				return null;
-			break;
+			return item;
 		case COMMENT:
 			if (this.enumset.contains(Kind.COMMENT))
 				return null;
-			break;
+			return item;
 		case NAMESPACE:
 			if (this.enumset.contains(Kind.NAMESPACE))
 				return null;
-			break;
+			return item;
 		case PROCESSING_INSTRUCTION:
 			if (this.enumset.contains(Kind.PI))
 				return null;
-			break;
+			return item;
 		default:
-			break;
+			return item;
 		}
-		return item;
 	}
 
 }

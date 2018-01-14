@@ -25,21 +25,19 @@ import innovimax.quixproc.datamodel.in.AQuiXEventBufferStreamReader;
 import innovimax.quixproc.datamodel.in.AStreamSource;
 import innovimax.quixproc.datamodel.in.AStreamSource.RDFStreamSource;
 import innovimax.quixproc.datamodel.in.QuiXEventStreamReader.State;
+import org.apache.jena.riot.system.StreamRDF;
 
 public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 	// private PipedRDFIterator<Tuple<Node>> iter;
 	private PipedRDFIterator<Triple> iter;
 	private ExecutorService executor;
 
-	public RDFQuiXEventStreamReader() {
-	}
-
 	@Override
-	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
+	protected AQuiXEvent load(final AStreamSource current) {
 		return load((RDFStreamSource) current);
 	}
 
-	private AQuiXEvent load(RDFStreamSource source) throws QuiXException {
+	private AQuiXEvent load(final RDFStreamSource source) {
 		// Create a PipedRDFStream to accept input and a PipedRDFIterator to
 		// consume it
 		// You can optionally supply a buffer size here for the
@@ -49,13 +47,13 @@ public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 		this.iter = new PipedRDFIterator<Triple>();
 		// final PipedRDFStream<Tuple<Node>> tripleStream = new
 		// PipedTuplesStream(this.iter);
-		final PipedRDFStream<Triple> tripleStream = new PipedTriplesStream(this.iter);
+		final StreamRDF tripleStream = new PipedTriplesStream(this.iter);
 		final TypedInputStream tis = source.asTypedInputStream();
 		// PipedRDFStream and PipedRDFIterator need to be on different threads
 		this.executor = Executors.newSingleThreadExecutor();
 
 		// Create a runnable for our parser thread
-		Runnable parser = () -> {
+		final Runnable parser = () -> {
             // Call the parsing process.
             // System.out.println("started thread before");
             RDFDataMgr.parse(tripleStream, tis, Lang.N3);
@@ -68,18 +66,17 @@ public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 	}
 
 	@Override
-	protected AQuiXEvent process(CallBack callback) throws QuiXException {
+	protected AQuiXEvent process(final CallBack callback) {
 		// We will consume the input on the main thread here
 		// System.out.println("process");
 		try {
 			if (!this.buffer.isEmpty()) {
 				return this.buffer.poll();
 			}
-			AQuiXEvent event;
 			if (!this.iter.hasNext() && callback.getState() == State.START_SOURCE) {
 				// special case if the buffer is empty but the document has not
 				// been closed
-				event = AQuiXEvent.getEndRDF();
+				final AQuiXEvent event = AQuiXEvent.getEndRDF();
 				callback.setState(State.END_SOURCE);
 				return event;
 			}
@@ -87,7 +84,7 @@ public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 				return callback.processEndSource();
 			}
 			// this iter has next
-			Triple next = this.iter.next();
+			final Triple next = this.iter.next();
 			this.buffer.add(AQuiXEvent.getSubject(QuiXCharStream.fromSequence(next.getSubject().toString())));
 			this.buffer.add(AQuiXEvent.getObject(QuiXCharStream.fromSequence(next.getObject().toString())));
 			this.buffer.add(AQuiXEvent.getEndPredicate(QuiXCharStream.fromSequence(next.getPredicate().toString())));
@@ -108,7 +105,7 @@ public class RDFQuiXEventStreamReader extends AQuiXEventBufferStreamReader {
 			 * AQuiXEvent.getStartPredicate(QuiXCharStream.fromSequence(next.get
 			 * (1).toString()));
 			 */
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new QuiXException(e);
 		}
 	}

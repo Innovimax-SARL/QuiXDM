@@ -18,24 +18,23 @@ public class AncestorContextFilter extends AQuiXEventStreamFilter {
 
 	private final Stack<QuiXQName> ancestors;
 
-	public AncestorContextFilter(IQuiXStream<IQuiXToken> stream) {
+	public AncestorContextFilter(final IQuiXStream<IQuiXToken> stream) {
 		super(stream);
 		this.ancestors = new Stack<QuiXQName>();
 	}
 
 	@Override
-	public IQuiXToken process(IQuiXToken item) {
+	public IQuiXToken process(final IQuiXToken item) {
 		switch (item.getType()) {
 		case START_ELEMENT:
 			// this.ancestors.push(qevent.asNamedEvent().getQName());
-			break;
+			return item;
 		case END_ELEMENT:
 			// this.ancestors.pop();
-			break;
+			return item;
 		default:
-			break;
+			return item;
 		}
-		return item;
 	}
 
 	public Iterator<QuiXQName> ancestors() {

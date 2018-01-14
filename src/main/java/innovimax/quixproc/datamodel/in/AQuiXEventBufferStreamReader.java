@@ -16,7 +16,7 @@ public abstract class AQuiXEventBufferStreamReader extends AQuiXEventStreamReade
 	protected final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
 	@Override
-	public void reinitialize(AStreamSource current) {
+	public void reinitialize(final AStreamSource current) {
 		//
 		this.buffer.clear();
 	}

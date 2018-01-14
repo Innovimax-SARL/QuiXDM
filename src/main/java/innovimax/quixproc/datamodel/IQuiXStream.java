@@ -8,9 +8,9 @@
 package innovimax.quixproc.datamodel;
 
 public interface IQuiXStream<T> {
-	boolean hasNext() throws QuiXException;
+	boolean hasNext();
 
-	T next() throws QuiXException;
+	T next();
 
 	void close();
 }

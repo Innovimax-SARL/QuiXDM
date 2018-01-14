@@ -12,7 +12,7 @@ import java.math.BigInteger;
 public abstract class AReversibleRandom {
 	long seed;
 
-	AReversibleRandom(long seed) {
+	AReversibleRandom(final long seed) {
 		this.seed = seed;
 	}
 
@@ -20,14 +20,15 @@ public abstract class AReversibleRandom {
 
 	public abstract int prev();
 
-	public void setSeed(long seed) {
+	public void setSeed(final long seed) {
 		this.seed = seed;
 	}
 
 	public static class SimpleReversibleRandom extends AReversibleRandom {
-		private final int a, b;
+		private final int a;
+        private final int b;
 
-		public SimpleReversibleRandom(long seed, int a, int b) {
+		public SimpleReversibleRandom(final long seed, final int a, final int b) {
 			super(seed);
 			this.a = a;
 			this.b = b;
@@ -38,7 +39,7 @@ public abstract class AReversibleRandom {
 
 		@Override
 		public int next() {
-			long v = this.a * this.seed + this.b;
+			final long v = this.a * this.seed + this.b;
 			this.seed++;
 			return (int) (v & 0x7FFF);
 		}
@@ -46,14 +47,14 @@ public abstract class AReversibleRandom {
 		@Override
 		public int prev() {
 			this.seed--;
-			long v = this.a * this.seed + this.b;
+			final long v = this.a * this.seed + this.b;
 			return (int) (v & 0x7FFF);
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
-		SimpleReversibleRandom rr = new SimpleReversibleRandom(0, 1, 1);
+		final SimpleReversibleRandom rr = new SimpleReversibleRandom(0, 1, 1);
 		for (int i = 0; i < 20; i++)
 			System.out.println(rr.next());
 		System.out.println("------");
@@ -73,11 +74,11 @@ public abstract class AReversibleRandom {
 		 */
 	}
 
-	public int nextInt(int i, boolean directionForward) {
+	public int nextInt(final int i, final boolean directionForward) {
 		return (directionForward ? this.next() : this.prev()) % i;
 	}
 
-	public int nextInt(int i) {
+	public int nextInt(final int i) {
 		return nextInt(i, true);
 	}
 
@@ -101,11 +102,11 @@ public abstract class AReversibleRandom {
  * https://github.com/bobbaluba/rlcg/blob/master/include/rlcg.hpp
  */
 class BReversibleRandom {
-	private final long M = 1L << 63;
-	private final long A = 6364136223846793005L;
+	private static final long M = 1L << 63;
+	private static final long A = 6364136223846793005L;
 	private final long ainverse;
-	private final long C = 1442695040888963407L;
-	private final int D = 32;
+	private static final long C = 1442695040888963407L;
+	private static final int D = 32;
 	private long x;
 
 	// modulus M, multiplicand A, increment C, least significant bits to discard
@@ -118,7 +119,7 @@ class BReversibleRandom {
 	// uint64_t x;
 	// public:
 	// ReversibleLCG(unsigned int seed) : x(seed){}
-	BReversibleRandom(long seed) {
+	BReversibleRandom(final long seed) {
 		this.x = seed;
 		this.ainverse = extendedEuclidX(BigInteger.valueOf(this.A), BigInteger.valueOf(this.M)).longValue();
 	}
@@ -154,22 +155,22 @@ class BReversibleRandom {
 	 */
 	// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b);
 	// constexpr uint64_t extendedEuclidX(uint64_t a, uint64_t b){
-    private long extendedEuclidX(long a, long b) {
-		return (b == 0) ? 1 : extendedEuclidY(b, a - b * (a / b));
+    private long extendedEuclidX(final long a, final long b) {
+		return b == 0 ? 1 : extendedEuclidY(b, a - b * (a / b));
 	}
 
 	// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b){
-    private long extendedEuclidY(long a, long b) {
-		return (b == 0) ? 0 : extendedEuclidX(b, a - b * (a / b)) - (a / b) * extendedEuclidY(b, a - b * (a / b));
+    private long extendedEuclidY(final long a, final long b) {
+		return b == 0 ? 0 : extendedEuclidX(b, a - b * (a / b)) - (a / b) * extendedEuclidY(b, a - b * (a / b));
 	}
 
-	private BigInteger extendedEuclidX(BigInteger a, BigInteger b) {
-		return (b.equals(BigInteger.ZERO)) ? BigInteger.ONE : extendedEuclidY(b, a.subtract(b.multiply(a.divide(b))));
+	private BigInteger extendedEuclidX(final BigInteger a, final BigInteger b) {
+		return b.equals(BigInteger.ZERO) ? BigInteger.ONE : extendedEuclidY(b, a.subtract(b.multiply(a.divide(b))));
 	}
 
 	// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b){
-    private BigInteger extendedEuclidY(BigInteger a, BigInteger b) {
-		return (b.equals(BigInteger.ZERO)) ? BigInteger.ZERO
+    private BigInteger extendedEuclidY(final BigInteger a, final BigInteger b) {
+		return b.equals(BigInteger.ZERO) ? BigInteger.ZERO
 				: extendedEuclidX(b, a.subtract(b.multiply(a.divide(b))))
 						.subtract(a.divide(b).multiply(extendedEuclidY(b, a.subtract(b.multiply(a.divide(b))))));
 	}
@@ -180,7 +181,7 @@ class BReversibleRandom {
 		final BigInteger ainverse;
 		final BigInteger C = new BigInteger("1442695040888963407");
 		BigInteger x;
-		final int D = 32;
+		static final int D = 32;
 
 		// modulus M, multiplicand A, increment C, least significant bits to
 		// discard D
@@ -192,7 +193,7 @@ class BReversibleRandom {
 		// uint64_t x;
 		// public:
 		// ReversibleLCG(unsigned int seed) : x(seed){}
-		ReversibleRandomBI(long seed) {
+		ReversibleRandomBI(final long seed) {
 			this.x = BigInteger.valueOf(seed);
 			this.ainverse = extendedEuclidX(this.A, this.M);
 		}
@@ -228,14 +229,14 @@ class BReversibleRandom {
 		 */
 		// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b);
 		// constexpr uint64_t extendedEuclidX(uint64_t a, uint64_t b){
-		BigInteger extendedEuclidX(BigInteger a, BigInteger b) {
-			return (b.equals(BigInteger.ZERO)) ? BigInteger.ONE
+		BigInteger extendedEuclidX(final BigInteger a, final BigInteger b) {
+			return b.equals(BigInteger.ZERO) ? BigInteger.ONE
 					: extendedEuclidY(b, a.subtract(b).multiply(a.divide(b)));
 		}
 
 		// constexpr uint64_t extendedEuclidY(uint64_t a, uint64_t b){
-		BigInteger extendedEuclidY(BigInteger a, BigInteger b) {
-			return (b.equals(BigInteger.ZERO)) ? BigInteger.ZERO
+		BigInteger extendedEuclidY(final BigInteger a, final BigInteger b) {
+			return b.equals(BigInteger.ZERO) ? BigInteger.ZERO
 					: extendedEuclidX(b, a.subtract(b).multiply(a.divide(b))
 							.subtract(a.divide(b).multiply(extendedEuclidY(b, a.subtract(b).multiply(a.divide(b))))));
 		}

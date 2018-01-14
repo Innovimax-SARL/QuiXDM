@@ -17,12 +17,12 @@ public interface IQuiXEventStreamReader extends IQuiXStream<AQuiXEvent> {
 		return new IQuiXStream<IQuiXToken>() {
 
 			@Override
-			public boolean hasNext() throws QuiXException {
+			public boolean hasNext() {
 				return that.hasNext();
 			}
 
 			@Override
-			public IQuiXToken next() throws QuiXException {
+			public IQuiXToken next() {
 				return that.next();
 			}
 

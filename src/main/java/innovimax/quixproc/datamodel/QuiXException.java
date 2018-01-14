@@ -13,15 +13,15 @@ public class QuiXException extends RuntimeException {
 		this(null, null);
 	}
 
-	protected QuiXException(String message, Throwable cause) {
+	protected QuiXException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public QuiXException(String message) {
+	public QuiXException(final String message) {
 		this(message, null);
 	}
 
-	public QuiXException(Throwable cause) {
+	public QuiXException(final Throwable cause) {
 		this(null, cause);
 	}
 

@@ -25,18 +25,18 @@ public abstract class AStreamSource {
 
 	final Type type;
 
-	AStreamSource(Type type) {
+	AStreamSource(final Type type) {
 		this.type = type;
 	}
 
-	private static XMLStreamSource instance(Source source) {
+	private static XMLStreamSource instance(final Source source) {
 		return new XMLStreamSource(source);
 	}
 
 	public static final class XMLStreamSource extends AStreamSource {
 		final Source source;
 
-		XMLStreamSource(Source source) {
+		XMLStreamSource(final Source source) {
 			super(Type.XML);
 			this.source = source;
 		}
@@ -49,7 +49,7 @@ public abstract class AStreamSource {
 	public abstract static class AJSONYAMLStreamSource extends AStreamSource {
 		private final InputStream is;
 
-		AJSONYAMLStreamSource(Type type, InputStream is) {
+		AJSONYAMLStreamSource(final Type type, final InputStream is) {
 			super(type);
 			this.is = is;
 		}
@@ -62,22 +62,22 @@ public abstract class AStreamSource {
 
 	static class JSONStreamSource extends AJSONYAMLStreamSource {
 
-		JSONStreamSource(InputStream is) {
+		JSONStreamSource(final InputStream is) {
 			super(Type.JSON, is);
 		}
 
-		static AStreamSource instance(InputStream is) {
+		static AStreamSource instance(final InputStream is) {
 			return new JSONStreamSource(is);
 		}
 	}
 
 	static class YAMLStreamSource extends AJSONYAMLStreamSource {
 
-		YAMLStreamSource(InputStream is) {
+		YAMLStreamSource(final InputStream is) {
 			super(Type.YAML, is);
 		}
 
-		static AStreamSource instance(InputStream is) {
+		static AStreamSource instance(final InputStream is) {
 			return new YAMLStreamSource(is);
 		}
 
@@ -86,7 +86,7 @@ public abstract class AStreamSource {
 	public static class CSVStreamSource extends AStreamSource {
 		private final Reader r;
 
-		CSVStreamSource(Reader r) {
+		CSVStreamSource(final Reader r) {
 			super(Type.CSV);
 			this.r = r;
 		}
@@ -95,7 +95,7 @@ public abstract class AStreamSource {
 			return this.r;
 		}
 
-		public static AStreamSource instance(Reader r) {
+		public static AStreamSource instance(final Reader r) {
 			return new CSVStreamSource(r);
 		}
 
@@ -104,7 +104,7 @@ public abstract class AStreamSource {
 	public static class RDFStreamSource extends AStreamSource {
 		private final TypedInputStream is;
 
-		RDFStreamSource(TypedInputStream is) {
+		RDFStreamSource(final TypedInputStream is) {
 			super(Type.RDF);
 			this.is = is;
 		}
@@ -113,23 +113,23 @@ public abstract class AStreamSource {
 			return this.is;
 		}
 
-		public static AStreamSource instance(TypedInputStream is) {
+		public static AStreamSource instance(final TypedInputStream is) {
 			return new RDFStreamSource(is);
 		}
 
 	}
 
-	public static Iterable<AStreamSource> instances(Source[] sources) {
-		AStreamSource[] asources = new AStreamSource[sources.length];
+	public static Iterable<AStreamSource> instances(final Source[] sources) {
+		final AStreamSource[] asources = new AStreamSource[sources.length];
 		int i = 0;
-		for (javax.xml.transform.Source source : sources) {
+		for (final Source source : sources) {
 			asources[i] = instance(source);
 			i++;
 		}
 		return Arrays.asList(asources);
 	}
 
-	public static AStreamSource instance(FileExtension ext, InputStream is) {
+	public static AStreamSource instance(final FileExtension ext, final InputStream is) {
 		switch (ext) {
 		case HTML:
 			break;

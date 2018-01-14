@@ -26,33 +26,33 @@ public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamRea
 	final JsonFactory ifactory;
 	private JsonParser iparser;
 
-	protected AJSONYAMLQuiXEventStreamReader(JsonFactory factory) {
+	protected AJSONYAMLQuiXEventStreamReader(final JsonFactory factory) {
 		this.ifactory = factory;
 	}
 
 	@Override
-	protected AQuiXEvent load(AStreamSource current) throws QuiXException {
+	protected AQuiXEvent load(final AStreamSource current) {
 		return load(((AJSONYAMLStreamSource) current).asInputStream());
 	}
 
-	private AQuiXEvent load(InputStream current) throws QuiXException {
+	private AQuiXEvent load(final InputStream current) {
 		try {
 			this.iparser = this.ifactory.createParser(current);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new QuiXException(e);
 		}
 		return AQuiXEvent.getStartJSON();
 	}
 
 	@Override
-	protected AQuiXEvent process(CallBack callback) throws QuiXException {
+	protected AQuiXEvent process(final CallBack callback) {
 		// System.out.println("process");
 		try {
 			if (callback.getState() == State.END_SOURCE) {
 				return callback.processEndSource();
 			}
 			while (true) {
-				JsonToken token = this.iparser.nextToken();
+				final JsonToken token = this.iparser.nextToken();
 				if (token == null) {
 					callback.setState(State.END_SOURCE);
 					return AQuiXEvent.getEndJSON();
@@ -90,14 +90,14 @@ public abstract class AJSONYAMLQuiXEventStreamReader extends AQuiXEventStreamRea
 				}
 				throw new QuiXException("Unknown event " + token);
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new QuiXException(e);
 		}
 
 	}
 
 	@Override
-	public void reinitialize(AStreamSource current) {
+	public void reinitialize(final AStreamSource current) {
 		// TODO Auto-generated method stub
 
 	}

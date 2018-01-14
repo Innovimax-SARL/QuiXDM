@@ -125,9 +125,9 @@ public class QuiXQName implements Serializable {
 	 *            local part of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>localPart</code> is {@code null}
+	 *             When {@code localPart} is {@code null}
 	 *
-	 * @see javax.xml.namespace.QName(String namespaceURI, String localPart, String prefix)
+	 * @see QName(String namespaceURI, String localPart, String prefix)
 	 *      javax.xml.namespace.QName(String namespaceURI, String localPart, String prefix)
 	 */
 	public QuiXQName(final QuiXCharStream namespaceURI, final QuiXCharStream localPart) {
@@ -180,9 +180,9 @@ public class QuiXQName implements Serializable {
 	 *            prefix of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>localPart</code> or {@code prefix} is {@code null}
+	 *             When {@code localPart} or {@code prefix} is {@code null}
 	 */
-	public QuiXQName(QuiXCharStream namespaceURI, QuiXCharStream localPart, QuiXCharStream prefix) {
+	public QuiXQName(final QuiXCharStream namespaceURI, final QuiXCharStream localPart, final QuiXCharStream prefix) {
 
 		// map null Namespace URI to default
 		// to preserve compatibility with QName 1.0
@@ -242,14 +242,14 @@ public class QuiXQName implements Serializable {
 	 *            local part of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>localPart</code> is {@code null}
+	 *             When {@code localPart} is {@code null}
 	 *
 	 * @see #QName(String namespaceURI, String localPart) QName(String
 	 *      namespaceURI, String localPart)
 	 * @see #QName(String namespaceURI, String localPart, String prefix)
 	 *      QName(String namespaceURI, String localPart, String prefix)
 	 */
-	public QuiXQName(QuiXCharStream localPart) {
+	public QuiXQName(final QuiXCharStream localPart) {
 		this(QuiXCharStream.NULL_NS_URI, localPart, QuiXCharStream.DEFAULT_NS_PREFIX);
 	}
 
@@ -300,8 +300,8 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * <p>
-	 * If the <code>Object</code> to be tested is not a {@code QName} or is
-	 * <code>null</code>, then this method returns {@code false}.
+	 * If the {@code Object} to be tested is not a {@code QName} or is
+	 * {@code null}, then this method returns {@code false}.
 	 * </p>
 	 *
 	 * <p>
@@ -319,11 +319,11 @@ public class QuiXQName implements Serializable {
 	 * @param objectToTest
 	 *            the {@code Object} to test for equality with this
 	 *            {@code QName}
-	 * @return <code>true</code> if the given {@code Object} is equal to this
-	 *         <code>QName</code> else {@code false}
+	 * @return {@code true} if the given {@code Object} is equal to this
+	 *         {@code QName} else {@code false}
 	 */
 	@Override
-	public final boolean equals(Object objectToTest) {
+	public final boolean equals(final Object objectToTest) {
 		if (objectToTest == this) {
 			return true;
 		}
@@ -332,7 +332,7 @@ public class QuiXQName implements Serializable {
 			return false;
 		}
 
-		QuiXQName qName = (QuiXQName) objectToTest;
+		final QuiXQName qName = (QuiXQName) objectToTest;
 
 		return this.localPart.equals(qName.localPart) && this.namespaceURI.equals(qName.namespaceURI);
 	}
@@ -353,7 +353,7 @@ public class QuiXQName implements Serializable {
 	 * Object.hashCode()}.
 	 * </p>
 	 *
-	 * @return hash code for this <code>QName</code> {@code Object}
+	 * @return hash code for this {@code QName} {@code Object}
 	 */
 	@Override
 	public final int hashCode() {
@@ -362,7 +362,7 @@ public class QuiXQName implements Serializable {
 
 	/**
 	 * <p>
-	 * <code>String</code> representation of this {@code QName}.
+	 * {@code String} representation of this {@code QName}.
 	 * </p>
 	 *
 	 * <p>
@@ -388,7 +388,7 @@ public class QuiXQName implements Serializable {
 	 * Object.toString()}.
 	 * </p>
 	 *
-	 * @return <code>String</code> representation of this {@code QName}
+	 * @return {@code String} representation of this {@code QName}
 	 */
 	@Override
 	public String toString() {
@@ -396,16 +396,16 @@ public class QuiXQName implements Serializable {
 		if (this.namespaceURI.equals(QuiXCharStream.NULL_NS_URI)) {
 			return this.localPart.toString();
 		}
-		return "{" + this.namespaceURI + "}" + this.localPart;
+		return "{" + this.namespaceURI + '}' + this.localPart;
 	}
 
 	/**
 	 * <p>
-	 * <code>QName</code> derived from parsing the formatted {@code String} .
+	 * {@code QName} derived from parsing the formatted {@code String} .
 	 * </p>
 	 *
 	 * <p>
-	 * If the <code>String</code> is {@code null} or does not conform to
+	 * If the {@code String} is {@code null} or does not conform to
 	 * {@link #toString() QName.toString()} formatting, an
 	 * {@code IllegalArgumentException} is thrown.
 	 * </p>
@@ -445,15 +445,15 @@ public class QuiXQName implements Serializable {
 	 * </p>
 	 *
 	 * @param qNameAsString
-	 *            <code>String</code> representation of the {@code QName}
+	 *            {@code String} representation of the {@code QName}
 	 *
 	 * @throws IllegalArgumentException
-	 *             When <code>qNameAsString</code> is {@code null} or malformed
+	 *             When {@code qNameAsString} is {@code null} or malformed
 	 *
-	 * @return <code>QName</code> corresponding to the given {@code String}
+	 * @return {@code QName} corresponding to the given {@code String}
 	 * @see #toString() QName.toString()
 	 */
-	public static QuiXQName valueOf(String qNameAsString) {
+	public static QuiXQName valueOf(final String qNameAsString) {
 
 		// null is not valid
 		if (qNameAsString == null) {
@@ -473,14 +473,14 @@ public class QuiXQName implements Serializable {
 		}
 
 		// Namespace URI improperly specified?
-		if (qNameAsString.startsWith("{" + XMLConstants.NULL_NS_URI + "}")) {
+		if (qNameAsString.startsWith('{' + XMLConstants.NULL_NS_URI + '}')) {
 			throw new IllegalArgumentException("Namespace URI .equals(XMLConstants.NULL_NS_URI), " + ".equals(\""
-					+ XMLConstants.NULL_NS_URI + "\"), " + "only the local part, " + "\""
+					+ XMLConstants.NULL_NS_URI + "\"), " + "only the local part, " + '"'
 					+ qNameAsString.substring(2 + XMLConstants.NULL_NS_URI.length()) + "\", " + "should be provided.");
 		}
 
 		// Namespace URI and local part specified
-		int endOfNamespaceURI = qNameAsString.indexOf('}');
+		final int endOfNamespaceURI = qNameAsString.indexOf('}');
 		if (endOfNamespaceURI == -1) {
 			throw new IllegalArgumentException(
 					"cannot create QName from \"" + qNameAsString + "\", missing closing \"}\"");

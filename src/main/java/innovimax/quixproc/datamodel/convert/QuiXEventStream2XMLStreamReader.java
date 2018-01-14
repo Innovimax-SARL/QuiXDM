@@ -28,14 +28,14 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	private static final boolean DEBUG = false;
 	private static final int POSITION = 1;
 
-	public QuiXEventStream2XMLStreamReader(IQuiXEventStreamReader qs) {
+	public QuiXEventStream2XMLStreamReader(final IQuiXEventStreamReader qs) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		this.qs = qs;
 	}
 
 	@Override
-	public Object getProperty(String name) throws IllegalArgumentException {
+	public Object getProperty(final String name) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		// TODO Auto-generated method stub
@@ -51,7 +51,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			return true;
 		try {
 			return this.qs.hasNext();
-		} catch (QuiXException e) {
+		} catch (final QuiXException e) {
 			throw new XMLStreamException(e);
 		}
 	}
@@ -91,7 +91,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 					this.attributes.clear();
 					this.namespaces.clear();
 					while (true) {
-						boolean test = this.qs.hasNext();
+						final boolean test = this.qs.hasNext();
 						if (!test)
 							throw new QuiXException("Impossible");
 						this.future = this.qs.next();
@@ -119,7 +119,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 				default:
 				}
 			}
-		} catch (QuiXException e) {
+		} catch (final QuiXException e) {
 			throw new XMLStreamException(e);
 
 		}
@@ -127,7 +127,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	}
 
 	@Override
-	public void require(int type, String namespaceURI, String localName) {
+	public void require(final int type, final String namespaceURI, final String localName) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		throw new RuntimeException("no such method");
@@ -141,7 +141,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 			throw new XMLStreamException("parser must be on START_ELEMENT to read next text", getLocation());
 		}
 		int eventType = next();
-		StringBuilder content = new StringBuilder();
+		final StringBuilder content = new StringBuilder();
 		while (eventType != XMLStreamConstants.END_ELEMENT) {
 			switch (eventType) {
 				case XMLStreamConstants.CHARACTERS:
@@ -182,7 +182,7 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	}
 
 	@Override
-	public String getNamespaceURI(String prefix) {
+	public String getNamespaceURI(final String prefix) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		// TODO Auto-generated method stub
@@ -218,15 +218,11 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	}
 
 	@Override
-	public String getAttributeValue(String namespaceURI, String localName) {
+	public String getAttributeValue(final String namespaceURI, final String localName) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		for (Attribute attribute : this.attributes) {
-			// TODO compare between String and QuiXCharStream
-			if (localName.equals(attribute.getLocalName().toString()) && namespaceURI.equals(attribute.getURI().toString()))
-				return attribute.getValue().toString();
-		}
-		return null;
+		// TODO compare between String and QuiXCharStream
+		return this.attributes.stream().filter(attribute -> localName.equals(attribute.getLocalName().toString()) && namespaceURI.equals(attribute.getURI().toString())).findFirst().map(attribute -> attribute.getValue().toString()).orElse(null);
 	}
 
 	@Override
@@ -237,49 +233,49 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	}
 
 	@Override
-	public QName getAttributeName(int index) {
+	public QName getAttributeName(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return this.attributes.get(index).getQName().asQName();
 	}
 
 	@Override
-	public String getAttributeNamespace(int index) {
+	public String getAttributeNamespace(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return this.attributes.get(index).getURI().toString();
 	}
 
 	@Override
-	public String getAttributeLocalName(int index) {
+	public String getAttributeLocalName(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return this.attributes.get(index).getLocalName().toString();
 	}
 
 	@Override
-	public String getAttributePrefix(int index) {
+	public String getAttributePrefix(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return this.attributes.get(index).getPrefix().toString();
 	}
 
 	@Override
-	public String getAttributeType(int index) {
+	public String getAttributeType(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return null; // no type stored
 	}
 
 	@Override
-	public String getAttributeValue(int index) {
+	public String getAttributeValue(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return this.attributes.get(index).getValue().toString();
 	}
 
 	@Override
-	public boolean isAttributeSpecified(int index) {
+	public boolean isAttributeSpecified(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return true;
@@ -293,14 +289,14 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	}
 
 	@Override
-	public String getNamespacePrefix(int index) {
+	public String getNamespacePrefix(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		return this.namespaces.get(index).getPrefix().toString();
 	}
 
 	@Override
-	public String getNamespaceURI(int index) {
+	public String getNamespaceURI(final int index) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
 		// TODO Auto-generated method stub
@@ -374,12 +370,12 @@ public class QuiXEventStream2XMLStreamReader implements XMLStreamReader {
 	public char[] getTextCharacters() {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName());
-		String text = getText();
-		return (text == null ? null : text.toCharArray());
+		final String text = getText();
+		return text == null ? null : text.toCharArray();
 	}
 
 	@Override
-	public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) {
+	public int getTextCharacters(final int sourceStart, final char[] target, final int targetStart, final int length) {
 		if (DEBUG)
 			System.out.println(Thread.currentThread().getStackTrace()[POSITION].getMethodName() + "+++");
 		// TODO Auto-generated method stub

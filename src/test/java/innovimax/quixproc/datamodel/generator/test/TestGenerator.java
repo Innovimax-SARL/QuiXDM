@@ -7,6 +7,14 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.generator.test;
 
+import innovimax.quixproc.datamodel.generator.csv.ACSVGenerator.SimpleCSVGenerator;
+import innovimax.quixproc.datamodel.generator.rdf.ARDFGenerator.SimpleRDFGenerator;
+import innovimax.quixproc.datamodel.in.AStreamSource.CSVStreamSource;
+import innovimax.quixproc.datamodel.in.AStreamSource.RDFStreamSource;
+import java.lang.reflect.InvocationTargetException;
+import org.hamcrest.CoreMatchers;
+import static org.hamcrest.CoreMatchers.*;
+import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -39,8 +47,8 @@ public class TestGenerator {
 		READ_BYTE, READ_BUFFER, PARSE
 	}
 
-	private static void testAll(FileExtension ext, Process process, int size, Unit unit)
-			throws IOException, QuiXException, InstantiationException, IllegalAccessException {
+	private static void testAll(final FileExtension ext, final Process process, final int size, final Unit unit)
+			throws IOException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		switch (ext) {
 		case CSV:
 			testAllCSV(ext, process, size, unit);
@@ -61,16 +69,16 @@ public class TestGenerator {
 		}
 	}
 
-	private static void testAllTree(FileExtension ext, Process process, int size, Unit unit)
-			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
-		for (TreeType gtype : TreeType.values()) {
-			for (SpecialType stype : SpecialType.allowedModifiers(ext, gtype)) {
-				for (Variation variation : Variation.values()) {
+	private static void testAllTree(final FileExtension ext, final Process process, final int size, final Unit unit)
+			throws IOException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+		for (final TreeType gtype : TreeType.values()) {
+			for (final SpecialType stype : SpecialType.allowedModifiers(ext, gtype)) {
+				for (final Variation variation : Variation.values()) {
 					System.out.format("Test %s START %d %s {%s, %s, %s, %s}%n", ext, size, unit, process, gtype, stype,
 							variation);
-					long start = System.currentTimeMillis();
-					AGenerator generator = ATreeGenerator.instance(ext, gtype, stype);
-					InputStream is = generator.getInputStream(size, unit, variation);
+					final long start = System.currentTimeMillis();
+					final AGenerator generator = ATreeGenerator.instance(ext, gtype, stype);
+					final InputStream is = generator.getInputStream(size, unit, variation);
 					long event = 0;
 					long totalsize = 0;
 					switch (process) {
@@ -83,7 +91,7 @@ public class TestGenerator {
 						}
 						break;
 					case READ_BUFFER:
-						byte[] buffer = new byte[1024 * 1024];
+						final byte[] buffer = new byte[1024 * 1024];
 						int length;
 						while ((length = is.read(buffer)) > 0) {
 							// do nothing
@@ -91,8 +99,8 @@ public class TestGenerator {
 						}
 						break;
 					case PARSE:
-						QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.instance(ext, is));
-						IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
+						final QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.instance(ext, is));
+						final IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
 						while (vqxs.hasNext()) {
 							// System.out.println(
 							vqxs.next()
@@ -108,11 +116,11 @@ public class TestGenerator {
 					long time = System.currentTimeMillis() - start;
 					if (time == 0)
 						time++;
-					long speed = 1000 * totalsize / time;
+					final long speed = 1000 * totalsize / time;
 					System.out.format("Test %s END %,dms; %,dB/s; %,dB", ext, time, speed, totalsize);
 					if (event > 0) {
-						long evpers = 1000 * event / time;
-						long density = 1000 * totalsize / event;
+						final long evpers = 1000 * event / time;
+						final long density = 1000 * totalsize / event;
 						System.out.format("; %,dev; %,dev/s; %,dB/kev", event, evpers, density);
 					}
 					System.out.println();
@@ -121,11 +129,11 @@ public class TestGenerator {
 		}
 	}
 
-	private static void testAllRDF(FileExtension ext, Process process, int size, Unit unit) throws IOException {
+	private static void testAllRDF(final FileExtension ext, final Process process, final int size, final Unit unit) throws IOException {
 		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, Variation.NO_VARIATION);
-		long start = System.currentTimeMillis();
-		ARDFGenerator generator = new ARDFGenerator.SimpleRDFGenerator();
-		TypedInputStream is = generator.getTypedInputStream(size, unit, Variation.NO_VARIATION);
+		final long start = System.currentTimeMillis();
+		final ARDFGenerator generator = new SimpleRDFGenerator();
+		final TypedInputStream is = generator.getTypedInputStream(size, unit, Variation.NO_VARIATION);
 		long event = 0;
 		long totalsize = 0;
 		switch (process) {
@@ -138,7 +146,7 @@ public class TestGenerator {
 			}
 			break;
 		case READ_BUFFER:
-			byte[] buffer = new byte[1024 * 1024];
+			final byte[] buffer = new byte[1024 * 1024];
 			int length;
 			while ((length = is.read(buffer)) > 0) {
 				// do nothing
@@ -146,8 +154,8 @@ public class TestGenerator {
 			}
 			break;
 		case PARSE:
-			QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.RDFStreamSource.instance(is));
-			IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
+			final QuiXEventStreamReader xqesr = new QuiXEventStreamReader(RDFStreamSource.instance(is));
+			final IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
 			while (vqxs.hasNext()) {
 				// System.out.println(
 				vqxs.next()
@@ -164,22 +172,22 @@ public class TestGenerator {
 		long time = System.currentTimeMillis() - start;
 		if (time == 0)
 			time++;
-		long speed = 1000 * totalsize / time;
+		final long speed = 1000 * totalsize / time;
 		System.out.format("Test %s END %,dms; %,dB/s; %,dB", ext, time, speed, totalsize);
 		if (event > 0) {
-			long evpers = 1000 * event / time;
-			long density = 1000 * totalsize / event;
+			final long evpers = 1000 * event / time;
+			final long density = 1000 * totalsize / event;
 			System.out.format("; %,dev; %,dev/s; %,dB/kev", event, evpers, density);
 		}
 		System.out.println();
 
 	}
 
-	private static void testAllCSV(FileExtension ext, Process process, int size, Unit unit) throws IOException {
+	private static void testAllCSV(final FileExtension ext, final Process process, final int size, final Unit unit) throws IOException {
 		System.out.format("Test %s START %d %s {%s, %s}%n", ext, size, unit, process, Variation.NO_VARIATION);
-		long start = System.currentTimeMillis();
-		ACSVGenerator generator = new ACSVGenerator.SimpleCSVGenerator();
-		Reader is = generator.getReader(size, unit, Variation.NO_VARIATION);
+		final long start = System.currentTimeMillis();
+		final ACSVGenerator generator = new SimpleCSVGenerator();
+		final Reader is = generator.getReader(size, unit, Variation.NO_VARIATION);
 		long event = 0;
 		long totalsize = 0;
 		switch (process) {
@@ -192,7 +200,7 @@ public class TestGenerator {
 			}
 			break;
 		case READ_BUFFER:
-			char[] buffer = new char[1024 * 1024];
+			final char[] buffer = new char[1024 * 1024];
 			int length;
 			while ((length = is.read(buffer)) > 0) {
 				// do nothing
@@ -200,8 +208,8 @@ public class TestGenerator {
 			}
 			break;
 		case PARSE:
-			QuiXEventStreamReader xqesr = new QuiXEventStreamReader(AStreamSource.CSVStreamSource.instance(is));
-			IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
+			final QuiXEventStreamReader xqesr = new QuiXEventStreamReader(CSVStreamSource.instance(is));
+			final IQuiXStream<IQuiXToken> vqxs = new ValidQuiXTokenStream(xqesr);
 			while (vqxs.hasNext()) {
 				// System.out.println(
 				vqxs.next()
@@ -218,68 +226,68 @@ public class TestGenerator {
 		long time = System.currentTimeMillis() - start;
 		if (time == 0)
 			time++;
-		long speed = 1000 * totalsize / time;
+		final long speed = 1000 * totalsize / time;
 		System.out.format("Test %s END %,dms; %,dB/s; %,dB", ext, time, speed, totalsize);
 		if (event > 0) {
-			long evpers = 1000 * event / time;
-			long density = 1000 * totalsize / event;
+			final long evpers = 1000 * event / time;
+			final long density = 1000 * totalsize / event;
 			System.out.format("; %,dev; %,dev/s; %,dB/kev", event, evpers, density);
 		}
 		System.out.println();
 	}
 
 	@Test
-	public void testAllXML1K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
-		for (Process process : Process.values()) {
+	public void testAllXML1K() throws Exception {
+		for (final Process process : Process.values()) {
 			testAll(FileExtension.XML, process, 1, Unit.KBYTE);
 		}
-		assertTrue(true);
+		Assert.assertThat(true, is(true));
 	}
 
 //	@Test
 	public void testAllXML1GNotParse()
-			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
-		for (Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE)) {
+			throws Exception {
+		for (final Process process : EnumSet.of(Process.READ_BUFFER, Process.READ_BYTE)) {
 			testAll(FileExtension.XML, process, 1, Unit.GBYTE);
 		}
-		assertTrue(true);
+		Assert.assertThat(true, is(true));
 	}
 
 	@Test
-	public void testAllJSON100K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
-		for (Process process : Process.values()) {
+	public void testAllJSON100K() throws Exception {
+		for (final Process process : Process.values()) {
 			testAll(FileExtension.JSON, process, 100, Unit.KBYTE);
 		}
-		assertTrue(true);
+		Assert.assertThat(true, is(true));
 	}
 
 	@Test
-	public void testAllYAML100K() throws QuiXException, IOException, InstantiationException, IllegalAccessException {
-		for (Process process : Process.values()) {
+	public void testAllYAML100K() throws Exception {
+		for (final Process process : Process.values()) {
 			testAll(FileExtension.YAML, process, 100, Unit.KBYTE);
 		}
-		assertTrue(true);
+		Assert.assertThat(true, is(true));
 	}
 
 	@Test
-	public void testAllRDF100K() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
-		for (Process process : Process.values()) {
+	public void testAllRDF100K() throws Exception {
+		for (final Process process : Process.values()) {
 			testAll(FileExtension.RDF, process, 100, Unit.KBYTE);
 		}
-		assertTrue(true);
+		Assert.assertThat(true, is(true));
 	}
 
 	@Test
-	public void testAllCSV100K() throws IOException, QuiXException, InstantiationException, IllegalAccessException {
-		for (Process process : Process.values()) {
+	public void testAllCSV100K() throws Exception {
+		for (final Process process : Process.values()) {
 			testAll(FileExtension.CSV, process, 100, Unit.KBYTE);
 		}
-		assertTrue(true);
+		Assert.assertThat(true, is(true));
 	}
 
-	public static void main(String[] args)
-			throws QuiXException, IOException, InstantiationException, IllegalAccessException {
-		for (Process process : EnumSet.of(/* Process.READ_BUFFER, */ Process.READ_BYTE, Process.PARSE)) {
+	public static void main(final String[] args)
+			throws Exception {
+		for (final Process process : EnumSet.of(/* Process.READ_BUFFER, */ Process.READ_BYTE, Process.PARSE)) {
 			 testAll(FileExtension.XML, process, 1, Unit.MBYTE);
 			// testAll(FileExtension.JSON, process, 10, Unit.MBYTE);
 			// testAll(FileExtension.XML, process, 2, Unit.MBYTE);

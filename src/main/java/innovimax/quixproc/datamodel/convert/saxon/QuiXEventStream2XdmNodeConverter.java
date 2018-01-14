@@ -27,27 +27,27 @@ class QuiXEventStream2XdmNodeConverter {
 	private static int counter = 1;
 	private final int rank = counter++;
 
-	public QuiXEventStream2XdmNodeConverter(DocumentBuilder db, IQuiXEventStreamReader reader) {
+	public QuiXEventStream2XdmNodeConverter(final DocumentBuilder db, final IQuiXEventStreamReader reader) {
 		this.reader = reader;
 		this.db = db;
 	}
 
-	public XdmNode exec() throws QuiXConvertException {
+	public XdmNode exec() {
 		// System.out.println("DOMConverter.exec("+rank+")");
 		try {
-			XMLStreamReader xer = new QuiXEventStream2XMLStreamReader(this.reader);
+			final XMLStreamReader xer = new QuiXEventStream2XMLStreamReader(this.reader);
 			try {
-				StaxBridge sb = new StaxBridge();
+				final StaxBridge sb = new StaxBridge();
 				sb.setXMLStreamReader(xer);
-				Source source = new PullSource(sb);
+				final Source source = new PullSource(sb);
 				this.node = this.db.build(source);
-			} catch (SaxonApiException e) {
+			} catch (final SaxonApiException e) {
 				e.printStackTrace();
 			} finally {
 				this.reader.close();
 			}
 			return this.node;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new QuiXConvertException(e);
 		}
 	}

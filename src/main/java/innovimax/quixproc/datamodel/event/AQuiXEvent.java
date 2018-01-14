@@ -34,31 +34,31 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	final QuiXToken type;
 
 	/* constructors */
-	AQuiXEvent(QuiXToken type) {
+	AQuiXEvent(final QuiXToken type) {
 		this.type = type;
 		createCount++;
 	}
 
 	public abstract static class AXMLQuiXEvent extends AQuiXEvent {
-		AXMLQuiXEvent(QuiXToken token) {
+		AXMLQuiXEvent(final QuiXToken token) {
 			super(token);
 		}
 	}
 
 	public abstract static class AJSONQuiXEvent extends AQuiXEvent {
-		AJSONQuiXEvent(QuiXToken token) {
+		AJSONQuiXEvent(final QuiXToken token) {
 			super(token);
 		}
 	}
 
 	public abstract static class ARDFQuiXEvent extends AQuiXEvent {
-		ARDFQuiXEvent(QuiXToken token) {
+		ARDFQuiXEvent(final QuiXToken token) {
 			super(token);
 		}
 	}
 
 	public abstract static class ACSVQuiXEvent extends AQuiXEvent {
-		ACSVQuiXEvent(QuiXToken token) {
+		ACSVQuiXEvent(final QuiXToken token) {
 			super(token);
 		}
 	}
@@ -88,7 +88,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static final class StartDocument extends AXMLQuiXEvent {
 		private final QuiXCharStream uri;
 
-		StartDocument(QuiXCharStream uri) {
+		StartDocument(final QuiXCharStream uri) {
 			super(QuiXToken.START_DOCUMENT);
 			this.uri = uri;
 			createDocCount++;
@@ -108,7 +108,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static final class EndDocument extends AXMLQuiXEvent {
 		private final QuiXCharStream uri;
 
-		EndDocument(QuiXCharStream uri) {
+		EndDocument(final QuiXCharStream uri) {
 			super(QuiXToken.END_DOCUMENT);
 			this.uri = uri;
 			createDocCount++;
@@ -194,7 +194,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class StartPredicate extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		StartPredicate(QuiXCharStream name) {
+		StartPredicate(final QuiXCharStream name) {
 			super(QuiXToken.START_PREDICATE);
 			this.name = name;
 		}
@@ -203,7 +203,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class EndPredicate extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		EndPredicate(QuiXCharStream name) {
+		EndPredicate(final QuiXCharStream name) {
 			super(QuiXToken.END_PREDICATE);
 			this.name = name;
 		}
@@ -212,7 +212,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class Subject extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		Subject(QuiXCharStream name) {
+		Subject(final QuiXCharStream name) {
 			super(QuiXToken.SUBJECT);
 			this.name = name;
 		}
@@ -221,7 +221,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class Object extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		Object(QuiXCharStream name) {
+		Object(final QuiXCharStream name) {
 			super(QuiXToken.OBJECT);
 			this.name = name;
 		}
@@ -230,7 +230,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class Graph extends ARDFQuiXEvent {
 		final QuiXCharStream name;
 
-		Graph(QuiXCharStream name) {
+		Graph(final QuiXCharStream name) {
 			super(QuiXToken.GRAPH);
 			this.name = name;
 		}
@@ -239,7 +239,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	// JSON
 
 	static class AJSONValue extends AJSONQuiXEvent {
-		AJSONValue(QuiXToken token) {
+		AJSONValue(final QuiXToken token) {
 			super(token);
 		}
 	}
@@ -265,7 +265,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class ValueNumber extends AJSONValue {
 		final double value;
 
-		ValueNumber(double value) {
+		ValueNumber(final double value) {
 			super(QuiXToken.VALUE_NUMBER);
 			this.value = value;
 		}
@@ -274,7 +274,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class ValueString extends AJSONValue {
 		final QuiXCharStream value;
 
-		ValueString(QuiXCharStream value) {
+		ValueString(final QuiXCharStream value) {
 			super(QuiXToken.VALUE_STRING);
 			this.value = value;
 		}
@@ -283,7 +283,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	static class KeyName extends AJSONQuiXEvent {
 		private final QuiXCharStream name;
 
-		KeyName(QuiXCharStream name) {
+		KeyName(final QuiXCharStream name) {
 			super(QuiXToken.KEY_NAME);
 			this.name = name;
 		}
@@ -293,7 +293,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		private final QuiXCharStream prefix;
 		private final QuiXCharStream uri;
 
-		Namespace(QuiXCharStream prefix, QuiXCharStream uri) {
+		Namespace(final QuiXCharStream prefix, final QuiXCharStream uri) {
 			super(QuiXToken.NAMESPACE);
 			this.prefix = prefix;
 			this.uri = uri;
@@ -316,7 +316,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public abstract static class NamedEvent extends AXMLQuiXEvent {
 		private final QuiXQName qname;
 
-		NamedEvent(QuiXQName qname, QuiXToken type) {
+		NamedEvent(final QuiXQName qname, final QuiXToken type) {
 			super(type);
 			this.qname = qname;
 		}
@@ -344,7 +344,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	}
 
 	public static final class StartElement extends NamedEvent {
-		StartElement(QuiXQName qname) {
+		StartElement(final QuiXQName qname) {
 			super(qname, QuiXToken.START_ELEMENT);
 			// System.out.println("START ELEMENT"+localName);
 		}
@@ -356,7 +356,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	}
 
 	public static final class EndElement extends NamedEvent {
-		EndElement(QuiXQName qname) {
+		EndElement(final QuiXQName qname) {
 			super(qname, QuiXToken.END_ELEMENT);
 			// System.out.println("END ELEMENT" + localName);
 		}
@@ -370,7 +370,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static final class Attribute extends NamedEvent {
 		private final QuiXCharStream value;
 
-		Attribute(QuiXQName qname, QuiXCharStream value) {
+		Attribute(final QuiXQName qname, final QuiXCharStream value) {
 			super(qname, QuiXToken.ATTRIBUTE);
 			this.value = value;
 			createAttrCount++;
@@ -391,7 +391,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	public static final class Text extends AXMLQuiXEvent {
 		private final QuiXCharStream data;
 
-		Text(QuiXCharStream data) {
+		Text(final QuiXCharStream data) {
 			super(QuiXToken.TEXT);
 			this.data = data;
 			// System.out.println("TEXT");
@@ -403,7 +403,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 		@Override
 		public String toString() {
-			return this.type + " " + getData();
+			return this.type + " " + this.data;
 		}
 	}
 
@@ -411,7 +411,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		private final QuiXCharStream target;
 		private final QuiXCharStream data;
 
-		PI(QuiXCharStream target, QuiXCharStream data) {
+		PI(final QuiXCharStream target, final QuiXCharStream data) {
 			super(QuiXToken.PROCESSING_INSTRUCTION);
 			this.target = target;
 			this.data = data;
@@ -427,14 +427,14 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 		@Override
 		public String toString() {
-			return this.type + " " + getTarget();
+			return this.type + " " + this.target;
 		}
 	}
 
 	public static final class Comment extends AXMLQuiXEvent {
 		private final QuiXCharStream data;
 
-		Comment(QuiXCharStream data) {
+		Comment(final QuiXCharStream data) {
 			super(QuiXToken.COMMENT);
 			this.data = data;
 		}
@@ -445,7 +445,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 		@Override
 		public String toString() {
-			return this.type + " " + getData();
+			return this.type + " " + this.data;
 		}
 	}
 
@@ -508,26 +508,22 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 
 	public static AQuiXEvent getStartSequence() {
 		createCallCount++;
-		StartSequence result;
-		result = SEQUENCE_CACHING_ENABLED ? newStartSequence : new StartSequence();
-		return result;
+		return SEQUENCE_CACHING_ENABLED ? newStartSequence : new StartSequence();
 	}
 
 	private static final EndSequence newEndSequence = SEQUENCE_CACHING_ENABLED ? new EndSequence() : null;
 
 	public static AQuiXEvent getEndSequence() {
 		createCallCount++;
-		EndSequence result;
-		result = SEQUENCE_CACHING_ENABLED ? newEndSequence : new EndSequence();
-		return result;
+		return SEQUENCE_CACHING_ENABLED ? newEndSequence : new EndSequence();
 	}
 
 	private static final Map<QuiXCharStream, StartDocument> startDocumentMap = DOCUMENT_CACHING_ENABLED
 			? new HashMap<QuiXCharStream, StartDocument>() : null;
 
-	public static AXMLQuiXEvent getStartDocument(QuiXCharStream uri) {
+	public static AXMLQuiXEvent getStartDocument(final QuiXCharStream uri) {
 		createCallCount++;
-		StartDocument result;
+		final StartDocument result;
 		if (DOCUMENT_CACHING_ENABLED) {
 			synchronized (startDocumentMap) {
 				if (startDocumentMap.containsKey(uri)) {
@@ -538,7 +534,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 				}
 			}
 		} else {
-			result = new StartDocument(uri);
+			return new StartDocument(uri);
 		}
 		return result;
 	}
@@ -546,9 +542,9 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	private static final Map<QuiXCharStream, EndDocument> endDocumentMap = DOCUMENT_CACHING_ENABLED
 			? new HashMap<QuiXCharStream, EndDocument>() : null;
 
-	public static AXMLQuiXEvent getEndDocument(QuiXCharStream uri) {
+	public static AXMLQuiXEvent getEndDocument(final QuiXCharStream uri) {
 		createCallCount++;
-		EndDocument result;
+		final EndDocument result;
 		if (DOCUMENT_CACHING_ENABLED) {
 			synchronized (endDocumentMap) {
 				if (endDocumentMap.containsKey(uri)) {
@@ -559,22 +555,22 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 				}
 			}
 		} else {
-			result = new EndDocument(uri);
+			return new EndDocument(uri);
 		}
 		return result;
 	}
 
-	public static Namespace getNamespace(QuiXCharStream prefix, QuiXCharStream uri) {
+	public static Namespace getNamespace(final QuiXCharStream prefix, final QuiXCharStream uri) {
 		return new Namespace(prefix == null ? QuiXCharStream.EMPTY : prefix, uri);
 	}
 
 	private static final Map<QuiXCharStream, QuiXQName> qNameMap = NAME_CACHING_ENABLED
 			? new HashMap<QuiXCharStream, QuiXQName>() : null;
 
-	private static QuiXQName getQName(QuiXCharStream localName, QuiXCharStream namespace, QuiXCharStream pref) {
-		QuiXQName result;
-		QuiXCharStream uri = namespace == null ? QuiXCharStream.EMPTY : namespace;
-		QuiXCharStream prefix = pref == null ? QuiXCharStream.EMPTY : pref;
+	private static QuiXQName getQName(final QuiXCharStream localName, final QuiXCharStream namespace, final QuiXCharStream pref) {
+		final QuiXQName result;
+		final QuiXCharStream uri = namespace == null ? QuiXCharStream.EMPTY : namespace;
+		final QuiXCharStream prefix = pref == null ? QuiXCharStream.EMPTY : pref;
 		if (NAME_CACHING_ENABLED) {
 			QuiXCharStream key = localName;
 			// here the prefix plays no role
@@ -590,7 +586,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 				}
 			}
 		} else {
-			result = new QuiXQName(uri, localName, prefix);
+			return new QuiXQName(uri, localName, prefix);
 		}
 		return result;
 	}
@@ -598,7 +594,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	private static final Map<QuiXQName, StartElement> startElementMap = ELEMENT_CACHING_ENABLED
 			? new HashMap<QuiXQName, StartElement>() : null;
 
-	public static AXMLQuiXEvent getStartElement(QuiXCharStream qName, QuiXCharStream namespace) {
+	public static AXMLQuiXEvent getStartElement(final QuiXCharStream qName, final QuiXCharStream namespace) {
 		QuiXCharStream localName = qName;
 		QuiXCharStream prefix = null;
 		if (qName.contains(":")) {
@@ -608,11 +604,11 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return getStartElement(localName, namespace, prefix);
 	}
 
-	public static AXMLQuiXEvent getStartElement(QuiXCharStream localName, QuiXCharStream namespace,
-			QuiXCharStream prefix) {
+	public static AXMLQuiXEvent getStartElement(final QuiXCharStream localName, final QuiXCharStream namespace,
+                                                final QuiXCharStream prefix) {
 		createCallCount++;
-		StartElement result;
-		QuiXQName qname = getQName(localName, namespace, prefix);
+		final StartElement result;
+		final QuiXQName qname = getQName(localName, namespace, prefix);
 		if (ELEMENT_CACHING_ENABLED) {
 			synchronized (startElementMap) {
 				if (startElementMap.containsKey(qname)) {
@@ -623,7 +619,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 				}
 			}
 		} else {
-			result = new StartElement(qname);
+			return new StartElement(qname);
 		}
 		return result;
 	}
@@ -631,7 +627,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 	private static final Map<QuiXQName, EndElement> endElementMap = ELEMENT_CACHING_ENABLED
 			? new HashMap<QuiXQName, EndElement>() : null;
 
-	public static AXMLQuiXEvent getEndElement(QuiXCharStream qName, QuiXCharStream namespace) {
+	public static AXMLQuiXEvent getEndElement(final QuiXCharStream qName, final QuiXCharStream namespace) {
 		QuiXCharStream localName = qName;
 		QuiXCharStream prefix = null;
 		if (qName.contains(":")) {
@@ -641,11 +637,11 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return getEndElement(localName, namespace, prefix);
 	}
 
-	public static AXMLQuiXEvent getEndElement(QuiXCharStream localName, QuiXCharStream namespace,
-			QuiXCharStream prefix) {
+	public static AXMLQuiXEvent getEndElement(final QuiXCharStream localName, final QuiXCharStream namespace,
+                                              final QuiXCharStream prefix) {
 		createCallCount++;
-		EndElement result;
-		QuiXQName qname = getQName(localName, namespace, prefix);
+		final EndElement result;
+		final QuiXQName qname = getQName(localName, namespace, prefix);
 		if (ELEMENT_CACHING_ENABLED) {
 			synchronized (endElementMap) {
 				if (endElementMap.containsKey(qname)) {
@@ -656,12 +652,12 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 				}
 			}
 		} else {
-			result = new EndElement(qname);
+			return new EndElement(qname);
 		}
 		return result;
 	}
 
-	public static AXMLQuiXEvent getAttribute(QuiXCharStream qName, QuiXCharStream namespace, QuiXCharStream value) {
+	public static AXMLQuiXEvent getAttribute(final QuiXCharStream qName, final QuiXCharStream namespace, final QuiXCharStream value) {
 		QuiXCharStream localName = qName;
 		QuiXCharStream prefix = null;
 		if (qName.contains(":")) {
@@ -671,23 +667,23 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return getAttribute(localName, namespace, prefix, value);
 	}
 
-	public static AXMLQuiXEvent getAttribute(QuiXCharStream localName, QuiXCharStream namespace, QuiXCharStream prefix,
-			QuiXCharStream value) {
+	public static AXMLQuiXEvent getAttribute(final QuiXCharStream localName, final QuiXCharStream namespace, final QuiXCharStream prefix,
+                                             final QuiXCharStream value) {
 		createCallCount++;
 		return new Attribute(getQName(localName, namespace, prefix), value);
 	}
 
-	public static AXMLQuiXEvent getText(QuiXCharStream text) {
+	public static AXMLQuiXEvent getText(final QuiXCharStream text) {
 		createCallCount++;
 		return new Text(text);
 	}
 
-	public static AXMLQuiXEvent getPI(QuiXCharStream target, QuiXCharStream data) {
+	public static AXMLQuiXEvent getPI(final QuiXCharStream target, final QuiXCharStream data) {
 		createCallCount++;
 		return new PI(target, data);
 	}
 
-	public static AXMLQuiXEvent getComment(QuiXCharStream comment) {
+	public static AXMLQuiXEvent getComment(final QuiXCharStream comment) {
 		createCallCount++;
 		return new Comment(comment);
 	}
@@ -718,7 +714,7 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new EndArray();
 	}
 
-	public static AJSONQuiXEvent getKeyName(QuiXCharStream name) {
+	public static AJSONQuiXEvent getKeyName(final QuiXCharStream name) {
 		return new KeyName(name);
 	}
 
@@ -734,11 +730,11 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new ValueFalse();
 	}
 
-	public static AJSONQuiXEvent getValueNumber(double number) {
+	public static AJSONQuiXEvent getValueNumber(final double number) {
 		return new ValueNumber(number);
 	}
 
-	public static AJSONQuiXEvent getValueString(QuiXCharStream str) {
+	public static AJSONQuiXEvent getValueString(final QuiXCharStream str) {
 		return new ValueString(str);
 	}
 
@@ -762,70 +758,70 @@ public abstract class AQuiXEvent implements IQuiXEvent, IQuiXToken {
 		return new EndRDF();
 	}
 
-	public static ARDFQuiXEvent getStartPredicate(QuiXCharStream name) {
+	public static ARDFQuiXEvent getStartPredicate(final QuiXCharStream name) {
 		return new StartPredicate(name);
 	}
 
-	public static ARDFQuiXEvent getEndPredicate(QuiXCharStream name) {
+	public static ARDFQuiXEvent getEndPredicate(final QuiXCharStream name) {
 		return new EndPredicate(name);
 	}
 
-	public static ARDFQuiXEvent getSubject(QuiXCharStream name) {
+	public static ARDFQuiXEvent getSubject(final QuiXCharStream name) {
 		return new Subject(name);
 	}
 
-	public static ARDFQuiXEvent getObject(QuiXCharStream name) {
+	public static ARDFQuiXEvent getObject(final QuiXCharStream name) {
 		return new Object(name);
 	}
 
-	public static ARDFQuiXEvent getGraph(QuiXCharStream name) {
+	public static ARDFQuiXEvent getGraph(final QuiXCharStream name) {
 		return new Graph(name);
 	}
 
 	/* utilities */
 
 	public boolean isStartSequence() {
-		return (this.type == QuiXToken.START_SEQUENCE);
+		return this.type == QuiXToken.START_SEQUENCE;
 	}
 
 	public boolean isEndSequence() {
-		return (this.type == QuiXToken.END_SEQUENCE);
+		return this.type == QuiXToken.END_SEQUENCE;
 	}
 
 	public boolean isStartDocument() {
-		return (this.type == QuiXToken.START_DOCUMENT);
+		return this.type == QuiXToken.START_DOCUMENT;
 	}
 
 	public boolean isEndDocument() {
-		return (this.type == QuiXToken.END_DOCUMENT);
+		return this.type == QuiXToken.END_DOCUMENT;
 	}
 
 	public boolean isStartElement() {
-		return (this.type == QuiXToken.START_ELEMENT);
+		return this.type == QuiXToken.START_ELEMENT;
 	}
 
 	public boolean isEndElement() {
-		return (this.type == QuiXToken.END_ELEMENT);
+		return this.type == QuiXToken.END_ELEMENT;
 	}
 
 	public boolean isAttribute() {
-		return (this.type == QuiXToken.ATTRIBUTE);
+		return this.type == QuiXToken.ATTRIBUTE;
 	}
 
 	public boolean isText() {
-		return (this.type == QuiXToken.TEXT);
+		return this.type == QuiXToken.TEXT;
 	}
 
 	public boolean isPI() {
-		return (this.type == QuiXToken.PROCESSING_INSTRUCTION);
+		return this.type == QuiXToken.PROCESSING_INSTRUCTION;
 	}
 
 	public boolean isComment() {
-		return (this.type == QuiXToken.COMMENT);
+		return this.type == QuiXToken.COMMENT;
 	}
 
 	public boolean isNamespace() {
-		return (this.type == QuiXToken.NAMESPACE);
+		return this.type == QuiXToken.NAMESPACE;
 	}
 
 	@Override

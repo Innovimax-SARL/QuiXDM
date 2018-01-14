@@ -140,7 +140,7 @@ public interface IQuiXStreamReader {
 	 * @throws IllegalArgumentException
 	 *             if name is null
 	 */
-	Object getProperty(String name) throws IllegalArgumentException;
+	Object getProperty(String name);
 
 	/**
 	 * Get next parsing event - a processor may return all contiguous character
@@ -181,7 +181,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if there is an error processing the underlying XML source
 	 */
-	QuiXToken next() throws QuiXStreamException;
+	QuiXToken next();
 
 	/**
 	 * Test if the current event is of the given type and if the namespace and
@@ -198,7 +198,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if the required values are not matched.
 	 */
-	void require(int type, String namespaceURI, String localName) throws QuiXStreamException;
+	void require(int type, String namespaceURI, String localName);
 
 	/**
 	 * Reads the content of a text-only element, an exception is thrown if this
@@ -241,7 +241,7 @@ public interface IQuiXStreamReader {
 	 *             if the current event is not a START_ELEMENT or if a non text
 	 *             element is encountered
 	 */
-	QuiXCharStream getElementText() throws QuiXStreamException;
+	QuiXCharStream getElementText();
 
 	/**
 	 * Skips any white space (isWhiteSpace() returns true), COMMENT, or
@@ -284,7 +284,7 @@ public interface IQuiXStreamReader {
 	 * @throws NoSuchElementException
 	 *             if this is called when hasNext() returns false
 	 */
-	int nextTag() throws QuiXStreamException;
+	int nextTag();
 
 	/**
 	 * Returns true if there are more parsing events and false if there are no
@@ -295,7 +295,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if there is a fatal error detecting the next state
 	 */
-	boolean hasNext() throws QuiXStreamException;
+	boolean hasNext();
 
 	/**
 	 * Frees any resources associated with this Reader. This method does not
@@ -304,7 +304,7 @@ public interface IQuiXStreamReader {
 	 * @throws QuiXStreamException
 	 *             if there are errors freeing associated resources
 	 */
-	void close() throws QuiXStreamException;
+	void close();
 
 	/**
 	 * Return the uri for the given prefix. The uri returned depends on the
@@ -606,7 +606,7 @@ public interface IQuiXStreamReader {
 	 * @throws NullPointerException
 	 *             is if target is null
 	 */
-	int getTextCharacters(int sourceStart, char[] target, int targetStart, int length) throws QuiXStreamException;
+	int getTextCharacters(int sourceStart, char[] target, int targetStart, int length);
 
 	/**
 	 * Gets the text associated with a CHARACTERS, SPACE or CDATA event. Allows

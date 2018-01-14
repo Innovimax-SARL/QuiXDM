@@ -17,11 +17,11 @@ public class QuiXMatchedEvent implements IQuiXEvent {
 
 	/* constructor */
 
-	public QuiXMatchedEvent(AQuiXEvent event) {
+	public QuiXMatchedEvent(final AQuiXEvent event) {
 		this.event = event;
 	}
 
-	public QuiXMatchedEvent(AQuiXEvent event, boolean matched) {
+	public QuiXMatchedEvent(final AQuiXEvent event, final boolean matched) {
 		this.event = event;
 		this.matched = matched;
 	}
@@ -33,7 +33,7 @@ public class QuiXMatchedEvent implements IQuiXEvent {
 		return this.event;
 	}
 
-	public QuiXMatchedEvent setMatched(boolean matched) {
+	public QuiXMatchedEvent setMatched(final boolean matched) {
 		this.matched = matched;
 		return this;
 	}
@@ -44,6 +44,6 @@ public class QuiXMatchedEvent implements IQuiXEvent {
 
 	@Override
 	public String toString() {
-		return this.event.toString() + ";" + this.matched;
+		return this.event.toString() + ';' + this.matched;
 	}
 }

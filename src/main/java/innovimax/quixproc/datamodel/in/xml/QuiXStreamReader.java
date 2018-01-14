@@ -7,6 +7,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.in.xml;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -26,6 +27,7 @@ import innovimax.quixproc.datamodel.QuiXToken;
 import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
 import innovimax.quixproc.datamodel.stream.QuiXStreamException;
+import javax.xml.transform.stream.StreamSource;
 
 public class QuiXStreamReader implements IQuiXStreamReader {
 
@@ -36,7 +38,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	private QuiXCharStream baseURI;
 	private final Queue<AQuiXEvent> buffer = new LinkedList<AQuiXEvent>();
 
-	private QuiXStreamReader(Iterable<Source> sources) {
+	private QuiXStreamReader(final Iterable<Source> sources) {
 		this.ifactory = XMLInputFactory.newFactory();
 		this.position = 0;
 		this.ifactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.FALSE);
@@ -45,13 +47,13 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	}
 
 	private void loadSource() throws XMLStreamException {
-		Source current = this.sources.next();
+		final Source current = this.sources.next();
 		this.sreader = this.ifactory.createXMLStreamReader(current);
 		this.baseURI = QuiXCharStream.fromSequence(current.getSystemId());
 	}
 
 	@Override
-	public boolean hasNext() throws QuiXStreamException {
+	public boolean hasNext() {
 		return this.state != State.FINISH;
 	}
 
@@ -63,7 +65,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	private final StringBuilder charBuffer = new StringBuilder();
 
 	@Override
-	public QuiXToken next() throws QuiXStreamException {
+	public QuiXToken next() {
 		try {
 			if (this.state == State.FINISH) {
 				return null;
@@ -111,7 +113,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 				return event;
 			}
 			while (true) {
-				int code = this.sreader.next();
+				final int code = this.sreader.next();
 				switch (code) {
 				case XMLStreamConstants.START_DOCUMENT:
 					// System.out.println("START_DOCUMENT");
@@ -198,7 +200,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 					break;
 				}
 			}
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			throw new QuiXStreamException(e);
 		}
 	}
@@ -211,7 +213,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	 * @param event
 	 * @return
 	 */
-	private QuiXToken updateText(QuiXToken event) {
+	private QuiXToken updateText(final QuiXToken event) {
 		if (this.charBuffer.length() != 0) {
 			// AQuiXEvent.getText(charBuffer.toString());
 			this.charBuffer.setLength(0);
@@ -225,37 +227,37 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	public void close() {
 		try {
 			this.sreader.close();
-		} catch (XMLStreamException e) {
+		} catch (final XMLStreamException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public Object getProperty(String name) throws IllegalArgumentException {
+	public Object getProperty(final String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void require(int type, String namespaceURI, String localName) throws QuiXStreamException {
+	public void require(final int type, final String namespaceURI, final String localName) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public QuiXCharStream getElementText() throws QuiXStreamException {
+	public QuiXCharStream getElementText() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int nextTag() throws QuiXStreamException {
+	public int nextTag() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public QuiXCharStream getNamespaceURI(String prefix) {
+	public QuiXCharStream getNamespaceURI(final String prefix) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -285,7 +287,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	}
 
 	@Override
-	public String getAttributeValue(String namespaceURI, String localName) {
+	public String getAttributeValue(final String namespaceURI, final String localName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -297,43 +299,43 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	}
 
 	@Override
-	public QName getAttributeName(int index) {
+	public QName getAttributeName(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getAttributeNamespace(int index) {
+	public String getAttributeNamespace(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getAttributeLocalName(int index) {
+	public String getAttributeLocalName(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getAttributePrefix(int index) {
+	public String getAttributePrefix(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getAttributeType(int index) {
+	public String getAttributeType(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getAttributeValue(int index) {
+	public String getAttributeValue(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean isAttributeSpecified(int index) {
+	public boolean isAttributeSpecified(final int index) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -345,13 +347,13 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	}
 
 	@Override
-	public String getNamespacePrefix(int index) {
+	public String getNamespacePrefix(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String getNamespaceURI(int index) {
+	public String getNamespaceURI(final int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -381,8 +383,7 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 	}
 
 	@Override
-	public int getTextCharacters(int sourceStart, char[] target, int targetStart, int length)
-			throws QuiXStreamException {
+	public int getTextCharacters(final int sourceStart, final char[] target, final int targetStart, final int length) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -483,14 +484,14 @@ public class QuiXStreamReader implements IQuiXStreamReader {
 		return null;
 	}
 
-	public static void main(String[] args) throws QuiXException {
-		Iterable<Source> sources = java.util.Arrays
+	public static void main(final String[] args) {
+		final Iterable<Source> sources = Arrays
 				.asList(new Source[] {
-						new javax.xml.transform.stream.StreamSource(
+						new StreamSource(
 								"/Users/innovimax/tmp/gs1/new/1000/1000_KO_22062015.xml"),
-						new javax.xml.transform.stream.StreamSource(
+						new StreamSource(
 								"/Users/innovimax/tmp/gs1/new/1000/1000_OK_22062015.xml") });
-		IQuiXStreamReader qesr = new QuiXStreamReader(sources);
+		final IQuiXStreamReader qesr = new QuiXStreamReader(sources);
 		while (qesr.hasNext()) {
 			System.out.println(qesr.next());
 		}

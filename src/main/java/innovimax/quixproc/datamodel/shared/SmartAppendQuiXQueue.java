@@ -67,7 +67,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		//
 		private LinkedItem<T> next;
 
-		LinkedItem(T event) {
+		LinkedItem(final T event) {
 			this.event = event;
 			// this.latch = new BooleanLatch();
 			this.lock = new Object();
@@ -93,13 +93,13 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 					}
 				}
 				return this.next;
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 				return null;
 			}
 		}
 
-		void setNext(LinkedItem<T> li) {
+		void setNext(final LinkedItem<T> li) {
 			this.next = li;
 			// this.latch.signal();
 			synchronized (this.lock) {
@@ -114,11 +114,11 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		// debug
 		private String name;
 
-		LocalReader(LinkedItem<T> li) {
+		LocalReader(final LinkedItem<T> li) {
 			this.current = li;
 		}
 
-		private void setName(String name) {
+		private void setName(final String name) {
 			this.name = name;
 		}
 
@@ -128,7 +128,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 				System.out.println("hasNext => current == null in LocalReader");
 				return false;
 			}
-			boolean result = this.current.getNext() != LinkedItem.END;
+			final boolean result = this.current.getNext() != LinkedItem.END;
 			if (DEBUG_LEVEL > 1)
 				if (!result)
 					System.out.println("Reader(" + this.name + ") hasnext=false");
@@ -138,7 +138,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		@Override
 		public T next() {
 			this.current = this.current.getNext();
-			T event = this.current.get();
+			final T event = this.current.get();
 			if (DEBUG_LEVEL > 1)
 				System.out.println(counter + "/" + this.name + "<-" + event);
 			return event;
@@ -168,10 +168,10 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	 * !!! NOT THREAD SAFE : Only one thread should do the appending here
 	 */
 	@Override
-	public void append(T event) {
+	public void append(final T event) {
 		if (DEBUG_LEVEL > 1)
 			System.out.println(counter + "->" + event);
-		LinkedItem<T> li = new LinkedItem<T>(event);
+		final LinkedItem<T> li = new LinkedItem<T>(event);
 		this.current.setNext(li);
 		this.current = li;
 	}
@@ -195,7 +195,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		final LinkedItem<T> local_head = this.head;
 		if (DEBUG_LEVEL > 0)
 			System.out.println("head " + this.head);
-		LocalReader<T> l = new LocalReader<T>(local_head);
+		final LocalReader<T> l = new LocalReader<T>(local_head);
 		if (DEBUG_LEVEL > 0)
 			l.setName(this.rank + "/" + this.currentReader + "/" + this.readerCount);
 		this.currentReader++;
@@ -218,7 +218,7 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	private static final class LocalProxyReader<T> implements ProxyReader<T> {
 		private LinkedItem<T> head;
 
-		LocalProxyReader(LinkedItem<T> head) {
+		LocalProxyReader(final LinkedItem<T> head) {
 			this.head = head;
 		}
 
@@ -241,14 +241,15 @@ public final class SmartAppendQuiXQueue<T> implements IQuiXQueue<T> {
 
 	@Override
 	public void setReaderCount(int count) {
-		if (count < 1)
-			count = 1;
-		this.readerCount = count;
+        int count1 = count;
+        if (count1 < 1)
+			count1 = 1;
+		this.readerCount = count1;
 		if (DEBUG_LEVEL > 0)
-			if (count >= 18)
+			if (count1 >= 18)
 				Thread.dumpStack();
 		if (DEBUG_LEVEL > 0)
-			System.out.println("SetReaderCount (" + this.rank + ") = " + count);
+			System.out.println("SetReaderCount (" + this.rank + ") = " + count1);
 	}
 
 	@Override

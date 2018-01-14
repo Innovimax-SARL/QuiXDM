@@ -15,15 +15,15 @@ public class QuiXConvertException extends QuiXException {
 		this(null, null);
 	}
 
-	public QuiXConvertException(String message) {
+	public QuiXConvertException(final String message) {
 		this(message, null);
 	}
 
-	public QuiXConvertException(Throwable cause) {
+	public QuiXConvertException(final Throwable cause) {
 		this(null, cause);
 	}
 
-	private QuiXConvertException(String message, Throwable cause) {
+	private QuiXConvertException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

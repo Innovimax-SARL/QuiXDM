@@ -21,7 +21,7 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 
 	private final Deque<Map<QuiXCharStream, QuiXCharStream>> namespaces;
 
-	public NamespaceContextFilter(IQuiXStream<IQuiXToken> stream) {
+	public NamespaceContextFilter(final IQuiXStream<IQuiXToken> stream) {
 		super(stream);
 		// TODO Auto-generated constructor stub
 		this.namespaces = new LinkedList<Map<QuiXCharStream, QuiXCharStream>>();
@@ -30,7 +30,7 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 	private boolean needCleaning = false;
 
 	@Override
-	public IQuiXToken process(IQuiXToken item) {
+	public IQuiXToken process(final IQuiXToken item) {
 		if (this.needCleaning) {
 			this.namespaces.pollLast();
 			this.needCleaning = false;
@@ -38,15 +38,15 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 		switch (item.getType()) {
 		case START_ELEMENT:
 			this.namespaces.add(new TreeMap<QuiXCharStream, QuiXCharStream>());
-			break;
+			return item;
 		case END_ELEMENT:
 			// differ the cleaning to the next event
 			this.needCleaning = true;
-			break;
+			return item;
 		case NAMESPACE:
 			// this.namespaces.getLast().put(qevent.asNamespace().getPrefix(),
 			// qevent.asNamespace().getURI());
-			break;
+			return item;
 		default:
 		}
 		return item;
@@ -59,10 +59,10 @@ public class NamespaceContextFilter extends AQuiXEventStreamFilter {
 	 * @param prefix
 	 * @return
 	 */
-	public QuiXCharStream getURI(String prefix) {
-		for (Iterator<Map<QuiXCharStream, QuiXCharStream>> iter = this.namespaces.descendingIterator(); iter
+	public QuiXCharStream getURI(final CharSequence prefix) {
+		for (final Iterator<Map<QuiXCharStream, QuiXCharStream>> iter = this.namespaces.descendingIterator(); iter
 				.hasNext();) {
-			Map<QuiXCharStream, QuiXCharStream> map = iter.next();
+			final Map<QuiXCharStream, QuiXCharStream> map = iter.next();
 			// TODO prefix is String and map of QuiXCharStream
 			if (map.containsKey(QuiXCharStream.fromSequence(prefix)))
 				return map.get(QuiXCharStream.fromSequence(prefix));

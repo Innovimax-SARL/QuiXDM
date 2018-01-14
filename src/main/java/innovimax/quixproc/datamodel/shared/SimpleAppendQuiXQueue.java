@@ -56,7 +56,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	 * stream.util.QuixEvent)
 	 */
 	@Override
-	public void append(T event) {
+	public void append(final T event) {
 		this.startWorking = true;
 		this.rwl.writeLock().lock();
 		try {
@@ -218,7 +218,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	 * @see com.xmlcalabash.stream.util.shared.IQuixEventQueue#setReaderCount()
 	 */
 	@Override
-	public void setReaderCount(int count) {
+	public void setReaderCount(final int count) {
 		this.readerCount = count;
 	}
 
@@ -245,7 +245,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 	private static class SimpleProducer implements Runnable {
 		private final IQuiXQueue<AQuiXEvent> qeq;
 
-		SimpleProducer(IQuiXQueue<AQuiXEvent> qeq) {
+		SimpleProducer(final IQuiXQueue<AQuiXEvent> qeq) {
 			this.qeq = qeq;
 		}
 
@@ -273,7 +273,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		private final IQuiXStream<AQuiXEvent> qs;
 		private final int rank;
 
-		SimpleConsumer(IQuiXStream<AQuiXEvent> qs, int rank) {
+		SimpleConsumer(final IQuiXStream<AQuiXEvent> qs, final int rank) {
 			this.qs = qs;
 			this.rank = rank;
 		}
@@ -288,7 +288,7 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 					if (i % LOG_MODULO == 0)
 						System.out.println("Consume " + this.rank);
 				}
-			} catch (QuiXException e) {
+			} catch (final QuiXException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -296,23 +296,23 @@ public class SimpleAppendQuiXQueue<T> implements IQuiXQueue<T> {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		System.out.println("Start");
 		System.out.println("Create QuixEventQueue");
 		// IQueue<QuixEvent> qeq = new SimpleAppendQueue<QuixEvent>();
-		SmartAppendQuiXQueue<AQuiXEvent> qeq = new SmartAppendQuiXQueue<AQuiXEvent>();
+		final SmartAppendQuiXQueue<AQuiXEvent> qeq = new SmartAppendQuiXQueue<AQuiXEvent>();
 		final int READER_COUNT = 20;
 		qeq.setReaderCount(READER_COUNT);
 		System.out.println("Create SimpleProducer");
-		SimpleProducer sp = new SimpleProducer(qeq);
+		final SimpleProducer sp = new SimpleProducer(qeq);
 		for (int i = 0; i < READER_COUNT; i++) {
 			System.out.println("Create SimpleConsumer");
-			SimpleConsumer sc = new SimpleConsumer(qeq.registerReader(), i);
-			Thread t = new Thread(sc);
+			final SimpleConsumer sc = new SimpleConsumer(qeq.registerReader(), i);
+			final Thread t = new Thread(sc);
 			System.out.println("Start SimpleConsumer");
 			t.start();
 		}
-		Thread t = new Thread(sp);
+		final Thread t = new Thread(sp);
 		System.out.println("Start SimpleProducer");
 		t.start();
 	}

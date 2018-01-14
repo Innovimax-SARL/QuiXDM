@@ -18,15 +18,15 @@ public abstract class AQuiXEventStreamReader {
 
 		void setState(State state);
 
-		AQuiXEvent processEndSource() throws QuiXException;
+		AQuiXEvent processEndSource();
 	}
 
 	protected AQuiXEventStreamReader() {
 	}
 
-	protected abstract AQuiXEvent load(AStreamSource current) throws QuiXException;
+	protected abstract AQuiXEvent load(AStreamSource current);
 
-	protected abstract AQuiXEvent process(CallBack callback) throws QuiXException;
+	protected abstract AQuiXEvent process(CallBack callback);
 
 	public abstract void reinitialize(AStreamSource current);
 

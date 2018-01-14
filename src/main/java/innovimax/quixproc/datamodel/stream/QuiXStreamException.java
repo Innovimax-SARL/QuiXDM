@@ -13,7 +13,7 @@ import innovimax.quixproc.datamodel.QuiXException;
 
 public class QuiXStreamException extends QuiXException {
 
-	public QuiXStreamException(XMLStreamException e) {
+	public QuiXStreamException(final XMLStreamException e) {
 		super(e);
 	}
 

@@ -20,6 +20,8 @@ import innovimax.quixproc.datamodel.event.AQuiXEvent;
 import innovimax.quixproc.datamodel.event.IQuiXEventStreamReader;
 import innovimax.quixproc.datamodel.generator.AReversibleRandom.SimpleReversibleRandom;
 import innovimax.quixproc.datamodel.stream.IQuiXStreamReader;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public abstract class AGenerator {
 
@@ -55,7 +57,7 @@ public abstract class AGenerator {
 	// 7BIT
 	protected final Charset currentCharset = StandardCharsets.US_ASCII;
 
-	protected byte[] s2b(String s) {
+	protected byte[] s2b(final String s) {
 		return s.getBytes(this.currentCharset);
 	}
 
@@ -76,7 +78,7 @@ public abstract class AGenerator {
 		private final String display;
 		private final BaseUnit base;
 
-		Unit(long value, String display, BaseUnit base) {
+		Unit(final long value, final String display, final BaseUnit base) {
 			this.value = value;
 			this.display = display;
 			this.base = base;
@@ -102,15 +104,15 @@ public abstract class AGenerator {
 	 * } return null; }
 	 */
 
-	public void generate(File output, long size) throws IOException {
+	public void generate(final File output, final long size) throws IOException {
 		generate(output, size, Unit.BYTE, Variation.NO_VARIATION);
 	}
 
-	public void generate(File output, long size, Unit unit) throws IOException {
+	public void generate(final File output, final long size, final Unit unit) throws IOException {
 		generate(output, size, unit, Variation.NO_VARIATION);
 	}
 
-	public void generate(File output, long size, Unit unit, Variation variation) throws IOException {
+	public void generate(final File output, final long size, final Unit unit, final Variation variation) throws IOException {
 		output.getParentFile().mkdirs();
 		final long total = size * unit.value();
 		try (FileOutputStream fos = new FileOutputStream(output)) {
@@ -128,7 +130,7 @@ public abstract class AGenerator {
 					current_pattern = updatePattern(current_pattern);
 					// System.out.println(current_size);
 					// write the alternate pattern
-					byte[] toWrite = applyVariation(variation, patterns, current_pattern);
+					final byte[] toWrite = applyVariation(variation, patterns, current_pattern);
 					// System.out.println(display(toWrite));
 					bos.write(toWrite);
 					// update the size
@@ -145,11 +147,11 @@ public abstract class AGenerator {
 		}
 	}
 
-	public InputStream getInputStream(long size, Unit unit, Variation variation) {
+	public InputStream getInputStream(final long size, final Unit unit, final Variation variation) {
 		return new GeneratorInputStream(size, unit, variation);
 	}
 
-	public final IQuiXEventStreamReader getQuiXEventStreamReader(long size, Unit unit, Variation variation) {
+	public final IQuiXEventStreamReader getQuiXEventStreamReader(final long size, final Unit unit, final Variation variation) {
 		return new GeneratorQuiXEventStreamReader(size, unit, variation);
 	}
 
@@ -190,7 +192,7 @@ public abstract class AGenerator {
 		int current_pattern;
 		final long current_evsize = getStartEvent().length + getEndEvent().length;
 
-		GeneratorQuiXEventStreamReader(long size, Unit unit, Variation variation) {
+		GeneratorQuiXEventStreamReader(final long size, final Unit unit, final Variation variation) {
 			this.state = QuiXEventStreamReaderState.START;
 			this.total = size * unit.value();
 			this.variation = variation;
@@ -199,12 +201,12 @@ public abstract class AGenerator {
 		}
 
 		@Override
-		public boolean hasNext() throws QuiXException {
+		public boolean hasNext() {
 			return this.state != QuiXEventStreamReaderState.END;
 		}
 
 		@Override
-		public AQuiXEvent next() throws QuiXException {
+		public AQuiXEvent next() {
 			if (this.position < this.buffer.length) {
 				return this.buffer[this.position++];
 			}
@@ -252,7 +254,7 @@ public abstract class AGenerator {
 		final long total;
 		final Variation variation;
 
-		GeneratorInputStream(long size, Unit unit, Variation variation) {
+		GeneratorInputStream(final long size, final Unit unit, final Variation variation) {
 			this.state = InputStreamState.START;
 			this.buffer = this.start;
 			// System.out.println("START : length : "+this.buffer.length+" :
@@ -263,7 +265,7 @@ public abstract class AGenerator {
 		}
 
 		@Override
-		public int read(byte[] b, int off, int len) {
+		public int read(final byte[] b, final int off, final int len) {
 			// System.out.println("READ : off : "+off+" ; len : "+len+" :
 			// "+display(b));
 			if (b == null) {
@@ -290,7 +292,7 @@ public abstract class AGenerator {
 			do {
 				// System.out.println("offset : "+this.offset);
 				// System.out.println("length : "+len);
-				int length = Math.min(this.buffer.length - (this.offset + 1), len - total);
+				final int length = Math.min(this.buffer.length - (this.offset + 1), len - total);
 				// System.out.println("length : "+length);
 				System.arraycopy(this.buffer, this.offset + 1, b, off + total, length);
 				total += length;
@@ -352,7 +354,7 @@ public abstract class AGenerator {
 				return -1;
 			this.offset++;
 			if (this.offset < this.buffer.length) {
-				int c = this.buffer[this.offset];
+				final int c = this.buffer[this.offset];
 				// System.out.println("read : "+display((byte) (c & 0xFF)));
 				return c;
 			}
@@ -362,27 +364,19 @@ public abstract class AGenerator {
 			if (this.buffer.length == 0)
 				return -1;
 			this.offset++;
-			int c = this.buffer[this.offset];
+			final int c = this.buffer[this.offset];
 			// System.out.println("read : "+display((byte) (c & 0xFF)));
 			return c;
 		}
 
 	}
 
-	protected static String display(byte b) {
+	protected static String display(final byte b) {
 		return Integer.toHexString(b & 0xFF) + "(" + Character.toString((char) (b & 0xFF)) + ")";
 	}
 
-	protected static String display(byte[] bytea) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		for (int i = 0; i < bytea.length; i++) {
-			if (i > 0)
-				sb.append(", ");
-			sb.append(display(bytea[i]));
-		}
-		sb.append("]");
-		return sb.toString();
+	protected static String display(final byte[] bytea) {
+		return IntStream.range(0, bytea.length).mapToObj(i -> display(bytea[i])).collect(Collectors.joining(", ", "[", "]"));
 	}
 
 	protected AGenerator() {
@@ -394,7 +388,7 @@ public abstract class AGenerator {
 		this.random.setSeed(this.seed);
 	}
 
-	public static String display(int c) {
+	public static String display(final int c) {
 		return display((byte) (c & 0XFF));
 	}
 

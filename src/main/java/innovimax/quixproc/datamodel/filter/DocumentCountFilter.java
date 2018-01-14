@@ -14,21 +14,20 @@ public class DocumentCountFilter extends AQuiXEventStreamFilter {
 
 	private int count;
 
-	public DocumentCountFilter(IQuiXStream<IQuiXToken> stream) {
+	public DocumentCountFilter(final IQuiXStream<IQuiXToken> stream) {
 		super(stream);
 		this.count = 0;
 	}
 
 	@Override
-	public IQuiXToken process(IQuiXToken item) {
+	public IQuiXToken process(final IQuiXToken item) {
 		switch (item.getType()) {
 		case START_DOCUMENT:
 			this.count++;
-			break;
+			return item;
 		default:
-			break;
+			return item;
 		}
-		return item;
 	}
 
 	public int getCurrentDocumentCount() {

@@ -32,14 +32,33 @@ public abstract class QuiXCharStream {
 	public static final QuiXCharStream NULL_NS_URI = fromSequence(XMLConstants.NULL_NS_URI);
 	public static final QuiXCharStream DEFAULT_NS_PREFIX = fromSequence(XMLConstants.DEFAULT_NS_PREFIX);
 
+	/**
+	 * @return
+	 * @throws ConcurrentModificationException
+	 */
 	@Override
-	public abstract String toString() throws ConcurrentModificationException;
+	public abstract String toString();
 
-	public abstract boolean contains(CharSequence sequence) throws ConcurrentModificationException;
+	/**
+	 * @param sequence
+	 * @return
+	 * @throws ConcurrentModificationException
+	 */
+	public abstract boolean contains(CharSequence sequence);
 
-	public abstract QuiXCharStream substringBefore(CharSequence sequence) throws ConcurrentModificationException;
+	/**
+	 * @param sequence
+	 * @return
+	 * @throws ConcurrentModificationException
+	 */
+	public abstract QuiXCharStream substringBefore(CharSequence sequence);
 
-	public abstract QuiXCharStream substringAfter(CharSequence sequence) throws ConcurrentModificationException;
+	/**
+	 * @param sequence
+	 * @return
+	 * @throws ConcurrentModificationException
+	 */
+	public abstract QuiXCharStream substringAfter(CharSequence sequence);
 
 	public abstract boolean isEmpty();
 
@@ -47,36 +66,56 @@ public abstract class QuiXCharStream {
 
 	public abstract QuiXCharStream append(CharSequence cs);
 
-	public static QuiXCharStream fromSequence(CharSequence cs) {
+	public static QuiXCharStream fromSequence(final CharSequence cs) {
 		return new CharSequenceQuiXCharStream(cs);
 	}
 
 	private static final class QuiXCharStreamList extends QuiXCharStream {
-		final QuiXCharStream a, b;
+		final QuiXCharStream a;
+		final QuiXCharStream b;
 
-		QuiXCharStreamList(QuiXCharStream a, QuiXCharStream b) {
+		QuiXCharStreamList(final QuiXCharStream a, final QuiXCharStream b) {
 			this.a = a;
 			this.b = b;
 		}
 
+		/**
+		 * @return
+		 * @throws ConcurrentModificationException
+		 */
 		@Override
-		public String toString() throws ConcurrentModificationException {
+		public String toString() {
 			return this.a.toString() + this.b.toString();
 		}
 
+		/**
+		 * @param sequence
+		 * @return
+		 * @throws ConcurrentModificationException
+		 */
 		@Override
-		public boolean contains(CharSequence sequence) throws ConcurrentModificationException {
+		public boolean contains(final CharSequence sequence) {
 			return this.a.contains(sequence) || this.b.contains(sequence);
 		}
 
+		/**
+		 * @param sequence
+		 * @return
+		 * @throws ConcurrentModificationException
+		 */
 		@Override
-		public QuiXCharStream substringBefore(CharSequence sequence) throws ConcurrentModificationException {
+		public QuiXCharStream substringBefore(final CharSequence sequence) {
 
 			return null;
 		}
 
+		/**
+		 * @param sequence
+		 * @return
+		 * @throws ConcurrentModificationException
+		 */
 		@Override
-		public QuiXCharStream substringAfter(CharSequence sequence) throws ConcurrentModificationException {
+		public QuiXCharStream substringAfter(final CharSequence sequence) {
 			// TODO Auto-generated method stub
 			// not easy to do...
 			return null;
@@ -88,12 +127,12 @@ public abstract class QuiXCharStream {
 		}
 
 		@Override
-		public QuiXCharStream append(QuiXCharStream cs) {
+		public QuiXCharStream append(final QuiXCharStream cs) {
 			return new QuiXCharStreamList(this, cs);
 		}
 
 		@Override
-		public QuiXCharStream append(CharSequence cs) {
+		public QuiXCharStream append(final CharSequence cs) {
 			return new QuiXCharStreamList(this, new CharSequenceQuiXCharStream(cs));
 		}
 
@@ -102,7 +141,7 @@ public abstract class QuiXCharStream {
 	private static final class CharSequenceQuiXCharStream extends QuiXCharStream {
 		private final CharSequence cs;
 
-		CharSequenceQuiXCharStream(CharSequence cs) {
+		CharSequenceQuiXCharStream(final CharSequence cs) {
 			this.cs = cs;
 		}
 
@@ -112,23 +151,21 @@ public abstract class QuiXCharStream {
 		}
 
 		@Override
-		public boolean contains(CharSequence sequence) {
+		public boolean contains(final CharSequence sequence) {
 			return this.cs.toString().contains(sequence);
 		}
 
 		@Override
-		public QuiXCharStream substringBefore(CharSequence sequence) {
-			int i = this.cs.toString().indexOf(sequence.toString());
-			return i == -1 ? QuiXCharStream.fromSequence("")
-					: QuiXCharStream.fromSequence(this.cs.toString().substring(0, i));
+		public QuiXCharStream substringBefore(final CharSequence sequence) {
+			final int i = this.cs.toString().indexOf(sequence.toString());
+			return QuiXCharStream.fromSequence(i == -1 ? "" : this.cs.toString().substring(0, i));
 
 		}
 
 		@Override
-		public QuiXCharStream substringAfter(CharSequence sequence) {
-			int i = this.cs.toString().indexOf(sequence.toString());
-			return i == -1 ? QuiXCharStream.fromSequence("")
-					: QuiXCharStream.fromSequence(this.cs.toString().substring(i + sequence.length()));
+		public QuiXCharStream substringAfter(final CharSequence sequence) {
+			final int i = this.cs.toString().indexOf(sequence.toString());
+			return QuiXCharStream.fromSequence(i == -1 ? "" : this.cs.toString().substring(i + sequence.length()));
 		}
 
 		@Override
@@ -137,12 +174,12 @@ public abstract class QuiXCharStream {
 		}
 
 		@Override
-		public QuiXCharStream append(QuiXCharStream c) {
+		public QuiXCharStream append(final QuiXCharStream c) {
 			return new QuiXCharStreamList(this, c);
 		}
 
 		@Override
-		public QuiXCharStream append(CharSequence c) {
+		public QuiXCharStream append(final CharSequence c) {
 			return QuiXCharStream.fromSequence(this.cs.toString() + c.toString());
 		}
 

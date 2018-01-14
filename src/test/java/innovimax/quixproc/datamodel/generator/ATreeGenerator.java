@@ -7,6 +7,7 @@
  *        http://www.apache.org/licenses/LICENSE-2.0*/
 package innovimax.quixproc.datamodel.generator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Set;
@@ -33,11 +34,11 @@ public abstract class ATreeGenerator extends AGenerator {
 			TreeGeneratorRuntimeExtractor.process(map, AYAMLGenerator.class);
 		}
 
-		public static Set<SpecialType> allowedModifiers(FileExtension ext, TreeType gtype) {
-			EnumMap<TreeType, EnumMap<SpecialType, Class<?>>> enumMap = map.get(ext);
+		public static Iterable<SpecialType> allowedModifiers(final FileExtension ext, final TreeType gtype) {
+			final EnumMap<TreeType, EnumMap<SpecialType, Class<?>>> enumMap = map.get(ext);
 			if (enumMap == null)
 				return Collections.emptySet();
-			EnumMap<SpecialType, Class<?>> enumMap2 = enumMap.get(gtype);
+			final EnumMap<SpecialType, Class<?>> enumMap2 = enumMap.get(gtype);
 			if (enumMap2 == null)
 				return Collections.emptySet();
 			return enumMap2.keySet();
@@ -55,17 +56,17 @@ public abstract class ATreeGenerator extends AGenerator {
 	protected abstract static class AHighDensityGenerator extends ATreeGenerator {
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			return (current_pattern + 1) % getPatterns().length;
 		}
 
 		@Override
-		protected long updateSize(long current_size, int current_pattern) {
+		protected long updateSize(final long current_size, final int current_pattern) {
 			return current_size + getPatterns()[current_pattern].length;
 		}
 
 		@Override
-		protected boolean notFinished(long current_size, int current_pattern, long total) {
+		protected boolean notFinished(final long current_size, final int current_pattern, final long total) {
 			return current_size < total;
 		}
 
@@ -76,7 +77,7 @@ public abstract class ATreeGenerator extends AGenerator {
 		private int next_pattern = 0;
 
 		@Override
-		protected int updatePattern(int current_pattern) {
+		protected int updatePattern(final int current_pattern) {
 			// System.out.println("update pattern " + current_pattern + " -->
 			// "+this.next_pattern);
 
@@ -85,11 +86,11 @@ public abstract class ATreeGenerator extends AGenerator {
 		}
 
 		@Override
-		protected long updateSize(long current_size, int current_pattern) {
+		protected long updateSize(final long current_size, final int current_pattern) {
 			// update the size by adding open and closing tag
 			// System.out.println("update size " + current_size+",
 			// current_pattern "+current_pattern);
-			long result = current_size + (current_pattern == 0 ? getPatternsLength() : 0);
+			final long result = current_size + (current_pattern == 0 ? getPatternsLength() : 0);
 			// System.out.println("after update size " + result);
 			return result;
 		}
@@ -97,7 +98,7 @@ public abstract class ATreeGenerator extends AGenerator {
 		private long loop = 0;
 
 		@Override
-		protected boolean notFinished(long current_size, int current_pattern, long total) {
+		protected boolean notFinished(final long current_size, final int current_pattern, final long total) {
 			// System.out.println("not finished " + current_size + ",
 			// "+current_pattern+", "+total);
 			// try {
@@ -124,9 +125,9 @@ public abstract class ATreeGenerator extends AGenerator {
 
 	}
 
-	public static AGenerator instance(FileExtension ext, TreeType gtype, SpecialType stype)
-			throws InstantiationException, IllegalAccessException {
-		return (AGenerator) SpecialType.map.get(ext).get(gtype).get(stype).newInstance();
+	public static AGenerator instance(final FileExtension ext, final TreeType gtype, final SpecialType stype)
+			throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+		return (AGenerator) SpecialType.map.get(ext).get(gtype).get(stype).getConstructor().newInstance();
 	}
 
 }
