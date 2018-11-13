@@ -6,6 +6,7 @@ jdk:
   - openjdk10
   - oraclejdk11
   - openjdk11
+  - openjdk-ea
 env:
   global:
 # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
